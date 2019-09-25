@@ -1,0 +1,158 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=ConfigurationManager.AppSettings["SiteName"] %> - <%: Page.Title %></title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+</head>
+<body>
+    <form runat="server">
+
+        <%--<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">--%>
+        <asp:HiddenField ID = "rt_measure"  value="<%$ Resources:Site.master, rt_measure %>" Runat="Server" />
+        <asp:HiddenField ID = "weather" Value="<%$ Resources:Site.master, weather %>" Runat="Server" />
+        <%--<asp:HiddenField ID = "spm"  value="<%$ Resources:Site.master, pyrano %>" Runat="Server" />
+        <asp:HiddenField ID = "c4e"  value="<%$ Resources:Site.master, c4e %>" Runat="Server" />
+        <asp:HiddenField ID = "optod" Value="<%$ Resources:Site.master, optod %>" Runat="Server" />
+        <asp:HiddenField ID = "turbi"  value="<%$ Resources:Site.master, turbi %>" Runat="Server" />--%>
+        <asp:HiddenField ID = "signature" Value="<%$ Resources:Site.master, signature %>" Runat="Server" />
+        <asp:HiddenField ID = "waveahrs" Value="<%$ Resources:Site.master, waveahrs %>" Runat="Server" />
+        <asp:HiddenField ID = "position" Value="<%$ Resources:Site.master, position %>" Runat="Server" />
+        <asp:HiddenField ID = "contact" Value="<%$ Resources:Site.master, contact %>" Runat="Server" />
+
+        <asp:HiddenField ID = "signin" Value="<%$ Resources:Site.master, signin %>" Runat="Server" />
+        <asp:HiddenField ID = "signout" Value="<%$ Resources:Site.master, signout %>" Runat="Server" />
+
+        <%--<asp:HiddenField ID = "hour"  value="<%$ Resources:Site.master, hour %>" Runat="Server" />--%>
+
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--Pour plus d'informations sur les scripts de regroupement dans ScriptManager, consultez http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Scripts Framework--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Scripts de site--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div class="container" id="banner">
+        <%--<div class="row" id="banner">--%>
+        <%--<div class="container-banner" id="banner">--%>
+            <div class="row">
+                <span>
+                    <a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">
+                         <img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>Nortekmed.jpg" height="130" />
+                    </a>
+                    <img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>LOGO-SNA.jpg" height="100" />
+                    <%--<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>malawi_flag.png" height="100" />--%>
+                    
+                </span>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+            $('#topnavbar').affix({
+                offset: {
+                    top: $('#banner').height()
+                }   
+            });
+        </script>
+
+        <div class="navbar navbar-inverse navbar-static-top" role="navigation" id="topnavbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+
+                        <script type="text/javascript">
+                            var l_rt_measure = document.getElementById('<%=rt_measure.ClientID%>').value;
+                            var l_sig = document.getElementById('<%=signature.ClientID%>').value;
+                            var l_waveahrs = document.getElementById('<%=waveahrs.ClientID%>').value;
+                            var l_weather = document.getElementById('<%=weather.ClientID%>').value;
+                            <%--var l_spm = document.getElementById('<%=spm.ClientID%>').value;
+                            var l_c4e = document.getElementById('<%=c4e.ClientID%>').value;
+                            var l_optod = document.getElementById('<%=optod.ClientID%>').value;
+                            var l_turbi = document.getElementById('<%=turbi.ClientID%>').value;--%>
+                            var l_pos = document.getElementById('<%=position.ClientID%>').value;
+                            var l_contact = document.getElementById('<%=contact.ClientID%>').value;
+                            
+                            document.write('<li><a runat="server" href="~/Realtime">'); document.write(l_rt_measure); document.write("</a></li>");
+                            document.write('<li><a runat="server" href="~/Current_Sig">'); document.write(l_sig); document.write("</a></li>");
+                            document.write('<li><a runat="server" href="~/Wave_AHRS">'); document.write(l_waveahrs); document.write("</a></li>");
+                            document.write('<li><a runat="server" href="~/Meteo">'); document.write(l_weather); document.write("</a></li>");
+                            //document.write('<li><a runat="server" href="~/Aquapro_C4E">'); document.write(l_c4e); document.write("</a></li>");
+                            //document.write('<li><a runat="server" href="~/Aquapro_Optod">'); document.write(l_optod); document.write("</a></li>");
+                            //document.write('<li><a runat="server" href="~/Aquapro_Turbi">'); document.write(l_turbi); document.write("</a></li>");
+                            //document.write('<li><a runat="server" href="~/pyrano">'); document.write(l_spm); document.write("</a></li>");
+                            document.write('<li><a runat="server" href="~/position">'); document.write(l_pos); document.write("</a></li>");
+                            document.write('<li><a runat="server" href="~/Contact">'); document.write(l_contact); document.write("</a></li>");
+                        </script>
+                    </ul>
+
+                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul class="nav navbar-nav navbar-right">
+                                <script type="text/javascript">
+                                    var l_signin = document.getElementById('<%=signin.ClientID%>').value;
+                                    document.write('<li><a runat="server" href="~/Login">'); document.write(l_rt_measure); document.write("</a ></li>");
+                                </script>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a runat="server" href="#"><%: Context.User.Identity.GetUserName()  %></a></li>
+
+                                <li>
+                                    <script type="text/javascript">
+                                        var l_signout = document.getElementById('<%=signout.ClientID%>').value;
+                                        document.write('<asp:LoginStatus runat="server" ID="logoutstatus" LogoutAction="Redirect" LogoutText="' + l_signout + '" LogoutPageUrl="~/Default" OnLoggingOut="Unnamed_LoggingOut" />');
+                                    </script>
+                                </li>
+                            </ul>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>
+            </footer>
+        </div>
+    </form>
+</body>
+</html>
