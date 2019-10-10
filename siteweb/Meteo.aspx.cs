@@ -49,9 +49,6 @@ public partial class Meteo : System.Web.UI.Page
     static string s_nb_satelite_airmar;
 
 
-
-
-
     static string s_temperature_unit;
     static string s_pressure_unit;
 
@@ -77,6 +74,21 @@ public partial class Meteo : System.Web.UI.Page
     static string s_gps_quality_airmar_unit;
     static string s_nb_satelite_airmar_unit;
 
+    static string prj_name;
+    static string device_name = "METEO";
+    static string location;
+    static string timeref;
+    static string timestamp;
+    static string direction;
+    static string orientation;
+
+    static string l_prj_name = "PROJECT NAME : ";
+    static string l_device_name = "DEVICE NAME : ";
+    static string l_location = "MEASUREMENT LOCATION";
+    static string l_timeref = "TIMEREF : ";
+    static string l_timestamp = "TIMESTAMP : ";
+    static string l_direction = "DIRECTION : ";
+    static string l_orientation = "NORTH : ";
 
 
     protected void Page_Init(object sender, EventArgs e)
@@ -174,6 +186,56 @@ public partial class Meteo : System.Web.UI.Page
     //    DownloadCsv("pluie_" + interval + ".csv", output);
     //}
 
+
+    protected void DownloadWind(object Source, EventArgs e)
+    {
+
+        string[] output = new string[downloaddata.wind_time.Length + 1];
+        output[0] = "UTC datetime;speedmoy(m/s); speedmax(m/s); direction(°)";
+
+
+        // mise en forme
+        for (int i = 0; i < downloaddata.wind_time.Length; i++)
+        {
+            output[i + 1] += downloaddata.wind_time[i].Replace("T", ", ");
+            output[i + 1] += ";";
+            output[i + 1] += downloaddata.wind_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+            output[i + 1] += ";";
+            output[i + 1] += downloaddata.wind_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+            output[i + 1] += ";";
+            output[i + 1] += downloaddata.wind_dir[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
+            output[i + 1] += ";";
+
+        }
+
+        string interval = downloaddata.wind_time[0].Split('T')[0] + "_to_" + downloaddata.wind_time[downloaddata.wind_time.Length - 1].Split('T')[0];
+
+        DownloadCsv("vent_" + interval + ".csv", output);
+    }
+
+    protected void DownloadPressTemp(object Source, EventArgs e)
+    {
+
+        string[] output = new string[downloaddata.ptu_time.Length + 1];
+        output[0] = "UTC datetime;temperature(°C);pression(hPa)";
+
+
+        // mise en forme
+        for (int i = 0; i < downloaddata.ptu_time.Length; i++)
+        {
+            output[i + 1] += downloaddata.ptu_time[i].Replace("T", ", ");
+            output[i + 1] += ";";
+            output[i + 1] += downloaddata.ptu_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+            output[i + 1] += ";";
+            output[i + 1] += downloaddata.ptu_pressure[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
+            output[i + 1] += ";";
+
+        }
+
+        string interval = downloaddata.ptu_time[0].Split('T')[0] + "_to_" + downloaddata.ptu_time[downloaddata.ptu_time.Length - 1].Split('T')[0];
+
+        DownloadCsv("presstemp_" + interval + ".csv", output);
+    }
 
     protected void Download_0_(object Source, EventArgs e)
     {
@@ -321,6 +383,8 @@ public partial class Meteo : System.Web.UI.Page
 
     protected void InitField()
     {
+        prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
+
         //Retrieving data from master resx files
         start.Value = Resources.Site.Master.start.ToString();
         end.Value = Resources.Site.Master.end.ToString();
@@ -758,6 +822,7 @@ public partial class Meteo : System.Web.UI.Page
         public string[] str_time4;
 
 
+    // temperature pressure humidity
         public void set_param_equip_0(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<string> w_time)
         {
             param0 = w_par0.ToArray();
@@ -774,6 +839,7 @@ public partial class Meteo : System.Web.UI.Page
             str_time1 = w_time.ToArray();
         }
 
+    //wind_speed_avg / wind_dir_avg / wind_speed_max / wind_dir_max
         public void set_param_equip_2(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<double> w_par3, List<string> w_time)
         {
             param6 = w_par0.ToArray();
@@ -783,6 +849,8 @@ public partial class Meteo : System.Web.UI.Page
             str_time2 = w_time.ToArray();
         }
 
+    //AIRMAR
+    //temp_airmar / press_airmar / wind_speed_avg_airmar / wind_speed_max_airmar / wind_dir_airmar / voltage_airmar
         public void set_param_equip_3(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<double> w_par3, List<double> w_par4, List<double> w_par5, List<string> w_time)
         {
             param10 = w_par0.ToArray();
@@ -794,6 +862,8 @@ public partial class Meteo : System.Web.UI.Page
             str_time3 = w_time.ToArray();
         }
 
+    //AIRMAR
+    //lat_airmar / lng_airmar / gps_quality_airmar / nb_satelite_airmar
         public void set_param_equip_4(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<double> w_par3, List<string> w_time)
         {
             param16 = w_par0.ToArray();
