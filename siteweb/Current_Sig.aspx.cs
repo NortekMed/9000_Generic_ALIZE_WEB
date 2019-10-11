@@ -335,7 +335,7 @@ public partial class SIG_Current : System.Web.UI.Page
         }
 
 
-        DbRequest += (" FROM SIGNATURE a " + timestampsrequest + " order by a.TIME_REC");
+        DbRequest += (" FROM SIGNATURE a" + timestampsrequest + " order by a.TIME_REC");
 
 
         // Get wind from database

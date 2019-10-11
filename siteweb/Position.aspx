@@ -2,6 +2,12 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 
+    <%--<script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="Scripts/bootstrap-datepicker.js"></script>
+    <script src="Scripts/nortekmed/Highcharts_cfg.js"></script>--%>
+
+
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/heatmap.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -10,7 +16,7 @@
     <script src="https://code.highcharts.com/modules/boost.js"></script>
     <script src="Scripts/bootstrap-datepicker.js"></script>
     <script src="Scripts/nortekmed/Highcharts_cfg.js"></script>
-    <script src="Scripts/bootstrap-datepicker.js"></script>
+    <%--<script src="Scripts/bootstrap-datepicker.js"></script>--%>
 
 
     <asp:HiddenField ID = "page_name"  value="<%$ Resources:Site.master, position %>" Runat="Server" />
@@ -84,6 +90,13 @@
         document.write('</div>');
     </script>
         
+    <%--<script type="text/javascript">
+            
+        document.write('<div class="panel panel-default">');
+        document.write('<div class="panel-body">');
+        document.write('<div id="poscontainer" style="min-width:500px; width:100%; height:300px;"></div>');
+        document.write('</div>');
+    </script>--%>
 
     <script>
         var l_chart_label = document.getElementById('<%=chart_label.ClientID%>').value;
@@ -91,12 +104,14 @@
         var l_d_ew = document.getElementById('<%=d_EW.ClientID%>').value;
         var l_map_label = document.getElementById('<%=map_label.ClientID%>').value;
 
+
+
         document.write('<div class="row">');
 
             document.write('<div class="col-md-8"><div class="panel panel-default">');
                     document.write('<div class="panel-heading"><b>' + l_chart_label + '</b></div>');
                         document.write('<div class="panel-body">');
-                        document.write('<div id="PosContainer" style="min-width:500px; width:100%; height:300px;"></div>');
+                        document.write('<div id="poscontainer" style="min-width:500px; width:100%; height:300px;"></div>');
                         document.write('<table class="table" style="font - size: 20px">');
                         document.write('<tbody>');
                         document.write('<tr><td>' + l_d_ns + '</td><td><label id="DISTNS">X</label></td><td>m</td></tr>');
@@ -108,7 +123,7 @@
                     document.write('<div class="panel-heading"><b>' + l_map_label + '</b></div>');
                     document.write('<div class="panel-body">');
                         document.write('<div id="map-canvas" class ="img-responsive" style="height:375px; width:100%"></div>');
-                        document.write('<p>' + l_info_0 + '</p>');
+                        document.write('<p>' + info_0 + '</p>');
             document.write('</div></div></div>');
 
         document.write('</div>');
@@ -202,24 +217,32 @@
 
             buoy_LatLng = { lat: data.P_lat[data.P_lat.length - 1], lng: data.P_lng[data.P_lng.length - 1] };
 
-            alert('position : ' + buoy_LatLng.lat + ' , ' + buoy_LatLng.lng);
+            //alert('position : ' + buoy_LatLng.lat + ' , ' + buoy_LatLng.lng + ' , ');
+            //alert(data.P_time.length);
 
-            var chartPos = $('#PosContainer').highcharts();
+            var chartPos = $('#poscontainer').highcharts();
+
             var P_pos = [];
-
             for (var i = 0; i < data.P_time.length; i++) {
-                P_pos.push(
-                    {
-                        x: data.P_lng[i],
-                        y: data.P_lat[i],
-                        name : YYYYMMDDtoDDMMYYY(data.P_time[i])
-                    });
+                //P_pos.push([ Date.parse(data.str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.P_lat[i]]);
+                P_pos.push([data.P_lng[i], data.P_lat[i]]);
+                //alert(data.P_lng[i] +'  ' + data.P_lat[i]);
+                ////P_pos[i].push(
+                //    {
+                //        x: data.P_lng[i],
+                //        y: data.P_lat[i],
+                //        //name : YYYYMMDDtoDDMMYYY(data.P_time[i])
+                //    });
             }
 
-            chartPos.series[0].setData(P_pos);
 
             $('#DISTNS').text(data.P_dist_north_south.toFixed(0))
             $('#DISTWE').text(data.P_dist_west_est.toFixed(0))
+
+            chartPos.series[0].setData(P_pos);
+
+
+            
 
             initialize();
         };
@@ -260,14 +283,87 @@
 
         google.maps.event.addDomListener(window, 'load', initialize);
 
-        initData();
+        //initData();
 
     </script>
 
     <script type="text/javascript">
 
+    $(function () {
+        $('#poscontainer').highcharts({
+            exporting: {
+                enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+            },
+            title: {
+                visible: false,
+                text: '',
+                x: -20 //center
+            },
+            subtitle: {
+                text: '',
+                x: -20
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: false
+                    }
+                },
+            },
+            xAxis: {
+                //type: 'datetime',
+                title: {
+                    text: 'Longitude',
+                },
+                gridLineWidth: 1,
+                labels: {
+                format: '{value} °',
+                },
+            },
+            yAxis: [{
+                title: {
+                    text: 'Latitude',
+                },
+                labels: {
+                    format: '{value} °',
+                },
+            }],
+
+            series: [{
+                name: 'Position',
+                data: [],
+                color: 'blue',
+                animation: false,
+                lineWidth: 0,
+                marker: {
+                    enabled: true,
+                    symbol: 'diamond'
+                },
+                tooltip: {
+                    pointFormat: 'Lat:{point.y}° Lng:{point.x}°'
+                }
+            }
+            ]
+        });
+        
+
+    //initData();
+
+    });
+</script>
+
+    <script type="text/javascript">
         $(function () {
-            $('#PosContainer').highcharts({
+            // Init charts with last 24hours values
+            initData();
+        });
+
+    </script>
+
+    <%--<script type="text/javascript">
+
+        $(function () {
+            $('#poscontainer').highcharts({
                 exporting: {
                     enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
                 },
@@ -327,7 +423,7 @@
         //initData();
 
         });
-    </script>
+    </script>--%>
 
 </asp:Content>
 

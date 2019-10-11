@@ -187,55 +187,55 @@ public partial class Meteo : System.Web.UI.Page
     //}
 
 
-    protected void DownloadWind(object Source, EventArgs e)
-    {
+    //protected void DownloadWind(object Source, EventArgs e)
+    //{
 
-        string[] output = new string[downloaddata.wind_time.Length + 1];
-        output[0] = "UTC datetime;speedmoy(m/s); speedmax(m/s); direction(°)";
-
-
-        // mise en forme
-        for (int i = 0; i < downloaddata.wind_time.Length; i++)
-        {
-            output[i + 1] += downloaddata.wind_time[i].Replace("T", ", ");
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wind_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wind_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wind_dir[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-
-        }
-
-        string interval = downloaddata.wind_time[0].Split('T')[0] + "_to_" + downloaddata.wind_time[downloaddata.wind_time.Length - 1].Split('T')[0];
-
-        DownloadCsv("vent_" + interval + ".csv", output);
-    }
-
-    protected void DownloadPressTemp(object Source, EventArgs e)
-    {
-
-        string[] output = new string[downloaddata.ptu_time.Length + 1];
-        output[0] = "UTC datetime;temperature(°C);pression(hPa)";
+    //    string[] output = new string[downloaddata.wind_time.Length + 1];
+    //    output[0] = "UTC datetime;speedmoy(m/s); speedmax(m/s); direction(°)";
 
 
-        // mise en forme
-        for (int i = 0; i < downloaddata.ptu_time.Length; i++)
-        {
-            output[i + 1] += downloaddata.ptu_time[i].Replace("T", ", ");
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.ptu_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.ptu_pressure[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
+    //    // mise en forme
+    //    for (int i = 0; i < downloaddata.wind_time.Length; i++)
+    //    {
+    //        output[i + 1] += downloaddata.wind_time[i].Replace("T", ", ");
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.wind_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.wind_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.wind_dir[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
+    //        output[i + 1] += ";";
 
-        }
+    //    }
 
-        string interval = downloaddata.ptu_time[0].Split('T')[0] + "_to_" + downloaddata.ptu_time[downloaddata.ptu_time.Length - 1].Split('T')[0];
+    //    string interval = downloaddata.wind_time[0].Split('T')[0] + "_to_" + downloaddata.wind_time[downloaddata.wind_time.Length - 1].Split('T')[0];
 
-        DownloadCsv("presstemp_" + interval + ".csv", output);
-    }
+    //    DownloadCsv("vent_" + interval + ".csv", output);
+    //}
+
+    //protected void DownloadPressTemp(object Source, EventArgs e)
+    //{
+
+    //    string[] output = new string[downloaddata.ptu_time.Length + 1];
+    //    output[0] = "UTC datetime;temperature(°C);pression(hPa)";
+
+
+    //    // mise en forme
+    //    for (int i = 0; i < downloaddata.ptu_time.Length; i++)
+    //    {
+    //        output[i + 1] += downloaddata.ptu_time[i].Replace("T", ", ");
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.ptu_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.ptu_pressure[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
+    //        output[i + 1] += ";";
+
+    //    }
+
+    //    string interval = downloaddata.ptu_time[0].Split('T')[0] + "_to_" + downloaddata.ptu_time[downloaddata.ptu_time.Length - 1].Split('T')[0];
+
+    //    DownloadCsv("presstemp_" + interval + ".csv", output);
+    //}
 
     protected void Download_0_(object Source, EventArgs e)
     {

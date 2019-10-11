@@ -141,6 +141,8 @@
         document.write('</div><br><br>')
     </script>
 
+    
+
     <script type="text/javascript">
         var label = document.getElementById('<%=_0_equipname.ClientID%>').value;
             
@@ -206,6 +208,8 @@
         document.write('</div>');
         document.write('</div>');
     </script>
+
+    
 
     <script type="text/javascript">
         document.write('</div>');
@@ -372,14 +376,14 @@
             
 
 
-            //chart meteo airmar - temp / pression
-            chartpar3.series[0].setData(par10);
-            chartpar3.series[1].setData(par11);
+            ////chart meteo airmar - temp / pression
+            //chartpar3.series[0].setData(par10);
+            //chartpar3.series[1].setData(par11);
 
-            //Chart vent ( airmare ) wsmoy / wsmax / wd
-            chartpar4.series[0].setData(par12);
-            chartpar4.series[1].setData(par13);
-            chartpar4.series[2].setData(par14);
+            ////Chart vent ( airmare ) wsmoy / wsmax / wd
+            //chartpar4.series[0].setData(par12);
+            //chartpar4.series[1].setData(par13);
+            //chartpar4.series[2].setData(par14);
 
             //chart voltage airmare
             chartpar5.series[0].setData(par15);
