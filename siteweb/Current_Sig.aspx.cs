@@ -238,7 +238,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
         direction_label.Value = Resources.CurrentSIG.direction_label.ToString();
         direction_unit.Value = Resources.CurrentSIG.direction_unit.ToString();
-        speed_label.Value = Resources.CurrentSIG.msg_info_0.ToString();
+        speed_label.Value = Resources.CurrentSIG.speed_label.ToString();
         profdir_label.Value = Resources.CurrentSIG.profdir_label.ToString();
         profspeed_label.Value = Resources.CurrentSIG.profspeed_label.ToString();
 

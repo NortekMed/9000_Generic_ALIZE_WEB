@@ -74,10 +74,12 @@
     <asp:HiddenField ID = "sig_param1"  value="<%$ Resources:CurrentSIG, param1label %>" Runat="Server" />
     <asp:HiddenField ID = "sig_param2"  value="<%$ Resources:CurrentSIG, param2label %>" Runat="Server" />
     <asp:HiddenField ID = "sig_param3"  value="<%$ Resources:CurrentSIG, param3label %>" Runat="Server" />
+    <asp:HiddenField ID = "sig_param4"  value="<%$ Resources:CurrentSIG, param4label %>" Runat="Server" />
     <asp:HiddenField ID = "sig_param0unit"  value="<%$ Resources:CurrentSIG, param0unit %>" Runat="Server" />
     <asp:HiddenField ID = "sig_param1unit"  value="<%$ Resources:CurrentSIG, param1unit %>" Runat="Server" />
     <asp:HiddenField ID = "sig_param2unit"  value="<%$ Resources:CurrentSIG, param2unit %>" Runat="Server" />
     <asp:HiddenField ID = "sig_param3unit"  value="<%$ Resources:CurrentSIG, param3unit %>" Runat="Server" />
+    <asp:HiddenField ID = "sig_param4unit"  value="<%$ Resources:CurrentSIG, param4unit %>" Runat="Server" />
 
     <asp:HiddenField ID = "wave_panel"  value="<%$ Resources:WaveAHRS, equip_name %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_param0"  value="<%$ Resources:WaveAHRS, d_avg_label %>" Runat="Server" />
@@ -123,48 +125,19 @@
             document.write('<div class="panel-body">');
             document.write('<table class="table"><tbody>');
 
-            document.write('<tr><td>' + l_desc + '</td></tr>');
+            //document.write('<tr><td>' + l_desc + '</td></tr>');
+            document.write('<tr><td>' + l_param3 + '</td><td><label id="ahrs_par3">X</label></td><td>' + l_param3unit + '</td>');
+            document.write('<tr><td>' + l_param5 + '</td><td><label id="ahrs_par5">X</label></td><td>' + l_param5unit + '</td>');
             document.write('<tr><td>' + l_param0 + '</td><td><label id="ahrs_par0">X</label></td><td>' + l_param0unit + '</td>');
             document.write('<tr><td>' + l_param1 + '</td><td><label id="ahrs_par1">X</label></td><td>' + l_param1unit + '</td>');
             document.write('<tr><td>' + l_param2 + '</td><td><label id="ahrs_par2">X</label></td><td>' + l_param2unit + '</td>');
-            document.write('<tr><td>' + l_param3 + '</td><td><label id="ahrs_par3">X</label></td><td>' + l_param3unit + '</td>');
             document.write('<tr><td>' + l_param4 + '</td><td><label id="ahrs_par4">X</label></td><td>' + l_param4unit + '</td>');
-            document.write('<tr><td>' + l_param5 + '</td><td><label id="ahrs_par5">X</label></td><td>' + l_param5unit + '</td>');
 
             document.write('</body></table></div>');
             document.write('</div></div>');
 
         </script>
 
-    <%--<div class="row">--%>
-        <script type="text/javascript">
-            var l_paneltitle = document.getElementById('<%=sig_panel.ClientID%>').value;
-            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
-            var l_param0 = document.getElementById('<%=sig_param0.ClientID%>').value;
-            var l_param1 = document.getElementById('<%=sig_param1.ClientID%>').value;
-            var l_param2 = document.getElementById('<%=sig_param2.ClientID%>').value;
-            var l_param3 = document.getElementById('<%=sig_param3.ClientID%>').value;
-            var l_param0unit = document.getElementById('<%=sig_param0unit.ClientID%>').value;
-            var l_param1unit = document.getElementById('<%=sig_param1unit.ClientID%>').value;
-            var l_param2unit = document.getElementById('<%=sig_param2unit.ClientID%>').value;
-            var l_param3unit = document.getElementById('<%=sig_param3unit.ClientID%>').value;
-
-
-            document.write('<div class="col-md-8">');
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Current_Date">X</label> </div>');
-            document.write('<div class="panel-body">');//<p>Mesures moyennées sur 1 minute</p>');
-            document.write('<tr><td>'+ l_desc + '</td></tr>');
-            document.write('<div class="row">');
-            document.write('<div class="col-md-6"><div id="SpeedSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
-            document.write('</div>');
-            document.write('<div class="col-md-6"><div id="DirSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
-            document.write('</div></div></div></div>');
-
-        </script>
-    </div>
-
-    <div class="row">
         <script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=meteo_panel.ClientID%>').value;
             var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
@@ -182,11 +155,11 @@
             document.write('<div class="panel-body">');
             document.write('<table class="table"><tbody>');
 
-            document.write('<tr><td>'); document.write(l_desc); document.write('</td></tr>');
+            //document.write('<tr><td>'); document.write(l_desc); document.write('</td></tr>');
             document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>m/s</td>');
             document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>m/s</td>');
             document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
-            document.write('<tr><td>'); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
+            document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
             document.write('<tr><td>'); document.write(l_param4); document.write('</td><td><label id="press">X</label></td><td>hPa</td>');
             //document.write('<tr><td>'); document.write(l_param5); document.write('</td><td><label id="rain_d">X</label></td><td>mm</td>');
             //document.write('<tr><td>'); document.write(l_param6); document.write('</td><td><label id="rain_acc">X</label></td><td>°</td>');
@@ -194,6 +167,62 @@
             document.write('</body></table></div>');
             document.write('</div></div>');
         </script>
+
+        <script type="text/javascript">
+            var l_paneltitle = document.getElementById('<%=meteo_panel.ClientID%>').value;
+            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+            var l_param0 = document.getElementById('<%=w_s_avg.ClientID%>').value;
+            var l_param1 = document.getElementById('<%=w_s_max.ClientID%>').value;
+            var l_param2 = document.getElementById('<%=w_dir_avg.ClientID%>').value;
+            var l_param3 = document.getElementById('<%=w_temp.ClientID%>').value;
+            var l_param4 = document.getElementById('<%=w_press.ClientID%>').value;
+            var l_param5 = document.getElementById('<%=w_rain_d.ClientID%>').value;
+            var l_param6 = document.getElementById('<%=w_rain_acc.ClientID%>').value;
+
+            document.write('<div class="col-md-4">')
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>'); document.write("Position"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+            document.write('<div class="panel-body">');
+            document.write('<table class="table"><tbody>');
+
+            document.write('<tr><td>'); document.write("Lat: "); document.write('</td><td><label id="lat">X</label></td><td>°</td>');
+            document.write('<td>'); document.write("Lon: "); document.write('</td><td><label id="lon">X</label></td><td>°</td></tr>');
+
+            document.write('</body></table></div>');
+            document.write('</div></div>');
+        </script>
+
+    <div class="row">
+        <script type="text/javascript">
+            var l_paneltitle = document.getElementById('<%=sig_panel.ClientID%>').value;
+            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+            var l_param0 = document.getElementById('<%=sig_param0.ClientID%>').value;
+            var l_param1 = document.getElementById('<%=sig_param1.ClientID%>').value;
+            var l_param2 = document.getElementById('<%=sig_param2.ClientID%>').value;
+            var l_param3 = document.getElementById('<%=sig_param3.ClientID%>').value;
+            var l_param0unit = document.getElementById('<%=sig_param0unit.ClientID%>').value;
+            var l_param1unit = document.getElementById('<%=sig_param1unit.ClientID%>').value;
+            var l_param2unit = document.getElementById('<%=sig_param2unit.ClientID%>').value;
+            var l_param3unit = document.getElementById('<%=sig_param3unit.ClientID%>').value;
+
+
+            document.write('<div class="col-md-8">');
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Current_Date">X</label> </div>');
+            document.write('<div class="panel-body">');//<p>Mesures moyennées sur 1 minute</p>');
+            //document.write('<tr><td>'+ l_desc + '</td></tr>');
+            document.write('<div class="row">');
+            document.write('<div class="col-md-6"><div id="SpeedSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
+            document.write('</div>');
+            document.write('<div class="col-md-6"><div id="DirSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
+            document.write('</div></div></div></div>');
+
+        </script>
+    </div>
+
+    <%--<div class="row">--%>
+        
+
 
         <%--<script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=pyrano_panel.ClientID%>').value;
@@ -310,8 +339,190 @@
         
      </div>
 
-    
+    <%--<script type="text/javascript">
+        $(function () {
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false   // Dont apply client local time
+                }
+            });
 
+
+            initMeteo();
+            //initPyrano();
+            //initC4E();
+            //initOPTOD();
+            //initTurbi();
+            initSIG();
+            initWAVEAHRS();
+        });
+    </script>--%>
+
+
+    <script type="text/javascript">
+        $(function () {
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false   // Dont apply client local time
+                }
+            });
+
+            var courant_label = document.getElementById('<%=sig_param4.ClientID%>').value;
+            var courant_unit = document.getElementById('<%=sig_param4unit.ClientID%>').value;
+
+
+
+            $('#SpeedSIGcontainer').highcharts({
+                chart: {
+                    //inverted: true
+                },
+                title: {
+                    visible: false,
+                    text: '',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '',
+                    x: -20
+                },
+                exporting: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: false
+                        }
+                    },
+                },
+                yAxis: {
+                    minTickInterval: 2,
+                    startOnTick: true,
+                    endOnTick: true,
+                    title: {
+                        text: 'Distance',
+                    },
+                    labels: {
+                        format: '{value} m'
+                    },
+                    reversed: true,
+                    tickPixelInterval: 50,
+                    gridLineWidth: 1
+                },
+                xAxis: {
+                    title: {
+                        text: 'Speed (m/s)' //courant_label.ToString() + ' ' + courant_unit.ToString()
+                    },
+                    labels: {
+                        format: '{value}'
+                    },
+                    startOnTick: false,
+                    endOnTick: false,
+                    reversed: false,
+                    min: 0,
+                    gridLineWidth: 1
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                }],
+
+                tooltip: {
+                    headerFormat: '',
+                    pointFormat: 'V={point.x}m/s Distance={point.y}m',
+                    valueDecimals: 2
+                },
+                legend: {
+                    enabled: false,
+                },
+                series: [{
+                    name: 'Speed (m/s)', //Vitesse (m/s)',
+                    data: [],
+                    animation: true,
+                }]
+            });
+
+
+            $('#DirSIGcontainer').highcharts({
+                chart: {
+                    //inverted: true
+                },
+                title: {
+                    visible: false,
+                    text: '',
+                    x: -20 //center
+                },
+                subtitle: {
+                    text: '',
+                    x: -20
+                },
+                exporting: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: false
+                        }
+                    },
+                },
+                yAxis: {
+                    minTickInterval: 2,
+                    startOnTick: true,
+                    endOnTick: true,
+                    title: {
+                        text: 'Distance',
+                    },
+                    labels: {
+                        format: '{value} m'
+                    },
+                    reversed: true,
+                    tickPixelInterval: 40,
+                    gridLineWidth: 1,
+
+                },
+                xAxis: {
+                    title: {
+                        text: 'Direction (°)'
+                    },
+                    min: 0,
+                    max: 360,
+                    tickInterval: 90,
+                    labels: {
+                        format: '{value}'
+                    },
+                    startOnTick: false,
+                    endOnTick: false,
+                    reversed: false,
+                    gridLineWidth: 1,
+                    min: 0,
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                }],
+
+                tooltip: {
+                    headerFormat: '',
+                    pointFormat: 'D={point.x}° Distance={point.y}m',
+                    valueDecimals: 1
+                },
+                legend: {
+                    enabled: false,
+                    layout: 'horizontal',
+                    align: 'middle',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                },
+                series: [{
+                    name: 'Direction',
+                    color: '#FCA000',
+                    data: [],
+                    animation: true,
+                }]
+            });
+        });
+    </script>
 
     <script type="text/javascript">
     $(function () {
@@ -322,13 +533,28 @@
         });
 
         
-        initMeteo();
-        //initPyrano();
-        //initC4E();
-        //initOPTOD();
-        //initTurbi();
-        initSIG();
-        initWAVEAHRS();
+        //Call webservice with ajax!
+        function initPosition() {
+
+            var obj = { begin: "", end: "" };
+
+            $.ajax({
+                type: "POST",
+                url: "Position.aspx/GetValues",
+                data: JSON.stringify(obj),
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    updatePosition(data.d);
+                },
+                error: function () {
+                    alert('position : erreur de chargement ou pas de données');
+                }
+            });
+        }
+
+
 
         //Call webservice with ajax!
         function initMeteo() {
@@ -485,26 +711,41 @@
         }
 
         // Update charts with meteo data
-        function updateMeteo(data) {
+        function updatePosition(data) {
 
-            var last = data.wind_time.length - 1;
-
+            var last = data.P_time.length - 1;
+            
             if (last >= 0) {
 
-                YYYYMMDDtoDDMMYYY(data.wind_time[last]);
+                //YYYYMMDDtoDDMMYYY(data.list_time[last]);
 
-                $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.wind_time[last]))
-                $('#wsmoy').text(data.wind_avg[last])
-                $('#wsmax').text(data.wind_max[last])
-                $('#wdmoy').text(data.wind_dir[last])
+                $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[last]))
+                $('#lat').text(data.P_lat[last])
+                $('#lon').text(data.P_lng[last])
+            }
+        }
 
-                last = data.ptu_time.length - 1;
-                $('#wtemp').text(data.ptu_temp[last])
-                $('#press').text(data.ptu_pressure[last])
+        // Update charts with meteo data
+        function updateMeteo(data) {
 
-                last = data.rain_time.length - 1;
-                $('#rain_acc').text(data.rain_acc[last])
-                $('#rain_d').text(data.rain_dur[last])
+            var last = data.str_time2.length - 1;
+            
+            if (last >= 0) {
+
+                //YYYYMMDDtoDDMMYYY(data.str_time2[last]);
+
+                $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.str_time2[last]))
+                $('#wsmoy').text(data.param6[last])
+                $('#wsmax').text(data.param8[last])
+                $('#wdmoy').text(data.param7[last])
+
+                last = data.str_time0.length - 1;
+                $('#wtemp').text(data.wxt_temp[last])
+                $('#press').text(data.wxt_press[last])
+
+                //last = data.rain_time.length - 1;
+                //$('#rain_acc').text(data.rain_acc[last])
+                //$('#rain_d').text(data.rain_dur[last])
             }
         }
 
@@ -515,7 +756,7 @@
 
             if (last >= 0) {
 
-                YYYYMMDDtoDDMMYYY(data.spm_time[last]);
+                //YYYYMMDDtoDDMMYYY(data.spm_time[last]);
 
                 $('#pyranohour').text("      " + YYYYMMDDtoDDMMYYY(data.spm_time[last]))
                 $('#pyrano_par0').text(data.param0[last])
@@ -533,7 +774,7 @@
 
             if (last >= 0) {
 
-                YYYYMMDDtoDDMMYYY(data.spm_time[last]);
+                //YYYYMMDDtoDDMMYYY(data.spm_time[last]);
 
                 $('#c4ehour').text("      " + YYYYMMDDtoDDMMYYY(data.spm_time[last]))
                 $('#c4e_par0').text(data.param0[last])
@@ -551,7 +792,7 @@
 
             if (last >= 0) {
 
-                YYYYMMDDtoDDMMYYY(data.spm_time[last]);
+                //YYYYMMDDtoDDMMYYY(data.spm_time[last]);
 
                 $('#pyranohour').text("      " + YYYYMMDDtoDDMMYYY(data.spm_time[last]))
                 $('#optod_par0').text(data.param0[last])
@@ -569,7 +810,7 @@
 
             if (last >= 0) {
 
-                YYYYMMDDtoDDMMYYY(data.spm_time[last]);
+                //YYYYMMDDtoDDMMYYY(data.spm_time[last]);
 
                 $('#pyranohour').text("      " + YYYYMMDDtoDDMMYYY(data.spm_time[last]))
                 $('#turbi_par0').text(data.param0[last])
@@ -587,6 +828,8 @@
             var Amplitude = [];
             var Direction = [];
 
+            $('#Current_Date').text(YYYYMMDDtoDDMMYYY(data.C_time[last]));
+
             if (last >= 0) {
                 
                 // on coupe a la bonne hauteur
@@ -598,11 +841,11 @@
                     Direction.push([data.C_dir[last][j], (j + 1) * data.C_cellsize + data.C_blancking]);
                 }
 
-                var chart = $('#SpeedSIGcontainer').highcharts();
-                chart.series[0].setData(Amplitude);
+                var chart0 = $('#SpeedSIGcontainer').highcharts();
+                chart0.series[0].setData(Amplitude);
 
-                var chart = $('#DirSIGcontainer').highcharts();
-                chart.series[0].setData(Direction);
+                var chart1 = $('#DirSIGcontainer').highcharts();
+                chart1.series[0].setData(Direction);
             }
         }
 
@@ -610,187 +853,37 @@
         // Update charts with pyrano data
         function updateWAVEAHRS(data) {
 
-            var last = data.data_type_TURBI.length - 1;
+            var last = data.H_time.length - 1;
 
             if (last >= 0) {
 
-                YYYYMMDDtoDDMMYYY(data.spm_time[last]);
+                YYYYMMDDtoDDMMYYY(data.H_time[last]);
 
-                $('#ahrshour').text("      " + YYYYMMDDtoDDMMYYY(data.spm_time[last]))
+                $('#ahrshour').text("      " + YYYYMMDDtoDDMMYYY(data.H_time[last]))
                 $('#ahrs_par0').text(data.D_mean[last])
                 $('#ahrs_par1').text(data.D_peak[last])
-                $('#ahrs_par2').text(data.H_sig[last])
-                $('#ahrs_par3').text(data.H_max[last])
+                $('#ahrs_par2').text(data.H_max[last])
+                $('#ahrs_par3').text(data.H_sig[last])
                 $('#ahrs_par4').text(data.T_mean[last])
                 $('#ahrs_par5').text(data.T_peak[last])
 
             }
         }
 
+        initMeteo();
+        //initPyrano();
+        //initC4E();
+        //initOPTOD();
+        //initTurbi();
+        initSIG();
+        initWAVEAHRS();
+        initPosition();
+
     });
 
     </script>
 
-    <script type="text/javascript">
-    $(function () {
-        Highcharts.setOptions({                                            
-            global: {
-                useUTC: false   // Dont apply client local time
-            }
-        });
-
-
-
-        $('#SpeedSIGcontainer').highcharts({
-            chart: {
-                //inverted: true
-            },
-            title: {
-                visible: false,
-                text: '',
-                x: -20 //center
-            },
-            subtitle: {
-                text: '',
-                x: -20
-            },
-            exporting: {
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false
-                    }
-                },
-            },
-            yAxis: {
-                minTickInterval: 2,
-                startOnTick: true,
-                endOnTick: true,
-                title: {
-                    text: 'Distance',
-                },
-                labels: {
-                    format: '{value} m'
-                },
-                //reversed: true,
-                tickPixelInterval: 50,
-                gridLineWidth: 1
-            },
-            xAxis: {
-                title: {
-                    text: 'Vitesse Courant(m/s)'
-                },
-                labels: {
-                    format: '{value}'
-                },
-                startOnTick: false,
-                endOnTick: false,
-                reversed: false,
-                min: 0,
-                gridLineWidth: 1
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-            }],
-
-            tooltip: {
-                headerFormat: '',
-                pointFormat: 'V={point.x}m/s Distance={point.y}m',
-                valueDecimals: 2
-            },
-            legend: {
-                enabled: false,
-            },
-            series: [{
-                name: 'Vitesse (m/s)',
-                data: [],
-                animation: true,
-            }]
-        });
-
-
-        $('#DirSIGcontainer').highcharts({
-            chart: {
-                //inverted: true
-            },
-            title: {
-                visible: false,
-                text: '',
-                x: -20 //center
-            },
-            subtitle: {
-                text: '',
-                x: -20
-            },
-            exporting: {
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false
-                    }
-                },
-            },
-            yAxis: {
-                minTickInterval: 2,
-                startOnTick: true,
-                endOnTick: true,
-                title: {
-                    text: 'Distance',
-                },
-                labels: {
-                    format: '{value} m'
-                },
-                //reversed: true,
-                tickPixelInterval: 40,
-                gridLineWidth: 1,
-                
-            },
-            xAxis: {
-                title: {
-                    text: 'Direction (°)'
-                },
-                min: 0,
-                max: 360,
-                tickInterval: 90,
-                labels: {
-                    format: '{value}'
-                },
-                startOnTick: false,
-                endOnTick: false,
-                reversed: false,
-                gridLineWidth: 1,
-                min: 0,
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-            }],
-
-            tooltip: {
-                headerFormat: '',
-                pointFormat: 'D={point.x}° Distance={point.y}m',
-                valueDecimals: 1
-            },
-            legend: {
-                enabled: false,
-                layout: 'horizontal',
-                align: 'middle',
-                verticalAlign: 'bottom',
-                borderWidth: 0
-            },
-            series: [{
-                name: 'Direction',
-                color: '#FCA000',
-                data: [],
-                animation: true,
-            }]
-        });
-    </script>
+    
 
 </asp:Content>
 

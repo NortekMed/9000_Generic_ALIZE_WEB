@@ -21,8 +21,10 @@
     <asp:HiddenField ID = "hour" ClientIdMode="Static" Runat="Server" />
 
     <asp:HiddenField ID = "_0_equipname" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "_0_equipname_alias" ClientIdMode="Static" Runat="Server"/>
 	<asp:HiddenField ID = "_1_equipname" ClientIdMode="Static" Runat="Server"/>
 	<asp:HiddenField ID = "_2_equipname" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "_2_equipname_alias" ClientIdMode="Static" Runat="Server"/>
 	<asp:HiddenField ID = "_3_equipname" ClientIdMode="Static" Runat="Server"/>
 	<asp:HiddenField ID = "_4_equipname" ClientIdMode="Static" Runat="Server"/>
 
@@ -141,10 +143,19 @@
         document.write('</div><br><br>')
     </script>
 
-    
+    <script type="text/javascript">
+        var label = document.getElementById('<%=_2_equipname_alias.ClientID%>').value;
+
+        document.write('<div class="panel panel-default">');
+        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        document.write('<div class="panel-body">');
+        document.write('<div id="param2container" style="min-width:500px; width:100%; height:300px;"></div>');
+        document.write('</div>');
+        document.write('</div>');
+    </script>
 
     <script type="text/javascript">
-        var label = document.getElementById('<%=_0_equipname.ClientID%>').value;
+        var label = document.getElementById('<%=_0_equipname_alias.ClientID%>').value;
             
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
@@ -165,16 +176,7 @@
         document.write('</div>');
     </script>--%>
 
-    <script type="text/javascript">
-        var label = document.getElementById('<%=_2_equipname.ClientID%>').value;
-
-        document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
-        document.write('<div class="panel-body">');
-        document.write('<div id="param2container" style="min-width:500px; width:100%; height:300px;"></div>');
-        document.write('</div>');
-        document.write('</div>');
-    </script>
+    
 
     <%--<script type="text/javascript">
         var label = document.getElementById('<%=_3_equipname.ClientID%>').value;
@@ -198,7 +200,7 @@
         document.write('</div>');
     </script>--%>
 
-    <script type="text/javascript">
+    <%--<script type="text/javascript">
         var label = document.getElementById('<%=voltage_airmar_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
@@ -207,7 +209,7 @@
         document.write('<div id="param5container" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
         document.write('</div>');
-    </script>
+    </script>--%>
 
     
 
@@ -319,9 +321,9 @@
 
             //METEO Vaissala
             for (var i = 0; i < data.str_time0.length; i++) {
-                par0.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param0[i]]);
-                par1.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param1[i]]);
-                par2.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param2[i]]);
+                par0.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_temp[i]]);
+                par1.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_press[i]]);
+                par2.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_hum[i]]);
             }
 
             //PLUIE Vaissala
@@ -412,6 +414,7 @@
         var par2_unit = " " + document.getElementById('<%=humidity_unit.ClientID%>').value;
 
         $('#param0container').highcharts({
+            
             xAxis: {
                 type: 'datetime',
                 minTickInterval: 30,
@@ -686,6 +689,11 @@
                     data: [],
                      yAxis: 1,
                     color: '#0282AD',
+                    lineWidth: 0,
+                    marker: {
+                        enabled: true,
+                        symbol: 'diamond'
+                    },
                     animation: true,
                     tooltip: {
                         valueSuffix: ' ' + par7_unit.toString()

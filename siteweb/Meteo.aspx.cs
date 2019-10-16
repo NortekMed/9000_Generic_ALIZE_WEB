@@ -17,8 +17,10 @@ public partial class Meteo : System.Web.UI.Page
     static public data_type_Meteo_0 downloaddata;
 
     static string _0_equip_name = "";
+    static string _0_equip_name_alias = "";
     static string _1_equip_name = "";
     static string _2_equip_name = "";
+    static string _2_equip_name_alias = "";
     static string _3_equip_name = "";
     static string _4_equip_name = "";
 
@@ -253,11 +255,11 @@ public partial class Meteo : System.Web.UI.Page
             {
                 output[i + 1] += downloaddata.str_time0[i].Replace("T", ", ");
                 output[i + 1] += ";";
-                output[i + 1] += downloaddata.param0[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+                output[i + 1] += downloaddata.wxt_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
                 output[i + 1] += ";";
-                output[i + 1] += downloaddata.param1[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+                output[i + 1] += downloaddata.wxt_press[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
                 output[i + 1] += ";";
-                output[i + 1] += downloaddata.param2[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
+                output[i + 1] += downloaddata.wxt_hum[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
                 output[i + 1] += ";";
 
             }
@@ -301,8 +303,10 @@ public partial class Meteo : System.Web.UI.Page
     protected void CreateField()
     {
         _0_equipname = new HiddenField();
+        _0_equipname_alias = new HiddenField();
         _1_equipname = new HiddenField();
         _2_equipname = new HiddenField();
+        _2_equipname_alias = new HiddenField();
         _3_equipname = new HiddenField();
         _4_equipname = new HiddenField();
 
@@ -398,8 +402,10 @@ public partial class Meteo : System.Web.UI.Page
 
         //Retrieving data from curennt object resx files
         _0_equipname.Value = Resources.meteo._0_equip_name.ToString();
+        _0_equipname_alias.Value = Resources.meteo._0_equip_name_alias.ToString();
         _1_equipname.Value = Resources.meteo._1_equip_name.ToString();
         _2_equipname.Value = Resources.meteo._2_equip_name.ToString();
+        _2_equipname_alias.Value = Resources.meteo._2_equip_name_alias.ToString();
         _3_equipname.Value = Resources.meteo._3_equip_name.ToString();
         _4_equipname.Value = Resources.meteo._4_equip_name.ToString();
         //_5_equipname.Value = Resources.meteo._5_equip_name.ToString();
@@ -524,8 +530,10 @@ public partial class Meteo : System.Web.UI.Page
 
 
         _0_equip_name = _0_equipname.Value;
+        _0_equip_name_alias = _0_equipname_alias.Value;
         _1_equip_name = _1_equipname.Value;
         _2_equip_name = _2_equipname.Value;
+        _2_equip_name_alias = _2_equipname_alias.Value;
         _3_equip_name = _3_equipname.Value;
         _4_equip_name = _4_equipname.Value;
 
@@ -795,9 +803,12 @@ public partial class Meteo : System.Web.UI.Page
 
     public class data_type_Meteo_0
     {
-        public double[] param0;     // temperature
-        public double[] param1;     // pressure
-        public double[] param2;     // humidity
+    //public double[] param0;     // temperature
+    //public double[] param1;     // pressure
+    //public double[] param2;     // humidity
+    public double[] wxt_temp;     // temperature
+    public double[] wxt_press;     // pressure
+    public double[] wxt_hum;     // humidity
         public double[] param3;     // rain_acc
         public double[] param4;     // rain_duration
         public double[] param5;     // rain_intensity
@@ -815,21 +826,24 @@ public partial class Meteo : System.Web.UI.Page
         public double[] param17;    // lng_airmar
         public double[] param18;    // gps_quality_airmar
         public double[] param19;    // nb_satelite_airmar
-        public string[] str_time0;
-        public string[] str_time1;
-        public string[] str_time2;
-        public string[] str_time3;
-        public string[] str_time4;
+        public string[] str_time0;  // temperature pressure humidity
+        public string[] str_time1;  // rain
+        public string[] str_time2;  //wind_speed_avg / wind_dir_avg / wind_speed_max / wind_dir_max
+        public string[] str_time3;  //temp_airmar / press_airmar / wind_speed_avg_airmar / wind_speed_max_airmar / wind_dir_airmar / voltage_airmar
+        public string[] str_time4;  //lat_airmar / lng_airmar / gps_quality_airmar / nb_satelite_airmar
 
 
     // temperature pressure humidity
-        public void set_param_equip_0(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<string> w_time)
-        {
-            param0 = w_par0.ToArray();
-            param1 = w_par1.ToArray();
-            param2 = w_par2.ToArray();
-            str_time0 = w_time.ToArray();
-        }
+    public void set_param_equip_0(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<string> w_time)
+    {
+        //param0 = w_par0.ToArray();
+        //param1 = w_par1.ToArray();
+        //param2 = w_par2.ToArray();
+        wxt_temp = w_par0.ToArray();
+        wxt_press = w_par1.ToArray();
+        wxt_hum = w_par2.ToArray();
+        str_time0 = w_time.ToArray();
+    }
 
         public void set_param_equip_1(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<string> w_time)
         {

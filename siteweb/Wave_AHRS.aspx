@@ -98,7 +98,7 @@
     </script>
 
     <script type="text/javascript">
-        var label = document.getElementById('<%=d_label.ClientID%>').value;
+        var label = document.getElementById('<%=t_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
@@ -109,7 +109,7 @@
     </script>
 
     <script type="text/javascript">
-        var label = document.getElementById('<%=t_label.ClientID%>').value;
+        var label = document.getElementById('<%=d_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
@@ -267,7 +267,7 @@
             xAxis: {
                 type: 'datetime',
                 title: {
-                    text: 'Heure (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
+                    text: 'Hour (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
                 },
                 tickPixelInterval: 80,
                 gridLineWidth: 1
@@ -275,7 +275,7 @@
             yAxis: [{
                 min: 0,
                 title: {
-                    text: 'Hauteur',
+                    text: 'Height',
                 },
                 //tickInterval: 0.5,
                 labels: {
@@ -289,7 +289,7 @@
                 floating: false,
             },
             series: [{
-                name: 'Hauteur max',
+                name: 'Height max',
                 data: [],
                 color: 'green',
                 animation: true,
@@ -297,7 +297,7 @@
                     valueSuffix: ' m'
                 }
             },{
-                name: 'Hauteur significative',
+                name: 'Significative height',
                 data: [],
                 color: 'blue',
                 animation: true,
@@ -331,7 +331,7 @@
             xAxis: {
                 type: 'datetime',
                 title: {
-                    text: 'Heure (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
+                    text: 'Hour (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
                 },
                 tickPixelInterval: 80,
                 gridLineWidth: 1
@@ -339,7 +339,7 @@
             yAxis: [{
                 min: 0,
                 title: {
-                    text: 'Période',
+                    text: 'Period',
                 },
                 labels: {
                     format: '{value} s',
@@ -355,7 +355,7 @@
                 floating: false,
             },
             series: [{
-                name: 'Période peak',
+                name: 'Peak period',
                 data: [],
                 color: 'gray',
                 animation: false,
@@ -363,7 +363,7 @@
                     valueSuffix: ' s'
                 }
             },{
-                name: 'Période moyenne',
+                name: 'Mean period',
                 data: [],
                 color: 'red',
                 animation: false,
@@ -397,7 +397,7 @@
             xAxis: {
                 type: 'datetime',
                 title: {
-                    text: 'Heure (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
+                    text: 'Hour (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
                 },
                 tickPixelInterval: 80,
                 gridLineWidth: 1
@@ -420,7 +420,7 @@
                 floating: false,
             },
             series: [{
-                name: 'Direction peak',
+                name: 'Peak direction',
                 data: [],
                 color: '#0282AD',
                 animation: false,
@@ -433,7 +433,7 @@
                     symbol: 'diamond'
                 },
             },{
-                name: 'Direction moyenne',
+                name: 'Mean direction',
                 data: [],
                 color: '#FCA000',
                 lineWidth: 0,

@@ -58,20 +58,7 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <div class="container" id="banner">
-        <%--<div class="row" id="banner">--%>
-        <%--<div class="container-banner" id="banner">--%>
-            <div class="row">
-                <span>
-                    <a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">
-                         <img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>Nortekmed.jpg" height="130" />
-                    </a>
-                    <img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>LOGO-SNA.jpg" height="100" />
-                    <%--<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>malawi_flag.png" height="100" />--%>
-                    
-                </span>
-            </div>
-        </div>
+        
 
 
         <script type="text/javascript">
@@ -82,8 +69,27 @@
             });
         </script>
 
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation" id="topnavbar">
-            <div class="container">
+        <script type="text/javascript">
+
+            var header = "<%=ConfigurationManager.AppSettings["HeaderAtFooter"] %>";
+
+            if (header == "false") {
+                document.write('<div class="container" id="banner">');
+                document.write('<div class="row">');
+                document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
+                document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');
+                document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');
+                document.write('</span>');
+                document.write('</div></div>');
+            }
+
+        </script>
+
+        <script type="text/javascript">
+           document.write('<div class="navbar navbar-inverse navbar-static-top" role="navigation" id="topnavbar" style="background-color:<%=ConfigurationManager.AppSettings["MenuColor"] %>">');
+        </script>
+        <%--<div class="navbar navbar-inverse navbar-static-top" role="navigation" id="topnavbar" style="background-color:#347111">--%>
+            <div class="container" >
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
@@ -106,6 +112,11 @@
                             var l_turbi = document.getElementById('<%=turbi.ClientID%>').value;--%>
                             var l_pos = document.getElementById('<%=position.ClientID%>').value;
                             var l_contact = document.getElementById('<%=contact.ClientID%>').value;
+
+                            var link = '<%=ConfigurationManager.AppSettings["Link"] %>';
+                            
+
+                            document.write('<li><a runat="server" href="">'); document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write("</a></li>");
                             
                             document.write('<li><a runat="server" href="~/Realtime">'); document.write(l_rt_measure); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/Current_Sig">'); document.write(l_sig); document.write("</a></li>");
@@ -117,6 +128,10 @@
                             //document.write('<li><a runat="server" href="~/pyrano">'); document.write(l_spm); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/position">'); document.write(l_pos); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/Contact">'); document.write(l_contact); document.write("</a></li>");
+                            //http://192.168.1.204
+                            document.write('<li><a runat="server" href="'); document.write(link);document.write('" target="_blank">'); document.write(' "LINK" '); document.write("</a></li>");
+                            //document.write('<li><a runat="server" href="http://192.168.1.204/SNA-SOUTHWEST" target="_blank">'); document.write(' "LINK" '); document.write("</a></li>");
+                            //document.write('<li><a runat="server" href="http://nortekmed.dyndns.org/SNA-SOUTHWEST">'); document.write(' "LINK" '); document.write("</a></li>");
                         </script>
                     </ul>
 
@@ -145,13 +160,59 @@
                 </div>
             </div>
         </div>
+
+        <%--<script type="text/javascript">
+            var header = <%=ConfigurationManager.AppSettings["HeaderAtFooter"] %>.value;
+            document.write('<div class="container body-content">');
+            document.write('<asp:ContentPlaceHolder ID="MainContent" runat="server">');
+            document.write('</asp:ContentPlaceHolder>');
+            document.write('<hr />');
+            
+
+            
+
+            document.write('<footer>');
+            if (header == false) {
+                document.write('<div class="container" id="banner">');
+                document.write('<div class="row">');
+                document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
+                document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');
+                document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');
+                document.write('</span>');
+                document.write('</div></div>');
+            }
+
+            document.write('<p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>');
+            document.write('</footer>');
+            document.write('</div>');
+
+        </script>--%>
+
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />
-            <footer>
+
+            <script type="text/javascript">
+                var header = "<%=ConfigurationManager.AppSettings["HeaderAtFooter"] %>";
+                document.write('<footer>');
+                if (header == "true") {
+                    document.write('<div class="container" id="banner">');
+                    document.write('<div class="row">');
+                    document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
+                    document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');
+                    document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');
+                    document.write('</span>');
+                    document.write('</div></div>');
+                    
+                }
+                document.write('<p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>');
+                document.write('</footer>');
+            </script>
+            
+            <%--<footer>
                 <p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>
-            </footer>
+            </footer>--%>
         </div>
     </form>
 </body>

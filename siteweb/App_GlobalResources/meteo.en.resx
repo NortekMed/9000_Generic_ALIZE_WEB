@@ -120,8 +120,11 @@
   <data name="_0_equip_name" xml:space="preserve">
     <value>METEO</value>
   </data>
+  <data name="_0_equip_name_alias" xml:space="preserve">
+    <value>WEATHER</value>
+  </data>
   <data name="_0_param0label" xml:space="preserve">
-    <value>Temperature</value>
+    <value>Air temperature</value>
   </data>
   <data name="_0_param0name" xml:space="preserve">
     <value>TEMPERATURE</value>
@@ -179,6 +182,9 @@
   </data>
   <data name="_2_equip_name" xml:space="preserve">
     <value>VENT</value>
+  </data>
+  <data name="_2_equip_name_alias" xml:space="preserve">
+    <value>WIND</value>
   </data>
   <data name="_2_param0label" xml:space="preserve">
     <value>Average wind speed</value>

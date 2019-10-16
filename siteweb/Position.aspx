@@ -67,7 +67,10 @@
                         document.write('<div class="col-md-4">');
                             document.write('<div class="form - group">');
                             document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
-                    document.write('</div></div>');
+                            //document.write('<span class="input-group-addon">');
+                            //document.write('<span class="glyphicon glyphicon-calendar"></span>');
+                            //document.write('</span>');
+                            document.write('</div></div>');
 
                         document.write("<div class='col-md-4'>");
                             document.write('<div class="form - group">');
@@ -109,11 +112,13 @@
         document.write('<div class="row">');
 
             document.write('<div class="col-md-8"><div class="panel panel-default">');
-                    document.write('<div class="panel-heading"><b>' + l_chart_label + '</b></div>');
+        //document.write('<div class="panel-heading"><b>' + l_chart_label + '</b></div>');
+        //document.write('<div class="panel-heading"><b>');document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Meteohour">X</label> </div>');
+                    document.write('<div class="panel-heading"><b>');document.write(l_chart_label);document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
                         document.write('<div class="panel-body">');
                         document.write('<div id="poscontainer" style="min-width:500px; width:100%; height:300px;"></div>');
                         document.write('<table class="table" style="font - size: 20px">');
-                        document.write('<tbody>');
+        document.write('<tr><td>GPS installation -- Lat: ' + '<%=ConfigurationManager.AppSettings["Lat"] %> °' + ' - Lng: ' + '<%=ConfigurationManager.AppSettings["Lng"] %> °');
                         document.write('<tr><td>' + l_d_ns + '</td><td><label id="DISTNS">X</label></td><td>m</td></tr>');
                         document.write('<tr><td>' + l_d_ew + '</td><td><label id="DISTWE">X</label></td><td>m</td></tr>');
                         document.write('</tbody></table>');
@@ -218,23 +223,31 @@
             buoy_LatLng = { lat: data.P_lat[data.P_lat.length - 1], lng: data.P_lng[data.P_lng.length - 1] };
 
             //alert('position : ' + buoy_LatLng.lat + ' , ' + buoy_LatLng.lng + ' , ');
-            //alert(data.P_time.length);
+            //alert(data.P_time[data.P_time.length-1]);
+
+            
+
+            $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[data.P_time.length - 1]));
+
 
             var chartPos = $('#poscontainer').highcharts();
 
             var P_pos = [];
-            for (var i = 0; i < data.P_time.length; i++) {
+            //for (var i = data.P_time.length - 3; i < data.P_time.length; i++) {
+            for (var i = data.P_time.length - 1; i > data.P_time.length - 12; i--) {
+                
                 //P_pos.push([ Date.parse(data.str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.P_lat[i]]);
-                P_pos.push([data.P_lng[i], data.P_lat[i]]);
-                //alert(data.P_lng[i] +'  ' + data.P_lat[i]);
-                ////P_pos[i].push(
-                //    {
-                //        x: data.P_lng[i],
-                //        y: data.P_lat[i],
-                //        //name : YYYYMMDDtoDDMMYYY(data.P_time[i])
-                //    });
+                //P_pos.push([data.P_lng[i], data.P_lat[i]]);
+                //, Date.parse(data.P_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'))
+                //alert(data.P_lng[i] + '  ' + data.P_lat[i] + ' ' + data.P_time[i]);
+                P_pos.push(
+                    {
+                        x: data.P_lng[i],
+                        y: data.P_lat[i],
+                        name : YYYYMMDDtoDDMMYYY(data.P_time[i])
+                    });
             }
-
+            //var data_name = data.map(function(a) {return a.name;});
 
             $('#DISTNS').text(data.P_dist_north_south.toFixed(0))
             $('#DISTWE').text(data.P_dist_west_est.toFixed(0))
@@ -242,7 +255,6 @@
             chartPos.series[0].setData(P_pos);
 
 
-            
 
             initialize();
         };
@@ -271,6 +283,9 @@
                 map: map,
                 title:  '<%=ConfigurationManager.AppSettings["SiteName"] %>'
             });
+
+            //marker.setIcon('http://google-maps-icons.googlecode.com/files/sailboat-tourism.png');
+            marker.setIcon('http://maps.google.com/mapfiles/marker_yellow.png');
 
             marker.addListener('click', function () {
                     infowindow.open(map, marker);
@@ -303,13 +318,13 @@
                 text: '',
                 x: -20
             },
-            plotOptions: {
-                series: {
-                    marker: {
-                        enabled: false
-                    }
-                },
-            },
+            //plotOptions: {
+            //    series: {
+            //        marker: {
+            //            enabled: false
+            //        }
+            //    },
+            //},
             xAxis: {
                 //type: 'datetime',
                 title: {
@@ -328,7 +343,6 @@
                     format: '{value} °',
                 },
             }],
-
             series: [{
                 name: 'Position',
                 data: [],
@@ -340,10 +354,9 @@
                     symbol: 'diamond'
                 },
                 tooltip: {
-                    pointFormat: 'Lat:{point.y}° Lng:{point.x}°'
+                    pointFormat: 'Lat: {point.y}° Lng: {point.x}°'
                 }
-            }
-            ]
+            }],
         });
         
 
@@ -354,6 +367,10 @@
 
     <script type="text/javascript">
         $(function () {
+
+            // Init map
+            //initialize();
+
             // Init charts with last 24hours values
             initData();
         });

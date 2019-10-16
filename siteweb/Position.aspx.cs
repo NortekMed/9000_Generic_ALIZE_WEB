@@ -186,12 +186,12 @@ public partial class Position : System.Web.UI.Page
             endate = Convert.ToDateTime(end).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])); ;
         }
 
-        string timestampsrequest = " WHERE a.TIME_LOG>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+        string timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
 
         // Get wind from database
         DataSet ds = new DataSet();
-        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG,a.LAT ,a.LNG FROM GPS a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC,a.LAT ,a.LNG FROM GPS a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
         DataTable myDataTable = ds.Tables[0];
 
@@ -203,7 +203,7 @@ public partial class Position : System.Web.UI.Page
 
         foreach (DataRow dRow in myDataTable.Rows)
         {
-            DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+            DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
@@ -233,13 +233,21 @@ public partial class Position : System.Web.UI.Page
 
         Class1 convertutm = new Class1();
         convertutm.Init_Datum();
-        double[] XY_UTM_max = new double[2];
-        double[] XY_UTM_min = new double[2];
-        XY_UTM_max = convertutm.XY(ymax, xmax);
-        XY_UTM_min = convertutm.XY(ymin, xmin);
-        double distance_nord = Math.Abs(XY_UTM_max[1] - XY_UTM_min[1]);
-        double distance_est = Math.Abs(XY_UTM_max[0] - XY_UTM_min[0]);
+        //double[] XY_UTM_max = new double[2];
+        //double[] XY_UTM_min = new double[2];
+        //XY_UTM_max = convertutm.XY(ymax, xmax);
+        //XY_UTM_min = convertutm.XY(ymin, xmin);
+        //double distance_nord = Math.Abs(XY_UTM_max[1] - XY_UTM_min[1]);
+        //double distance_est = Math.Abs(XY_UTM_max[0] - XY_UTM_min[0]);
 
+        double lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
+        double lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
+        double[] XY_UTM_o = new double[2];
+        double[] XY_UTM_last = new double[2];
+        XY_UTM_o = convertutm.XY(lng_o, lat_o);
+        XY_UTM_last = convertutm.XY(list_lng.Last(), list_lat.Last());
+        double distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
+        double distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
 
         // Build current data object
         dataPosition data = new dataPosition();

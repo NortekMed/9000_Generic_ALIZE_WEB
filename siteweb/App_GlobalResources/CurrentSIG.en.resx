@@ -175,7 +175,7 @@
     <value>SPD</value>
   </data>
   <data name="param4unit" xml:space="preserve">
-    <value>nd</value>
+    <value>m/s</value>
   </data>
   <data name="param5label" xml:space="preserve">
     <value>Amplitude</value>
@@ -196,10 +196,10 @@
     <value>*****</value>
   </data>
   <data name="profdir_label" xml:space="preserve">
-    <value>Direction profil</value>
+    <value>Direction profile 3D</value>
   </data>
   <data name="profspeed_label" xml:space="preserve">
-    <value>Speed profil</value>
+    <value>Speed profile 3D</value>
   </data>
   <data name="speed_label" xml:space="preserve">
     <value>Current speed</value>

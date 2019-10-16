@@ -256,7 +256,8 @@
     <value>METEO</value>
   </data>
   <data name="_0_param0label" xml:space="preserve">
-    <value>Température</value>
+    <value>Température de l'air</value>
+    <comment> </comment>
   </data>
   <data name="_0_param0name" xml:space="preserve">
     <value>TEMPERATURE</value>
@@ -311,5 +312,14 @@
   </data>
   <data name="_1_param2unit" xml:space="preserve">
     <value>mm/s</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="_0_equip_name_alias" xml:space="preserve">
+    <value>METEO</value>
+  </data>
+  <data name="_2_equip_name_alias" xml:space="preserve">
+    <value>VENT</value>
   </data>
 </root>

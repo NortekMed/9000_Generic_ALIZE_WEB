@@ -169,7 +169,6 @@
         <br />--%>
     <script type="text/javascript">
         var label = document.getElementById('<%=speed_label.ClientID%>').value;
-            
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
          document.write('<div class="panel-body">');
@@ -212,7 +211,7 @@
     </script>
 
     <script type="text/javascript">
-        var label = document.getElementById('<%=param2label.ClientID%>').value;
+        var label = document.getElementById('<%=param2label.ClientID%>').value  + ' (' + "<%=ConfigurationManager.AppSettings["Looking"] %>" +')';
 
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
@@ -489,7 +488,7 @@
                 endOnTick: true,
                 tickPixelInterval: 150,
                 labels: {
-                    format: '{value} nd'
+                    format: '{value} m/s'
                 }
             },
 
@@ -499,7 +498,7 @@
                 data: [],
                 colsize: 1000, // one second
                     tooltip: {
-                        pointFormat: '{point.x:%d/%m/%Y, %Hh%M} {point.y}m <b>{point.value} nd</b>'
+                        pointFormat: '{point.x:%d/%m/%Y, %Hh%M} {point.y}m <b>{point.value} m/s</b>'
                     },
             }]
         });
@@ -608,7 +607,7 @@
                 text: par4_label.toString()
             },
             labels: {
-                format: '{value} nd'
+                format: '{value} m/s'
             },
             gridLineWidth: 1
         }],
@@ -617,8 +616,9 @@
             align: 'left',
             verticalAlign: 'top',
             floating: false
-        },
-    });
+        }
+        });
+
 
     $('#Dircontainer').highcharts({
         exporting: {
@@ -658,7 +658,7 @@
                 text: dir_label.toString(),
             },
             labels: {
-                format: '{value} ' + dir_unit.toString()
+                format: '{value} ' + '°'
             },
             gridLineWidth: 1
         }],
@@ -667,7 +667,7 @@
             align: 'left',
             verticalAlign: 'top',
             floating: false,
-        },
+        }
     });
 
     $('#MTcontainer').highcharts({
@@ -716,7 +716,7 @@
                 color: 'black',
                 animation: false,
                 tooltip: {
-                    valueSuffix: ' ' +  + par2_unit.toString()
+                    valueSuffix: ' ' + par2_unit.toString()
                 }
         }
             //, {
