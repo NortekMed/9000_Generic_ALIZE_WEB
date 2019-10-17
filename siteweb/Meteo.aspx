@@ -38,6 +38,10 @@
     <asp:HiddenField ID = "wind_dir_avg"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_max"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_dir_max"  ClientIdMode="Static" Runat="Server" />
+
+    <asp:HiddenField ID = "wind_speed_min"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "wind_dir_min"  ClientIdMode="Static" Runat="Server" />
+
     <asp:HiddenField ID = "temp_airmar"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "press_airmar"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_avg_airmar"  ClientIdMode="Static" Runat="Server" />
@@ -138,7 +142,8 @@
         document.write('<br><p>' + l_download + '</p>');
         document.write('<div>');
 
-        document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="Download_0_" />');
+
+        document.write('<asp:Button runat="server" ID="DownloadWindButton" Text="" class="btn btn-default" OnClick="DownloadWind" />');
 
         document.write('</div><br><br>')
     </script>
@@ -320,10 +325,10 @@
             
 
             //METEO Vaissala
-            for (var i = 0; i < data.str_time0.length; i++) {
-                par0.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_temp[i]]);
-                par1.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_press[i]]);
-                par2.push([Date.parse(data.str_time0[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_hum[i]]);
+            for (var i = 0; i < data.wxt_str_time.length; i++) {
+                par0.push([Date.parse(data.wxt_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_temp[i]]);
+                par1.push([Date.parse(data.wxt_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_press[i]]);
+                par2.push([Date.parse(data.wxt_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_hum[i]]);
             }
 
             //PLUIE Vaissala
@@ -334,29 +339,30 @@
             //}
 
             //VENT Vaissala
-            for (var i = 0; i < data.str_time2.length; i++) {
-                par6.push([Date.parse(data.str_time2[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param6[i]]);
-                par7.push([Date.parse(data.str_time2[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param7[i]]);
-                par8.push([Date.parse(data.str_time2[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param8[i]]);
-                par9.push([Date.parse(data.str_time2[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param9[i]]);
+            for (var i = 0; i < data.wxt_wind_str_time.length; i++) {
+                par6.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_speed_avg[i]]);
+                par7.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_dir_avg[i]]);
+                par8.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_speed_max[i]]);
+                par9.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_dir_max[i]]);
             }
 
             //METEO_AIRMAR
-            for (var i = 0; i < data.str_time3.length; i++) {
-                par10.push([Date.parse(data.str_time3[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param10[i]]);
-                par11.push([Date.parse(data.str_time3[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param11[i]]);
-                par12.push([Date.parse(data.str_time3[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param12[i]]);
-                par13.push([Date.parse(data.str_time3[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param13[i]]);
-                par14.push([Date.parse(data.str_time3[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param14[i]]);
-                par15.push([Date.parse(data.str_time3[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param15[i]]);
+            for (var i = 0; i < data.wx_str_time.length; i++) {
+                par10.push([Date.parse(data.wx_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_temp[i]]);
+                par11.push([Date.parse(data.wx_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_press[i]]);
+                par12.push([Date.parse(data.wx_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_wind_speed_avg[i]]);
+                par13.push([Date.parse(data.wx_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_wind_speed_max[i]]);
+                par14.push([Date.parse(data.wx_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_wind_dir[i]]);
+                par15.push([Date.parse(data.wx_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_volt[i]]);
             }
 
+
             //GPS Airmar
-            for (var i = 0; i < data.str_time4.length; i++) {
-                par16.push([Date.parse(data.str_time4[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param16[i]]);
-                par17.push([Date.parse(data.str_time4[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param17[i]]);
-                par18.push([Date.parse(data.str_time4[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param18[i]]);
-                par19.push([Date.parse(data.str_time4[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param19[i]]);
+            for (var i = 0; i < data.wx_gps_str_time.length; i++) {
+                par16.push([Date.parse(data.wx_gps_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_lat[i]]);
+                par17.push([Date.parse(data.wx_gps_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_lng[i]]);
+                par18.push([Date.parse(data.wx_gps_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_gps_q[i]]);
+                par19.push([Date.parse(data.wx_gps_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wx_gps_nb[i]]);
             }
 
             

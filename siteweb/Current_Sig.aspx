@@ -27,7 +27,7 @@
     <asp:HiddenField ID = "hour" ClientIdMode="Static" Runat="Server" />
 
     <asp:HiddenField ID = "equipname" ClientIdMode="Static" Runat="Server"/>
-    <asp:HiddenField ID = "param0name"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "pitchname"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "param0unit"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "param0label" ClientIdMode="Static" Runat="Server" />
 
@@ -296,6 +296,8 @@
             var maree = [];
             var tempeau = [];
 
+            
+
             for (var i = 0; i < data.C_time.length; i++) {
                 maree.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_press[i]]);
                 tempeau.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_temp[i]]);
@@ -306,7 +308,7 @@
 
             
             var chart = $('#ProfileAmpcontainer').highcharts();
-            var chartDir = $('#ProfileDircontainer').highcharts();
+            var charProftDir = $('#ProfileDircontainer').highcharts();
             var Amplitude = [];
             var AmplitudeGrouped = [];
             var Direction = [];
@@ -336,19 +338,20 @@
             }, true); //true / false to redraw
 
 
-            chartDir.series[0].update({
+            charProftDir.series[0].update({
                 data: Direction,
                 colsize: data.meanTimeInterval,
                 rowsize: data.C_cellsize
             }, true); //true / false to redraw
             
-            chartDir.colorAxis[0].update({ min: 0, max: 360 });
+            charProftDir.colorAxis[0].update({ min: 0, max: 360 });
 
-            chartDir.yAxis[0].update({ max: data.C_amp[0].length * data.C_cellsize + data.C_blancking });
-
-
+            charProftDir.yAxis[0].update({ max: data.C_amp[0].length * data.C_cellsize + data.C_blancking });
 
 
+
+            var Amp_unit = ' ' + document.getElementById('<%=param4unit.ClientID%>').value;
+            var direction_unit = ' °';
             // Chart immersion  fixe"
             var chartAmp = $('#Ampcontainer').highcharts();
             while (chartAmp.series.length>0){
@@ -376,7 +379,7 @@
                     data: amp,
                     visible: false,
                     tooltip: {
-                        valueSuffix: param4unit.toString()
+                        valueSuffix: Amp_unit.toString()
                     }
                 });
 
@@ -395,7 +398,7 @@
                             symbol: 'diamond'
                         },
                     tooltip: {
-                        valueSuffix: ' ' + direction_unit
+                        valueSuffix: ' ' + direction_unit.toString()
                         }    
                 });
                 

@@ -19,9 +19,9 @@ public partial class SIG_Current : System.Web.UI.Page
 
     static string equip_name = "";
 
-    static string param0_name = "";
-    static string param0_unit = "";
-    static string param0_label = "";
+    static string pitch_name = "";
+    static string pitch_unit = "";
+    static string pitch_label = "";
     static string param1_name = "";
     static string param1_label = "";
     static string param1_unit = "";
@@ -144,7 +144,7 @@ public partial class SIG_Current : System.Web.UI.Page
     {
         equipname = new HiddenField();
 
-        param0name = new HiddenField();
+        pitchname = new HiddenField();
         param0label = new HiddenField();
         param0unit = new HiddenField();
 
@@ -206,7 +206,7 @@ public partial class SIG_Current : System.Web.UI.Page
         //Retrieving data from curennt object resx files
         equipname.Value = Resources.CurrentSIG.equip_name.ToString();
 
-        param0name.Value = Resources.CurrentSIG.param0name.ToString();
+        pitchname.Value = Resources.CurrentSIG.param0name.ToString();
         param0label.Value = Resources.CurrentSIG.param0label.ToString();
         param0unit.Value = Resources.CurrentSIG.param0unit.ToString();
 
@@ -246,9 +246,9 @@ public partial class SIG_Current : System.Web.UI.Page
         //Assigning string value
         equip_name = equipname.Value;
 
-        param0_name = param0name.Value;
-        param0_unit = param0unit.Value;
-        param0_label = param0label.Value;
+        pitch_name = pitchname.Value;
+        pitch_unit = param0unit.Value;
+        pitch_label = param0label.Value;
 
 
         param1_name = param1name.Value;
@@ -320,7 +320,7 @@ public partial class SIG_Current : System.Web.UI.Page
         // AWAC / AQUADOPP
 
         // Generate DB request
-        string DbRequest = "SELECT a.TIME_REC, a." + param0_name + ", a." + param1_name + ", a." + param2_name + ", a." + param3_name;
+        string DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + param1_name + ", a." + param2_name + ", a." + param3_name;
 
         for (int d = 0; d < int.Parse(WebConfigurationManager.AppSettings["nb_beam_SIG"]); d++ )
         {
@@ -369,7 +369,7 @@ public partial class SIG_Current : System.Web.UI.Page
             double[] dir = new double[int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"])];
             double dir_cor = 0;
 
-            list_pitch.Add(double.Parse(dRow[param0_name].ToString()));
+            list_pitch.Add(double.Parse(dRow[pitch_name].ToString()));
             list_roll.Add(double.Parse(dRow[param1_name].ToString()));
             list_temp.Add(double.Parse(dRow[param2_name].ToString()));
             list_press.Add(double.Parse(dRow[param3_name].ToString()));

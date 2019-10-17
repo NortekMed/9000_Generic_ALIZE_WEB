@@ -106,6 +106,7 @@
         var l_d_ns = document.getElementById('<%=d_NS.ClientID%>').value;
         var l_d_ew = document.getElementById('<%=d_EW.ClientID%>').value;
         var l_map_label = document.getElementById('<%=map_label.ClientID%>').value;
+        var info_0 = document.getElementById('<%=info_0.ClientID%>').value;
 
 
 
@@ -292,7 +293,7 @@
             });
 
             var infowindow = new google.maps.InfoWindow({
-                content: " <%=ConfigurationManager.AppSettings["SiteName"] %>"
+                content: ' <%=ConfigurationManager.AppSettings["SiteName"] %>'
             });
         }
 

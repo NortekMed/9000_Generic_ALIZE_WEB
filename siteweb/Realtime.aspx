@@ -92,6 +92,26 @@
 	<asp:HiddenField ID = "wave_param5"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_t_unit"  value="<%$ Resources:WaveAHRS, t_unit %>" Runat="Server" />
 
+    <script>
+         var time = new Date().getTime();
+         //$(document.body).bind("mousemove keypress", function(e) {
+         //    time = new Date().getTime();
+         //});
+
+        function refresh() {
+                //time = new Date().getTime();
+                //alert('refresh ask');
+            if (new Date().getTime() - time >= 60000)
+                window.location.reload(true);
+            else {
+                time = new Date().getTime();
+                setTimeout(refresh, 60000);
+            }
+                 
+         }
+
+         setTimeout(refresh, 10000);
+    </script>
 
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=maintitle.ClientID%>').value;
@@ -728,18 +748,18 @@
         // Update charts with meteo data
         function updateMeteo(data) {
 
-            var last = data.str_time2.length - 1;
+            var last = data.wxt_wind_str_time.length - 1;
             
             if (last >= 0) {
 
                 //YYYYMMDDtoDDMMYYY(data.str_time2[last]);
 
-                $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.str_time2[last]))
-                $('#wsmoy').text(data.param6[last])
-                $('#wsmax').text(data.param8[last])
-                $('#wdmoy').text(data.param7[last])
+                $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.wxt_wind_str_time[last]))
+                $('#wsmoy').text(data.wxt_wind_speed_avg[last])
+                $('#wsmax').text(data.wxt_wind_speed_max[last])
+                $('#wdmoy').text(data.wxt_wind_dir_avg[last])
 
-                last = data.str_time0.length - 1;
+                last = data.wxt_str_time.length - 1;
                 $('#wtemp').text(data.wxt_temp[last])
                 $('#press').text(data.wxt_press[last])
 

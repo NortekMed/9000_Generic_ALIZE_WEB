@@ -7,10 +7,12 @@
         <div class="row">
             <span>
                 <a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">
-                    <img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>Nortekmed.jpg"/>
+                    <img style="float: right" src="<%=ConfigurationManager.AppSettings["Logo_Nortek"] %>Nortekmed.jpg"/>
+                    <%--<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>Nortekmed.jpg"/>--%>
                 </a>
                 <%--<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>malawi_flag.png"/>--%>
-                <img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>LOGO-SNA.jpg"/>
+                <img style="float: left" src="<%=ConfigurationManager.AppSettings["Logo_0"] %>"/>
+                <%--<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>LOGO-SNA.jpg"/>--%>
             </span>
         </div>
         <h2><%=ConfigurationManager.AppSettings["SiteName"] %> </h2>

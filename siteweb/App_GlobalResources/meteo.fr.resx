@@ -257,7 +257,6 @@
   </data>
   <data name="_0_param0label" xml:space="preserve">
     <value>Température de l'air</value>
-    <comment> </comment>
   </data>
   <data name="_0_param0name" xml:space="preserve">
     <value>TEMPERATURE</value>
@@ -321,5 +320,23 @@
   </data>
   <data name="_2_equip_name_alias" xml:space="preserve">
     <value>VENT</value>
+  </data>
+  <data name="_2_param4label" xml:space="preserve">
+    <value>Direction min du vent</value>
+  </data>
+  <data name="_2_param4name" xml:space="preserve">
+    <value>DIRMIN</value>
+  </data>
+  <data name="_2_param4unit" xml:space="preserve">
+    <value>°</value>
+  </data>
+  <data name="_2_param5label" xml:space="preserve">
+    <value>Vitesse min du vent</value>
+  </data>
+  <data name="_2_param5name" xml:space="preserve">
+    <value>SPEEDMIN</value>
+  </data>
+  <data name="_2_param5unit" xml:space="preserve">
+    <value>m/s</value>
   </data>
 </root>

@@ -31,7 +31,7 @@
         <asp:HiddenField ID = "waveahrs" Value="<%$ Resources:Site.master, waveahrs %>" Runat="Server" />
         <asp:HiddenField ID = "position" Value="<%$ Resources:Site.master, position %>" Runat="Server" />
         <asp:HiddenField ID = "contact" Value="<%$ Resources:Site.master, contact %>" Runat="Server" />
-
+        
         <asp:HiddenField ID = "signin" Value="<%$ Resources:Site.master, signin %>" Runat="Server" />
         <asp:HiddenField ID = "signout" Value="<%$ Resources:Site.master, signout %>" Runat="Server" />
 
@@ -77,8 +77,10 @@
                 document.write('<div class="container" id="banner">');
                 document.write('<div class="row">');
                 document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
-                document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');
-                document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');
+                document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["LogoNortek"] %>" height="130" /></a>');
+                <%--document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');--%>
+                document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["Logo_0"] %>" height="100" />');
+                <%--document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');--%>
                 document.write('</span>');
                 document.write('</div></div>');
             }
@@ -161,33 +163,6 @@
             </div>
         </div>
 
-        <%--<script type="text/javascript">
-            var header = <%=ConfigurationManager.AppSettings["HeaderAtFooter"] %>.value;
-            document.write('<div class="container body-content">');
-            document.write('<asp:ContentPlaceHolder ID="MainContent" runat="server">');
-            document.write('</asp:ContentPlaceHolder>');
-            document.write('<hr />');
-            
-
-            
-
-            document.write('<footer>');
-            if (header == false) {
-                document.write('<div class="container" id="banner">');
-                document.write('<div class="row">');
-                document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
-                document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');
-                document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');
-                document.write('</span>');
-                document.write('</div></div>');
-            }
-
-            document.write('<p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>');
-            document.write('</footer>');
-            document.write('</div>');
-
-        </script>--%>
-
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -200,8 +175,10 @@
                     document.write('<div class="container" id="banner">');
                     document.write('<div class="row">');
                     document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
-                    document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');
-                    document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');
+                    document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["Logo_Nortek"] %>" height="130" /></a>');
+                    <%--document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');--%>
+                    document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["Logo_0"] %>" height="100" />');
+                    <%--document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');--%>
                     document.write('</span>');
                     document.write('</div></div>');
                     

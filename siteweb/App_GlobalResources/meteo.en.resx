@@ -222,6 +222,24 @@
   <data name="_2_param3unit" xml:space="preserve">
     <value>°</value>
   </data>
+  <data name="_2_param4label" xml:space="preserve">
+    <value>Min wind direction</value>
+  </data>
+  <data name="_2_param4name" xml:space="preserve">
+    <value>DIRMIN</value>
+  </data>
+  <data name="_2_param4unit" xml:space="preserve">
+    <value>°</value>
+  </data>
+  <data name="_2_param5label" xml:space="preserve">
+    <value>Min wind speed</value>
+  </data>
+  <data name="_2_param5name" xml:space="preserve">
+    <value>SPEEDMIN</value>
+  </data>
+  <data name="_2_param5unit" xml:space="preserve">
+    <value>m/s</value>
+  </data>
   <data name="_3_equip_name" xml:space="preserve">
     <value>METEO_AIRMAR</value>
   </data>

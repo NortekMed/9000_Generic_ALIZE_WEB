@@ -12,7 +12,8 @@
     
     <br />
 
-    <img src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" />
+    <img src="<%=ConfigurationManager.AppSettings["Logo_Nortek"] %>" height="130" />
+    <%--<img src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" />--%>
 
     <br />
     <br />
