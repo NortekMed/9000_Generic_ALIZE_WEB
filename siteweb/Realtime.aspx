@@ -883,9 +883,9 @@
                 $('#ahrs_par0').text(data.D_mean[last])
                 $('#ahrs_par1').text(data.D_peak[last])
                 $('#ahrs_par2').text(data.H_max[last])
-                $('#ahrs_par3').text(data.H_sig[last])
-                $('#ahrs_par4').text(data.T_mean[last])
-                $('#ahrs_par5').text(data.T_peak[last])
+                $('#ahrs_par3').text(data.H_m0[last])
+                $('#ahrs_par4').text(data.T_m02[last])
+                $('#ahrs_par5').text(data.T_p[last])
 
             }
         }

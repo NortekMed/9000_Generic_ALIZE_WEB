@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DIRECTION" xml:space="preserve">
+    <value>FROM</value>
+  </data>
   <data name="d_avg_label" xml:space="preserve">
     <value>Direction moyenne</value>
   </data>
@@ -126,23 +129,44 @@
   <data name="d_peak_label" xml:space="preserve">
     <value>Direction à T pic</value>
   </data>
+  <data name="d_spread" xml:space="preserve">
+    <value>Wave_Dir_SD</value>
+  </data>
   <data name="d_unit" xml:space="preserve">
     <value>°</value>
   </data>
   <data name="equip_name" xml:space="preserve">
     <value>WAVES</value>
   </data>
+  <data name="h_3_label" xml:space="preserve">
+    <value>H1/3</value>
+  </data>
   <data name="h_label" xml:space="preserve">
     <value>Hauteur vagues</value>
   </data>
   <data name="h_max_label" xml:space="preserve">
-    <value>Hauteur max</value>
+    <value>Hmax</value>
   </data>
   <data name="h_sig_label" xml:space="preserve">
-    <value>Hauteur significative</value>
+    <value>Hm0</value>
   </data>
   <data name="h_unit" xml:space="preserve">
     <value>m</value>
+  </data>
+  <data name="n_waves" xml:space="preserve">
+    <value>numwaves</value>
+  </data>
+  <data name="ORIENTATION" xml:space="preserve">
+    <value>Magnetic</value>
+  </data>
+  <data name="TIMEREF" xml:space="preserve">
+    <value>30 minutes</value>
+  </data>
+  <data name="TIMESTAMP" xml:space="preserve">
+    <value>UTC time, acquisition start</value>
+  </data>
+  <data name="t_3_label" xml:space="preserve">
+    <value>TH1/3</value>
   </data>
   <data name="t_avg_label" xml:space="preserve">
     <value>Période moyenne</value>
@@ -150,10 +174,22 @@
   <data name="t_label" xml:space="preserve">
     <value>Période vagues</value>
   </data>
+  <data name="t_m01_label" xml:space="preserve">
+    <value>T01</value>
+  </data>
+  <data name="t_m02_label" xml:space="preserve">
+    <value>T02</value>
+  </data>
+  <data name="t_max_label" xml:space="preserve">
+    <value>Thmax</value>
+  </data>
   <data name="t_peak_label" xml:space="preserve">
-    <value>Période pic</value>
+    <value>Tp</value>
   </data>
   <data name="t_unit" xml:space="preserve">
     <value>s</value>
+  </data>
+  <data name="t_z_label" xml:space="preserve">
+    <value>Tz</value>
   </data>
 </root>

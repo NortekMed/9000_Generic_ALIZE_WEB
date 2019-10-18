@@ -18,3 +18,4 @@ public partial class Realtime : System.Web.UI.Page
             Response.Redirect("~/Register/Login.aspx");
     }
 }
+

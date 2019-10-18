@@ -14,9 +14,19 @@ using System.Globalization;
 
 using System.Web.Security;
 
+using GlobalVariables;
+
 public partial class WaveAHRS : System.Web.UI.Page
 {
     static public dataWaveAHRS downloaddata;
+
+    static string prj_name = "";
+    static string device_name = "";
+    static string location;
+    static string timeref;
+    static string timestamp;
+    static string direction;
+    static string orientation;
 
 
     protected void Page_Init(object sender, EventArgs e)
@@ -42,37 +52,95 @@ public partial class WaveAHRS : System.Web.UI.Page
     // TELECHARGEMENTS
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected void DownloadWave(object Source, EventArgs e)
+    private List<string> MakeHeader(string device)
     {
 
-        string[] output = new string[downloaddata.H_time.Length + 1];
-        output[0] = "local datetime;Hsig;Hmax;Tmean;Tpeak;DirTpeak;DirMean";
-  
+
+        List<string> output = new List<string>();
+        output.Add(Global.l_prj_name + prj_name);
+        output.Add(Global.l_device_name + device);
+        output.Add(Global.l_location + location);
+        output.Add(Global.l_timeref + timeref);
+        output.Add(Global.l_timestamp + timestamp);
+        output.Add(Global.l_direction + direction);
+        output.Add(Global.l_orientation + orientation);
+
+
+        return output;
+    }
+
+
+    protected void DownloadWave(object Source, EventArgs e)
+    {
+        device_name = Resources.meteo._2_equip_name_alias;
+        List<string> output = MakeHeader(device_name);
+
+        output.Add("UTC datetime;"  + h_sig_label.Value + '(' + h_unit + ')' + ';'
+                                    + h_max_label.Value + '(' + h_unit + ')' + ';'
+                                    + h_3_label.Value + '(' + h_unit + ')' + ';'
+                                    + t_peak_label.Value + '(' + t_unit + ')' + ';'
+                                    + t_z_label.Value + '(' + t_unit + ')' + ';'
+                                    + t_m01_label.Value + '(' + t_unit + ')' + ';'
+                                    + t_max_label.Value + '(' + t_unit + ')' + ';'
+                                    + t_m02_label.Value + '(' + t_unit + ')' + ';'
+                                    //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
+                                    + t_3_label.Value + '(' + t_unit + ')' + ';'
+                                    
+                                    );
 
         // mise en forme
         for (int i = 0; i < downloaddata.H_time.Length; i++)
         {
-            output[i + 1] += downloaddata.H_time[i].Replace("T", ", ");
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.H_sig[i].ToString("0.00", NumberFormatInfo.InvariantInfo); 
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.H_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo); ;
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.T_mean[i].ToString("0.00", NumberFormatInfo.InvariantInfo); ;
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.T_peak[i].ToString("0.00", NumberFormatInfo.InvariantInfo); ;
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.D_peak[i].ToString("0.0", NumberFormatInfo.InvariantInfo); ;
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.D_mean[i].ToString("0.0", NumberFormatInfo.InvariantInfo); ;
-            output[i + 1] += ";";
+            output.Add(downloaddata.H_time[i].Replace("T", ", ") + ';'
+                        + downloaddata.H_m0[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.H_tier[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.H_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_p[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_z[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_m01[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_m02[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_3[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        );
+
         }
 
-        string interval = downloaddata.H_time[0].Split('T')[0] + "_to_" + downloaddata.H_time[downloaddata.H_time.Length - 1].Split('T')[0];
+        //string interval = downloaddata.wxt_wind_str_time[0].Split('T')[0] + "_to_" + downloaddata.wxt_wind_str_time[downloaddata.wxt_wind_str_time.Length - 1].Split('T')[0];
 
-        // Créer fichier csv et Télécharger
-        DownloadCsv("wave_" + interval + ".csv", output);
+        //DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
+
+    //protected void DownloadWave(object Source, EventArgs e)
+    //{
+
+    //    string[] output = new string[downloaddata.H_time.Length + 1];
+    //    output[0] = "local datetime;Hsig;Hmax;Tmean;Tpeak;DirTpeak;DirMean";
+  
+
+    //    // mise en forme
+    //    for (int i = 0; i < downloaddata.H_time.Length; i++)
+    //    {
+    //        output[i + 1] += downloaddata.H_time[i].Replace("T", ", ");
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.H_sig[i].ToString("0.00", NumberFormatInfo.InvariantInfo); 
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.H_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo); ;
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.T_mean[i].ToString("0.00", NumberFormatInfo.InvariantInfo); ;
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.T_peak[i].ToString("0.00", NumberFormatInfo.InvariantInfo); ;
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.D_peak[i].ToString("0.0", NumberFormatInfo.InvariantInfo); ;
+    //        output[i + 1] += ";";
+    //        output[i + 1] += downloaddata.D_mean[i].ToString("0.0", NumberFormatInfo.InvariantInfo); ;
+    //        output[i + 1] += ";";
+    //    }
+
+    //    string interval = downloaddata.H_time[0].Split('T')[0] + "_to_" + downloaddata.H_time[downloaddata.H_time.Length - 1].Split('T')[0];
+
+    //    // Créer fichier csv et Télécharger
+    //    DownloadCsv("wave_" + interval + ".csv", output);
+    //}
 
     protected void DownloadCsv(string filename, string[] data)
     {
@@ -113,10 +181,16 @@ public partial class WaveAHRS : System.Web.UI.Page
         equip_name = new HiddenField();
         h_label = new HiddenField();
         h_max_label = new HiddenField();
+        h_3_label = new HiddenField();
         h_sig_label = new HiddenField();
         h_unit = new HiddenField();
         t_avg_label = new HiddenField();
+        t_max_label = new HiddenField();
         t_peak_label = new HiddenField();
+        t_m01_label = new HiddenField();
+        t_m02_label = new HiddenField();
+        t_3_label = new HiddenField();
+        t_z_label = new HiddenField();
         t_unit = new HiddenField();
         t_label = new HiddenField();
         d_label = new HiddenField();
@@ -136,6 +210,15 @@ public partial class WaveAHRS : System.Web.UI.Page
 
     protected void InitField()
     {
+
+        prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
+        location = WebConfigurationManager.AppSettings["SiteName"];
+        timeref = Resources.meteo.TIMEREF;
+        timestamp = Resources.meteo.TIMESTAMP;
+        direction = Resources.meteo.DIRECTION;
+        orientation = Resources.meteo.ORIENTATION;
+
+
         //Retrieving data from master resx files
         start.Value = Resources.Site.Master.start.ToString();
         end.Value = Resources.Site.Master.end.ToString();
@@ -153,10 +236,16 @@ public partial class WaveAHRS : System.Web.UI.Page
         equip_name.Value = Resources.WaveAHRS.equip_name.ToString();
         h_label.Value = Resources.WaveAHRS.h_label.ToString();
         h_max_label.Value = Resources.WaveAHRS.h_max_label.ToString();
+        h_3_label.Value = Resources.WaveAHRS.h_3_label.ToString();
         h_sig_label.Value = Resources.WaveAHRS.h_sig_label.ToString();
         h_unit.Value = Resources.WaveAHRS.h_unit.ToString();
         t_avg_label.Value = Resources.WaveAHRS.t_avg_label.ToString();
+        t_max_label.Value = Resources.WaveAHRS.t_max_label.ToString();
         t_peak_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
+        t_m01_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
+        t_m02_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
+        t_3_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
+        t_z_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
         t_unit.Value = Resources.WaveAHRS.t_unit.ToString();
         t_label.Value = Resources.WaveAHRS.t_label.ToString();
         d_label.Value = Resources.WaveAHRS.d_label.ToString();
@@ -207,7 +296,7 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         // Get wind from database
         DataSet ds = new DataSet();
-        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX,a.H3 FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
         DataTable myDataTable = ds.Tables[0];
 
@@ -215,6 +304,7 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         List<double> list_h_sig = new List<double>();
         List<double> list_h_max = new List<double>();
+        List<double> list_h_3 = new List<double>();
         List<string> list_h_time = new List<string>();
 
         foreach (DataRow dRow in myDataTable.Rows)
@@ -227,17 +317,22 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_h_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
             list_h_sig.Add(double.Parse(dRow["HM0"].ToString()));
             list_h_max.Add(double.Parse(dRow["HMAX"].ToString()));
+            list_h_3.Add(double.Parse(dRow["H3"].ToString()));
         }
 
 
         // Get Pressure and temperature from database
         DataSet ds2 = new DataSet();
-        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TM02 FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.TM02, a.T3 FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter2.Fill(ds2);
         DataTable myDataTable2 = ds2.Tables[0];
 
-        List<double> list_t_mean = new List<double>();
-        List<double> list_t_max = new List<double>();
+        List<double> list_t_tp = new List<double>();
+        List<double> list_t_tz = new List<double>();
+        List<double> list_t_tm01 = new List<double>();
+        List<double> list_t_thmax = new List<double>();
+        List<double> list_t_tm02 = new List<double>();
+        List<double> list_t_t3 = new List<double>();
         List<string> list_t_time = new List<string>();
 
         foreach (DataRow dRow in myDataTable2.Rows)
@@ -248,35 +343,81 @@ public partial class WaveAHRS : System.Web.UI.Page
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
             //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"]));
             list_t_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
-            double tm02 = double.Parse(dRow["TM02"].ToString());
-            if (double.IsNaN(tm02) || tm02 > 30)
-            {
-                if (list_t_mean.Count > 0)
-                    tm02 = list_t_mean[list_t_mean.Count - 1];
-                else
-                    tm02 = 0;
-            }
-            list_t_mean.Add(tm02);
+
+            
 
             double tp = double.Parse(dRow["TP"].ToString());
             if (tp > 30)
             {
-                if (list_t_max.Count > 0)
-                    tp = list_t_max[list_t_max.Count - 1];
+                if (list_t_tp.Count > 0)
+                    tp = list_t_tp[list_t_tp.Count - 1];
                 else
                     tp = 0;
             }
-            list_t_max.Add(tp);
+            list_t_tp.Add(tp);
+
+            double tz = double.Parse(dRow["TZ"].ToString());
+            if (double.IsNaN(tz) || tz > 30)
+            {
+                if (list_t_tz.Count > 0)
+                    tz = list_t_tm02[list_t_tz.Count - 1];
+                else
+                    tz = 0;
+            }
+            list_t_tm02.Add(tz);
+
+            double tm01 = double.Parse(dRow["TM01"].ToString());
+            if (double.IsNaN(tm01) || tm01 > 30)
+            {
+                if (list_t_tm01.Count > 0)
+                    tm01 = list_t_tm02[list_t_tm01.Count - 1];
+                else
+                    tm01 = 0;
+            }
+            list_t_tm01.Add(tm01);
+
+            double thmax = double.Parse(dRow["TMAX"].ToString());
+            if (double.IsNaN(thmax) || thmax > 30)
+            {
+                if (list_t_tm01.Count > 0)
+                    thmax = list_t_thmax[list_t_thmax.Count - 1];
+                else
+                    thmax = 0;
+            }
+            list_t_thmax.Add(thmax);
+
+            double tm02 = double.Parse(dRow["TM02"].ToString());
+            if (double.IsNaN(tm02) || tm02 > 30)
+            {
+                if (list_t_tm02.Count > 0)
+                    tm02 = list_t_tm02[list_t_tm02.Count - 1];
+                else
+                    tm02 = 0;
+            }
+            list_t_tm02.Add(tm02);
+
+            double t3 = double.Parse(dRow["T3"].ToString());
+            if (double.IsNaN(t3) || t3 > 30)
+            {
+                if (list_t_t3.Count > 0)
+                    t3 = list_t_t3[list_t_t3.Count - 1];
+                else
+                    t3 = 0;
+            }
+            list_t_t3.Add(t3);
+
+
         }
 
 
         DataSet ds3 = new DataSet();
-        FbDataAdapter dataadapter3 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.MEANDIR FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter3 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.MEANDIR, a.SPRD FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter3.Fill(ds3);
         DataTable myDataTable3 = ds3.Tables[0];
 
         List<double> list_d_mean = new List<double>();
         List<double> list_d_max = new List<double>();
+        List<double> list_d_sd = new List<double>();
         List<string> list_d_time = new List<string>();
 
         foreach (DataRow dRow in myDataTable3.Rows)
@@ -289,6 +430,7 @@ public partial class WaveAHRS : System.Web.UI.Page
 
             list_d_mean.Add(double.Parse(dRow["MEANDIR"].ToString()));
             list_d_max.Add(double.Parse(dRow["DIRTP"].ToString()));
+            list_d_sd.Add(double.Parse(dRow["SPRD"].ToString()));
 
             //dir_cor = double.Parse(dRow["MAINDIR"].ToString()) - 14.8;
             //if (dir_cor < 0) dir_cor += 360;
@@ -301,10 +443,9 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         dataWaveAHRS data = new dataWaveAHRS();
 
-        data.setHeight(list_h_sig, list_h_max, list_h_time);
-        data.SetPeriod(list_t_mean, list_t_max, list_t_time);
+        data.setHeight(list_h_sig, list_h_max, list_h_3, list_h_time);
+        data.SetPeriod(list_t_tp, list_t_tz, list_t_tm02, list_t_tm01, list_t_thmax, list_t_t3, list_t_time);
         data.setDirection(list_d_mean, list_d_max, list_d_time);
-
 
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
@@ -318,29 +459,43 @@ public partial class WaveAHRS : System.Web.UI.Page
 
 public class dataWaveAHRS
 {
-    public double[] H_sig;
+    public double[] H_m0;
     public double[] H_max;
+    public double[] H_tier;
     public string[] H_time;
 
-    public double[] T_mean;
-    public double[] T_peak;
+    
+    public double[] T_p;
+    public double[] T_z;
+    public double[] T_m01;
+    public double[] T_max;
+    public double[] T_m02;
+    public double[] T_3;
     public string[] T_time;
 
     public double[] D_mean;
     public double[] D_peak;
     public string[] D_time;
 
-    public void setHeight(List<double> sig, List<double> max, List<string> time)
+    public void setHeight(List<double> sig, List<double> max, List<double> tier, List<string> time)
     {
-        H_sig = sig.ToArray();
+        H_m0 = sig.ToArray();
         H_max = max.ToArray();
+        H_tier = tier.ToArray();
         H_time = time.ToArray();
     }
 
-    public void SetPeriod(List<double> mean, List<double> peak, List<string> time)
+    //data.SetPeriod(list_t_tp, list_t_tz, list_t_tm02, list_t_tm01, list_t_thmax, list_t_t3, list_t_time);
+    public void SetPeriod(List<double> list_t_tp, List<double> list_t_tz, List<double> list_t_tm02, List<double> list_t_tm01, List<double> list_t_thmax, List<double> list_t_t3, List<string> time)
     {
-        T_mean = mean.ToArray();
-        T_peak = peak.ToArray();
+        
+        T_p = list_t_tp.ToArray();
+        T_z = list_t_tz.ToArray();
+        T_m01 = list_t_tm01.ToArray();
+        T_max = list_t_thmax.ToArray();
+        T_m02 = list_t_tm02.ToArray();
+        T_3 = list_t_t3.ToArray();
+
         T_time = time.ToArray();
     }
 

@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DIRECTION" xml:space="preserve">
+    <value>FROM</value>
+  </data>
+  <data name="ORIENTATION" xml:space="preserve">
+    <value>Magnetic</value>
+  </data>
+  <data name="TIMEREF" xml:space="preserve">
+    <value>10 minutes</value>
+  </data>
+  <data name="TIMESTAMP" xml:space="preserve">
+    <value>UTC time, acquisition start</value>
+  </data>
   <data name="_0_equip_name" xml:space="preserve">
     <value>METEO</value>
   </data>
@@ -196,7 +208,7 @@
     <value>m/s</value>
   </data>
   <data name="_2_param1label" xml:space="preserve">
-    <value>Mean wind direction</value>
+    <value>Average wind direction</value>
   </data>
   <data name="_2_param1name" xml:space="preserve">
     <value>DIRMOY</value>

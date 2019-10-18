@@ -244,10 +244,15 @@ public partial class Position : System.Web.UI.Page
         double lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
         double[] XY_UTM_o = new double[2];
         double[] XY_UTM_last = new double[2];
-        XY_UTM_o = convertutm.XY(lat_o,lng_o);
-        XY_UTM_last = convertutm.XY(list_lat.Last(),list_lng.Last());
-        double distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
-        double distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
+        double distance_nord = 0;
+        double distance_est = 0;
+        XY_UTM_o = convertutm.XY(lat_o, lng_o);
+        if (list_lat.Count > 0 && list_lng.Count > 0) { }
+            XY_UTM_last = convertutm.XY(list_lat.Last(), list_lng.Last());
+
+            distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
+            distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
+        }
 
         // Build current data object
         dataPosition data = new dataPosition();

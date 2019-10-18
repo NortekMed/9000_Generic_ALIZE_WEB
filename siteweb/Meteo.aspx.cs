@@ -12,6 +12,8 @@ using System.Text;
 using System.IO;
 using System.Globalization;
 
+using GlobalVariables;
+
 public partial class Meteo : System.Web.UI.Page
 {
     static public data_type_Meteo_0 downloaddata;
@@ -61,6 +63,7 @@ public partial class Meteo : System.Web.UI.Page
     static string s_rain_duration_unit;
     static string s_rain_intensity_unit;
 
+
     static string s_wind_speed_avg_unit;
     static string s_wind_dir_avg_unit;
 
@@ -77,21 +80,21 @@ public partial class Meteo : System.Web.UI.Page
     static string s_gps_quality_airmar_unit;
     static string s_nb_satelite_airmar_unit;
 
-    static string prj_name;
-    static string device_name = "METEO";
+    static string prj_name = "";
+    static string device_name = "";
     static string location;
     static string timeref;
     static string timestamp;
     static string direction;
     static string orientation;
 
-    static string l_prj_name = "PROJECT NAME : ";
-    static string l_device_name = "DEVICE NAME : ";
-    static string l_location = "MEASUREMENT LOCATION";
-    static string l_timeref = "TIMEREF : ";
-    static string l_timestamp = "TIMESTAMP : ";
-    static string l_direction = "DIRECTION : ";
-    static string l_orientation = "NORTH : ";
+    //static string l_prj_name = "PROJECT NAME : ";
+    //static string l_device_name = "DEVICE NAME : ";
+    //static string l_location = "MEASUREMENT LOCATION :";
+    //static string l_timeref = "TIMEREF : ";
+    //static string l_timestamp = "TIMESTAMP : ";
+    //static string l_direction = "DIRECTION : ";
+    //static string l_orientation = "NORTH : ";
 
 
     protected void Page_Init(object sender, EventArgs e)
@@ -107,6 +110,7 @@ public partial class Meteo : System.Web.UI.Page
 
 
         DownloadWindButton.Text = download_data.Value;
+        DownloadMeteoButton.Text = download_data.Value;
 
     }
 
@@ -115,168 +119,83 @@ public partial class Meteo : System.Web.UI.Page
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     ///
 
+    private List<string> MakeHeader( string device)
+    {
+        
+        
+        List<string> output = new List<string>();
+        output.Add(Global.l_prj_name + prj_name);
+        output.Add(Global.l_device_name + device);
+        output.Add(Global.l_location + location);
+        output.Add(Global.l_timeref + timeref);
+        output.Add(Global.l_timestamp + timestamp);
+        output.Add(Global.l_direction + direction);
+        output.Add(Global.l_orientation + orientation);
+        
+        
+        return output;
+    }
+
+
     protected void DownloadWind(object Source, EventArgs e)
     {
+        string speed_unit = s_wind_speed_avg_unit;
+        string dir_unit = s_wind_dir_avg_unit;
 
-        string[] output = new string[downloaddata.wxt_wind_str_time.Length + 1];
-        output[0] = "UTC datetime;speedmoy(m/s); speedmax(m/s); diravg(°); dirmax(°); speedmin(m/s); dirmin(°);";
+        device_name = Resources.meteo._2_equip_name_alias;
+        List<string> output = MakeHeader( device_name);
 
+        output.Add("UTC datetime;"  + wind_speed_avg_label.Value + '(' + speed_unit + ')' + ';'
+                                    + wind_speed_max_label.Value + '(' + speed_unit + ')' + ';'
+                                    + wind_speed_min_label.Value + '(' + speed_unit + ')' + ';'
+                                    + wind_dir_avg_label.Value + '(' + dir_unit + ')' + ';'
+                                    + wind_dir_max_label.Value + '(' + dir_unit + ')' + ';'
+                                    + wind_dir_min_label.Value + '(' + dir_unit + ')' + ';');
 
         // mise en forme
         for (int i = 0; i < downloaddata.wxt_wind_str_time.Length; i++)
         {
-            output[i + 1] += downloaddata.wxt_wind_str_time[i].Replace("T", ", ");
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wxt_wind_speed_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wxt_wind_speed_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wxt_wind_dir_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wxt_wind_dir_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wxt_wind_dir_min[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
-            output[i + 1] += downloaddata.wxt_wind_speed_min[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-            output[i + 1] += ";";
+            output.Add(   downloaddata.wxt_wind_str_time[i].Replace("T", ", ") + ';'
+                        + downloaddata.wxt_wind_speed_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_speed_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_speed_min[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_dir_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_dir_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_dir_min[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        );
 
         }
 
         string interval = downloaddata.wxt_wind_str_time[0].Split('T')[0] + "_to_" + downloaddata.wxt_wind_str_time[downloaddata.wxt_wind_str_time.Length - 1].Split('T')[0];
 
-        DownloadCsv("vent_" + interval + ".csv", output);
+        DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
 
-    //    protected void DownloadPressTemp(object Source, EventArgs e)
-    //{
 
-    //    string[] output = new string[downloaddata.ptu_time.Length + 1];
-    //    output[0] = "UTC datetime;temperature(°C);pression(hPa)";
+    protected void DownloadMeteo(object Source, EventArgs e)
+    {
+        device_name = Resources.meteo._0_equip_name;
+        List<string> output = MakeHeader(device_name);
 
+        output.Add("UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
+                                   + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';'
+                                    );
 
-    //    // mise en forme
-    //    for (int i = 0; i < downloaddata.ptu_time.Length; i++)
-    //    {
-    //        output[i + 1] += downloaddata.ptu_time[i].Replace("T", ", ");
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.ptu_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.ptu_pressure[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
+        // mise en forme
+        for (int i = 0; i < downloaddata.wxt_str_time.Length; i++)
+        {
+            output.Add(downloaddata.wxt_wind_str_time[i].Replace("T", ", ") + ';'
+                        + downloaddata.wxt_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_press[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        );
 
-    //    }
+        }
 
-    //    string interval = downloaddata.ptu_time[0].Split('T')[0] + "_to_" + downloaddata.ptu_time[downloaddata.ptu_time.Length - 1].Split('T')[0];
+        string interval = downloaddata.wxt_str_time[0].Split('T')[0] + "_to_" + downloaddata.wxt_str_time[downloaddata.wxt_str_time.Length - 1].Split('T')[0];
 
-    //    DownloadCsv("presstemp_" + interval + ".csv", output);
-    //}
+        DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
+    }
 
-    //protected void DownloadRain(object Source, EventArgs e)
-    //{
-
-    //    string[] output = new string[downloaddata.rain_time.Length + 1];
-    //    output[0] = "UTC datetime;duree(s); accumulation(mm)";
-
-
-    //    // mise en forme
-    //    for (int i = 0; i < downloaddata.rain_time.Length; i++)
-    //    {
-    //        output[i + 1] += downloaddata.rain_time[i].Replace("T", ", ");
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.rain_dur[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.rain_acc[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-
-    //    }
-
-    //    string interval = downloaddata.rain_time[0].Split('T')[0] + "_to_" + downloaddata.rain_time[downloaddata.rain_time.Length - 1].Split('T')[0];
-
-    //    DownloadCsv("pluie_" + interval + ".csv", output);
-    //}
-
-
-    //protected void DownloadWind(object Source, EventArgs e)
-    //{
-
-    //    string[] output = new string[downloaddata.wind_time.Length + 1];
-    //    output[0] = "UTC datetime;speedmoy(m/s); speedmax(m/s); direction(°)";
-
-
-    //    // mise en forme
-    //    for (int i = 0; i < downloaddata.wind_time.Length; i++)
-    //    {
-    //        output[i + 1] += downloaddata.wind_time[i].Replace("T", ", ");
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.wind_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.wind_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.wind_dir[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-
-    //    }
-
-    //    string interval = downloaddata.wind_time[0].Split('T')[0] + "_to_" + downloaddata.wind_time[downloaddata.wind_time.Length - 1].Split('T')[0];
-
-    //    DownloadCsv("vent_" + interval + ".csv", output);
-    //}
-
-    //protected void DownloadPressTemp(object Source, EventArgs e)
-    //{
-
-    //    string[] output = new string[downloaddata.ptu_time.Length + 1];
-    //    output[0] = "UTC datetime;temperature(°C);pression(hPa)";
-
-
-    //    // mise en forme
-    //    for (int i = 0; i < downloaddata.ptu_time.Length; i++)
-    //    {
-    //        output[i + 1] += downloaddata.ptu_time[i].Replace("T", ", ");
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.ptu_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-    //        output[i + 1] += downloaddata.ptu_pressure[i].ToString("0.0", NumberFormatInfo.InvariantInfo);
-    //        output[i + 1] += ";";
-
-    //    }
-
-    //    string interval = downloaddata.ptu_time[0].Split('T')[0] + "_to_" + downloaddata.ptu_time[downloaddata.ptu_time.Length - 1].Split('T')[0];
-
-    //    DownloadCsv("presstemp_" + interval + ".csv", output);
-    //}
-
-    //protected void Download_0_(object Source, EventArgs e)
-    //{
-    //    string data0 = " " + s_temperature + "( " + s_temperature_unit + ");";
-    //    string data1 = " " + s_pressure + "( " + s_pressure_unit + ");";
-    //    string data2 = " " + s_humidity + "( " + s_humidity_unit + ");";
-
-    //    string[] output = new string[downloaddata.str_time0.Length + 1];
-    //    output[0] = "UTC datetime;" + data0 + data1 + data2;
-
-    //    if (downloaddata.str_time0.Length > 0)
-    //    {
-    //        // mise en forme
-    //        for (int i = 0; i < downloaddata.str_time0.Length; i++)
-    //        {
-
-    //            output[i + 1] += downloaddata.str_time0[i].Replace("T", ", ");
-    //            output[i + 1] += ";";
-    //            output[i + 1] += downloaddata.wxt_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //            output[i + 1] += ";";
-    //            output[i + 1] += downloaddata.wxt_press[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //            output[i + 1] += ";";
-    //            output[i + 1] += downloaddata.wxt_hum[i].ToString("0.00", NumberFormatInfo.InvariantInfo);
-    //            output[i + 1] += ";";
-
-    //        }
-
-    //        string interval = downloaddata.str_time0[0].Split('T')[0] + "_to_" + downloaddata.str_time0[downloaddata.str_time0.Length - 1].Split('T')[0];
-
-    //        DownloadCsv(_0_equip_name + "_" + interval + ".csv", output);
-    //    }
-    //}
 
 
     protected void DownloadCsv(string filename, string[] data)
@@ -374,6 +293,10 @@ public partial class Meteo : System.Web.UI.Page
         wind_dir_avg_label = new HiddenField();
         wind_speed_max_label = new HiddenField();
         wind_dir_max_label = new HiddenField();
+
+        wind_speed_min_label    = new HiddenField();
+        wind_dir_min_label      = new HiddenField();
+
         temp_airmar_label = new HiddenField();
         press_airmar_label = new HiddenField();
         wind_speed_avg_airmar_label = new HiddenField();
@@ -400,6 +323,11 @@ public partial class Meteo : System.Web.UI.Page
     protected void InitField()
     {
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
+        location = WebConfigurationManager.AppSettings["Buoy"] + '-' + WebConfigurationManager.AppSettings["SiteName"];
+        timeref = Resources.meteo.TIMEREF;
+        timestamp = Resources.meteo.TIMESTAMP;
+        direction = Resources.meteo.DIRECTION;
+        orientation = Resources.meteo.ORIENTATION;
 
         //Retrieving data from master resx files
         start.Value = Resources.Site.Master.start.ToString();
@@ -478,6 +406,9 @@ public partial class Meteo : System.Web.UI.Page
         wind_dir_avg_label.Value = Resources.meteo._2_param1label.ToString();
         wind_speed_max_label.Value = Resources.meteo._2_param2label.ToString();
         wind_dir_max_label.Value = Resources.meteo._2_param3label.ToString();
+        wind_speed_min_label.Value = Resources.meteo._2_param5label.ToString();
+        wind_dir_min_label.Value = Resources.meteo._2_param4label.ToString();
+
         temp_airmar_label.Value = Resources.meteo._3_param0label.ToString();
         press_airmar_label.Value = Resources.meteo._3_param1label.ToString();
         wind_speed_avg_airmar_label.Value = Resources.meteo._3_param2label.ToString();

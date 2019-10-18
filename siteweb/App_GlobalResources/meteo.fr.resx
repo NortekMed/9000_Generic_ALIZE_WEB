@@ -312,9 +312,6 @@
   <data name="_1_param2unit" xml:space="preserve">
     <value>mm/s</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="_0_equip_name_alias" xml:space="preserve">
     <value>METEO</value>
   </data>
@@ -338,5 +335,17 @@
   </data>
   <data name="_2_param5unit" xml:space="preserve">
     <value>m/s</value>
+  </data>
+  <data name="DIRECTION" xml:space="preserve">
+    <value>FROM</value>
+  </data>
+  <data name="ORIENTATION" xml:space="preserve">
+    <value>Magnétique</value>
+  </data>
+  <data name="TIMEREF" xml:space="preserve">
+    <value>10 minutes</value>
+  </data>
+  <data name="TIMESTAMP" xml:space="preserve">
+    <value>Début acquisition, temps UTC</value>
   </data>
 </root>

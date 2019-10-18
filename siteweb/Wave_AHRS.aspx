@@ -27,10 +27,16 @@
 	<asp:HiddenField ID = "equip_name"  value="<%$ Resources:WaveAHRS, equip_name %>" Runat="Server" />
 	<asp:HiddenField ID = "h_label"  value="<%$ Resources:WaveAHRS, h_label %>" Runat="Server" />
 	<asp:HiddenField ID = "h_max_label"  value="<%$ Resources:WaveAHRS, h_max_label %>" Runat="Server" />
+	<asp:HiddenField ID = "h_3_label"  value="<%$ Resources:WaveAHRS, h_3_label %>" Runat="Server" />
 	<asp:HiddenField ID = "h_sig_label"  value="<%$ Resources:WaveAHRS, h_sig_label %>" Runat="Server" />
 	<asp:HiddenField ID = "h_unit"  value="<%$ Resources:WaveAHRS, h_unit %>" Runat="Server" />
 	<asp:HiddenField ID = "t_avg_label"  value="<%$ Resources:WaveAHRS, t_avg_label %>" Runat="Server" />
+	<asp:HiddenField ID = "t_max_label"  value="<%$ Resources:WaveAHRS, t_max_label %>" Runat="Server" />
 	<asp:HiddenField ID = "t_peak_label"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
+	<asp:HiddenField ID = "t_m01_label"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
+	<asp:HiddenField ID = "t_m02_label"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
+	<asp:HiddenField ID = "t_3_label"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
+	<asp:HiddenField ID = "t_z_label"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
 	<asp:HiddenField ID = "t_unit"  value="<%$ Resources:WaveAHRS, t_unit %>" Runat="Server" />
     <asp:HiddenField ID = "t_label"  value="<%$ Resources:WaveAHRS, t_label %>" Runat="Server" />
     <asp:HiddenField ID = "d_label"  value="<%$ Resources:WaveAHRS, d_label %>" Runat="Server" />
@@ -196,7 +202,7 @@
             var H_max = [];
 
             for (var i = 0; i < data.H_time.length; i++) {
-                H_sig.push([Date.parse(data.H_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.H_sig[i]*100)/100]);
+                H_sig.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_m0[i] * 100) / 100]);
                 H_max.push([Date.parse(data.H_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.H_max[i]*100)/100]);
             }
 
@@ -210,8 +216,8 @@
             var T_peak = [];
 
             for (var i = 0; i < data.T_time.length; i++) {
-                T_mean.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_mean[i]*10)/10]);
-                T_peak.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_peak[i]*10)/10]);
+                T_mean.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_m02[i]*10)/10]);
+                T_peak.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_p[i]*10)/10]);
             }
 
             chartT.series[0].setData(T_peak);

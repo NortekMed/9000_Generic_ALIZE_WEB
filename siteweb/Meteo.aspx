@@ -63,6 +63,7 @@
     <asp:HiddenField ID = "wind_dir_avg_unit"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_max_unit"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_dir_max_unit"  ClientIdMode="Static" Runat="Server" />
+
     <asp:HiddenField ID = "temp_airmar_unit"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "press_airmar_unit"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_avg_airmar_unit"  ClientIdMode="Static" Runat="Server" />
@@ -83,7 +84,9 @@
     <asp:HiddenField ID = "wind_speed_avg_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_dir_avg_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_max_label"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "wind_speed_min_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_dir_max_label"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "wind_dir_min_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "temp_airmar_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "press_airmar_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_avg_airmar_label"  ClientIdMode="Static" Runat="Server" />
@@ -144,6 +147,7 @@
 
 
         document.write('<asp:Button runat="server" ID="DownloadWindButton" Text="" class="btn btn-default" OnClick="DownloadWind" />');
+        document.write('<asp:Button runat="server" ID="DownloadMeteoButton" Text="" class="btn btn-default" OnClick="DownloadMeteo" />');
 
         document.write('</div><br><br>')
     </script>
