@@ -244,8 +244,8 @@ public partial class Position : System.Web.UI.Page
         double lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
         double[] XY_UTM_o = new double[2];
         double[] XY_UTM_last = new double[2];
-        XY_UTM_o = convertutm.XY(lng_o, lat_o);
-        XY_UTM_last = convertutm.XY(list_lng.Last(), list_lat.Last());
+        XY_UTM_o = convertutm.XY(lat_o,lng_o);
+        XY_UTM_last = convertutm.XY(list_lat.Last(),list_lng.Last());
         double distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
         double distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
 

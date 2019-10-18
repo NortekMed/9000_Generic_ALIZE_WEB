@@ -175,7 +175,7 @@
                     document.write('<div class="container" id="banner">');
                     document.write('<div class="row">');
                     document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
-                    document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["Logo_Nortek"] %>" height="130" /></a>');
+                    document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["LogoNortek"] %>" height="130" /></a>');
                     <%--document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');--%>
                     document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["Logo_0"] %>" height="100" />');
                     <%--document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');--%>

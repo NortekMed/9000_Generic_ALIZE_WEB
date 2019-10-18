@@ -507,6 +507,9 @@ public partial class Meteo : System.Web.UI.Page
         s_wind_speed_max = wind_speed_max.Value;
         s_wind_dir_max = wind_dir_max.Value;
 
+        s_wind_speed_min = wind_speed_min.Value;
+        s_wind_dir_min = wind_dir_min.Value;
+
         s_temp_airmar = temp_airmar.Value;
         s_press_airmar = press_airmar.Value;
         s_wind_speed_avg_airmar = wind_speed_avg_airmar.Value;
