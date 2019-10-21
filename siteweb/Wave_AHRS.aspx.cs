@@ -72,19 +72,24 @@ public partial class WaveAHRS : System.Web.UI.Page
 
     protected void DownloadWave(object Source, EventArgs e)
     {
-        device_name = Resources.meteo._2_equip_name_alias;
+        device_name = Resources.WaveAHRS.DEVICE_0;
         List<string> output = MakeHeader(device_name);
 
-        output.Add("UTC datetime;"  + h_sig_label.Value + '(' + h_unit + ')' + ';'
-                                    + h_max_label.Value + '(' + h_unit + ')' + ';'
-                                    + h_3_label.Value + '(' + h_unit + ')' + ';'
-                                    + t_peak_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_z_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_m01_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_max_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_m02_label.Value + '(' + t_unit + ')' + ';'
+        output.Add("UTC datetime;"  + h_sig_label.Value + '(' + h_unit.Value + ')' + ';'
+                                    + h_max_label.Value + '(' + h_unit.Value + ')' + ';'
+                                    + h_3_label.Value + '(' + h_unit.Value + ')' + ';'
+                                    + t_peak_label.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_z_label.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_m01_label.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_max_label.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_m02_label.Value + '(' + t_unit.Value + ')' + ';'
                                     //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_3_label.Value + '(' + t_unit + ')' + ';'
+                                    + t_3_label.Value + '(' + t_unit.Value + ')' + ';'
+                                    + d_avg_label.Value + '(' + d_unit.Value + ')' + ';'
+                                    + d_peak_label.Value + '(' + d_unit.Value + ')' + ';'
+                                    + d_spread_label.Value + '(' + d_unit.Value + ')' + ';'
+                                    + n_waves.Value + ';'
+
                                     
                                     );
 
@@ -101,13 +106,17 @@ public partial class WaveAHRS : System.Web.UI.Page
                         + downloaddata.T_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_m02[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_3[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.D_mean[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.D_peak[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.D_sd[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.N_waves[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
         }
 
-        //string interval = downloaddata.wxt_wind_str_time[0].Split('T')[0] + "_to_" + downloaddata.wxt_wind_str_time[downloaddata.wxt_wind_str_time.Length - 1].Split('T')[0];
+        string interval = downloaddata.H_time[0].Split('T')[0] + "_to_" + downloaddata.H_time[downloaddata.H_time.Length - 1].Split('T')[0];
 
-        //DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
+        DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
 
     //protected void DownloadWave(object Source, EventArgs e)
@@ -177,6 +186,8 @@ public partial class WaveAHRS : System.Web.UI.Page
     {
         d_avg_label = new HiddenField();
         d_peak_label = new HiddenField();
+        d_spread_label = new HiddenField();
+        n_waves = new HiddenField();
         d_unit = new HiddenField();
         equip_name = new HiddenField();
         h_label = new HiddenField();
@@ -213,10 +224,10 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
         location = WebConfigurationManager.AppSettings["SiteName"];
-        timeref = Resources.meteo.TIMEREF;
-        timestamp = Resources.meteo.TIMESTAMP;
-        direction = Resources.meteo.DIRECTION;
-        orientation = Resources.meteo.ORIENTATION;
+        timeref = Resources.WaveAHRS.TIMEREF;
+        timestamp = Resources.WaveAHRS.TIMESTAMP;
+        direction = Resources.WaveAHRS.DIRECTION;
+        orientation = Resources.WaveAHRS.ORIENTATION;
 
 
         //Retrieving data from master resx files
@@ -232,6 +243,8 @@ public partial class WaveAHRS : System.Web.UI.Page
         //Retrieving data from curennt object resx files
         d_avg_label.Value = Resources.WaveAHRS.d_avg_label.ToString();
         d_peak_label.Value = Resources.WaveAHRS.d_peak_label.ToString();
+        d_spread_label.Value = Resources.WaveAHRS.d_spread_label.ToString();
+        n_waves.Value = Resources.WaveAHRS.n_waves.ToString();
         d_unit.Value = Resources.WaveAHRS.d_unit.ToString();
         equip_name.Value = Resources.WaveAHRS.equip_name.ToString();
         h_label.Value = Resources.WaveAHRS.h_label.ToString();
@@ -364,7 +377,7 @@ public partial class WaveAHRS : System.Web.UI.Page
                 else
                     tz = 0;
             }
-            list_t_tm02.Add(tz);
+            list_t_tz.Add(tz);
 
             double tm01 = double.Parse(dRow["TM01"].ToString());
             if (double.IsNaN(tm01) || tm01 > 30)
@@ -411,13 +424,14 @@ public partial class WaveAHRS : System.Web.UI.Page
 
 
         DataSet ds3 = new DataSet();
-        FbDataAdapter dataadapter3 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.MEANDIR, a.SPRD FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter3 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.MEANDIR, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter3.Fill(ds3);
         DataTable myDataTable3 = ds3.Tables[0];
 
         List<double> list_d_mean = new List<double>();
         List<double> list_d_max = new List<double>();
         List<double> list_d_sd = new List<double>();
+        List<double> list_n_waves = new List<double>();
         List<string> list_d_time = new List<string>();
 
         foreach (DataRow dRow in myDataTable3.Rows)
@@ -431,6 +445,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_d_mean.Add(double.Parse(dRow["MEANDIR"].ToString()));
             list_d_max.Add(double.Parse(dRow["DIRTP"].ToString()));
             list_d_sd.Add(double.Parse(dRow["SPRD"].ToString()));
+            list_n_waves.Add(double.Parse(dRow["NUMW"].ToString()));
 
             //dir_cor = double.Parse(dRow["MAINDIR"].ToString()) - 14.8;
             //if (dir_cor < 0) dir_cor += 360;
@@ -445,7 +460,7 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         data.setHeight(list_h_sig, list_h_max, list_h_3, list_h_time);
         data.SetPeriod(list_t_tp, list_t_tz, list_t_tm02, list_t_tm01, list_t_thmax, list_t_t3, list_t_time);
-        data.setDirection(list_d_mean, list_d_max, list_d_time);
+        data.setDirection(list_d_mean, list_d_max, list_d_sd, list_n_waves, list_d_time);
 
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
@@ -475,6 +490,8 @@ public class dataWaveAHRS
 
     public double[] D_mean;
     public double[] D_peak;
+    public double[] D_sd;
+    public double[] N_waves;
     public string[] D_time;
 
     public void setHeight(List<double> sig, List<double> max, List<double> tier, List<string> time)
@@ -499,10 +516,12 @@ public class dataWaveAHRS
         T_time = time.ToArray();
     }
 
-    public void setDirection(List<double> mean, List<double> peak, List<string> time)
+    public void setDirection(List<double> mean, List<double> peak, List<double> sd, List<double> nwave, List<string> time)
     {
         D_mean = mean.ToArray();
         D_peak = peak.ToArray();
+        D_sd = sd.ToArray();
+        N_waves = nwave.ToArray();
         D_time = time.ToArray();
     }
 }

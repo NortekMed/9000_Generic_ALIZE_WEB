@@ -27,39 +27,40 @@
     <asp:HiddenField ID = "hour" ClientIdMode="Static" Runat="Server" />
 
     <asp:HiddenField ID = "equipname" ClientIdMode="Static" Runat="Server"/>
+
     <asp:HiddenField ID = "pitchname"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param0unit"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param0label" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "pitchunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "pitchlabel" ClientIdMode="Static" Runat="Server" />
 
-    <asp:HiddenField ID = "param1name"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param1unit"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param1label" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "rollname"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "rollunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "rolllabel" ClientIdMode="Static" Runat="Server" />
 
-    <asp:HiddenField ID = "param2name"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param2unit"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param2label" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "tempname"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "tempunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "templabel" ClientIdMode="Static" Runat="Server" />
 
-    <asp:HiddenField ID = "param3name"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param3unit"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param3label" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "pressname"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "pressunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "presslabel" ClientIdMode="Static" Runat="Server" />
 
-    <asp:HiddenField ID = "param4name"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param4unit"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param4label" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "speedname"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "speedunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "speedlabel" ClientIdMode="Static" Runat="Server" />
 
-    <asp:HiddenField ID = "param5name"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param5unit"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param5label" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "ampname"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "ampunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "amplabel" ClientIdMode="Static" Runat="Server" />
 
-    <asp:HiddenField ID = "param6name"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param6unit"  ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "param6label" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "corname"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "corunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "corlabel" ClientIdMode="Static" Runat="Server" />
 
     <asp:HiddenField ID = "msg_info_0" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "high_label" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "direction_label" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "direction_unit" ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "speed_label" ClientIdMode="Static" Runat="Server" />
+    <%--<asp:HiddenField ID = "speed_label" ClientIdMode="Static" Runat="Server" />--%>
     <asp:HiddenField ID = "profdir_label" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "profspeed_label" ClientIdMode="Static" Runat="Server" />
 
@@ -168,7 +169,7 @@
         <br />
         <br />--%>
     <script type="text/javascript">
-        var label = document.getElementById('<%=speed_label.ClientID%>').value;
+        var label = document.getElementById('<%=speedlabel.ClientID%>').value;
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
          document.write('<div class="panel-body">');
@@ -211,7 +212,7 @@
     </script>
 
     <script type="text/javascript">
-        var label = document.getElementById('<%=param2label.ClientID%>').value  + ' (' + "<%=ConfigurationManager.AppSettings["Looking"] %>" +')';
+        var label = document.getElementById('<%=templabel.ClientID%>').value  + ' (' + "<%=ConfigurationManager.AppSettings["Looking"] %>" +')';
 
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
@@ -350,7 +351,7 @@
 
 
 
-            var Amp_unit = ' ' + document.getElementById('<%=param4unit.ClientID%>').value;
+            var Amp_unit = ' ' + document.getElementById('<%=speedunit.ClientID%>').value;
             var direction_unit = ' °';
             // Chart immersion  fixe"
             var chartAmp = $('#Ampcontainer').highcharts();
@@ -428,13 +429,13 @@
         var dir_label = document.getElementById('<%=direction_label.ClientID%>').value;
 
 
-        var par2_label = document.getElementById('<%=param2label.ClientID%>').value;
-        var par2_name = document.getElementById('<%=param2name.ClientID%>').value;
-        var par2_unit = " " + document.getElementById('<%=param2unit.ClientID%>').value;
+        var par2_label = document.getElementById('<%=templabel.ClientID%>').value;
+        var par2_name = document.getElementById('<%=tempname.ClientID%>').value;
+        var par2_unit = " " + document.getElementById('<%=tempunit.ClientID%>').value;
 
-        var par4_label = document.getElementById('<%=param4label.ClientID%>').value;
-        var par4_name = document.getElementById('<%=param4name.ClientID%>').value;
-        var par4_unit = " " + document.getElementById('<%=param4unit.ClientID%>').value;
+        var par4_label = document.getElementById('<%=speedlabel.ClientID%>').value;
+        var par4_name = document.getElementById('<%=speedname.ClientID%>').value;
+        var par4_unit = " " + document.getElementById('<%=speedunit.ClientID%>').value;
 
         var s_high_label = document.getElementById('<%=high_label.ClientID%>').value;
 

@@ -23,6 +23,8 @@
 
     <asp:HiddenField ID = "d_avg_label"  value="<%$ Resources:WaveAHRS, d_avg_label %>" Runat="Server" />
 	<asp:HiddenField ID = "d_peak_label"  value="<%$ Resources:WaveAHRS, d_peak_label %>" Runat="Server" />
+	<asp:HiddenField ID = "d_spread_label"  value="<%$ Resources:WaveAHRS, d_spread_label %>" Runat="Server" />
+	<asp:HiddenField ID = "n_waves"  value="<%$ Resources:WaveAHRS, n_waves %>" Runat="Server" />
 	<asp:HiddenField ID = "d_unit"  value="<%$ Resources:WaveAHRS, d_unit %>" Runat="Server" />
 	<asp:HiddenField ID = "equip_name"  value="<%$ Resources:WaveAHRS, equip_name %>" Runat="Server" />
 	<asp:HiddenField ID = "h_label"  value="<%$ Resources:WaveAHRS, h_label %>" Runat="Server" />

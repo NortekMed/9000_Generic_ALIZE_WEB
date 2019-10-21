@@ -221,12 +221,10 @@
         // Update charts with wave data
         function updateCharts(data) {
 
-            buoy_LatLng = { lat: data.P_lat[data.P_lat.length - 1], lng: data.P_lng[data.P_lng.length - 1] };
-
-            //alert('position : ' + buoy_LatLng.lat + ' , ' + buoy_LatLng.lng + ' , ');
-            //alert(data.P_time[data.P_time.length-1]);
-
-            
+            if (data.P_lat.length != 0 && data.P_lng.length != 0)
+                buoy_LatLng = { lat: data.P_lat[data.P_lat.length - 1], lng: data.P_lng[data.P_lng.length - 1] };
+            else
+                buoy_LatLng = { lat: 43.14367, lng: 6.039166 };
 
             $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[data.P_time.length - 1]));
 
@@ -235,18 +233,22 @@
 
             var P_pos = [];
             //for (var i = data.P_time.length - 3; i < data.P_time.length; i++) {
-            for (var i = data.P_time.length - 1; i > data.P_time.length - 12; i--) {
-                
-                //P_pos.push([ Date.parse(data.str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.P_lat[i]]);
-                //P_pos.push([data.P_lng[i], data.P_lat[i]]);
-                //, Date.parse(data.P_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'))
-                //alert(data.P_lng[i] + '  ' + data.P_lat[i] + ' ' + data.P_time[i]);
-                P_pos.push(
-                    {
-                        x: data.P_lng[i],
-                        y: data.P_lat[i],
-                        name : YYYYMMDDtoDDMMYYY(data.P_time[i])
-                    });
+            var nb_to_display = 0;
+            if (data.P_time.length > 0) { 
+                if (data.P_time.length > 48)
+                    nb_to_display = 48;
+                else
+                    nb_to_display = data.P_time.length;
+
+                for (var i = data.P_time.length - 1; i >= nb_to_display - 1; i--) {    // display only 48 last position
+
+                    P_pos.push(
+                        {
+                            x: data.P_lng[i],
+                            y: data.P_lat[i],
+                            name: YYYYMMDDtoDDMMYYY(data.P_time[i])
+                        });
+                }
             }
             //var data_name = data.map(function(a) {return a.name;});
 
@@ -254,8 +256,6 @@
             $('#DISTWE').text(data.P_dist_west_est.toFixed(0))
 
             chartPos.series[0].setData(P_pos);
-
-
 
             initialize();
         };
@@ -319,15 +319,7 @@
                 text: '',
                 x: -20
             },
-            //plotOptions: {
-            //    series: {
-            //        marker: {
-            //            enabled: false
-            //        }
-            //    },
-            //},
             xAxis: {
-                //type: 'datetime',
                 title: {
                     text: 'Longitude',
                 },
@@ -369,79 +361,13 @@
     <script type="text/javascript">
         $(function () {
 
-            // Init map
-            //initialize();
-
             // Init charts with last 24hours values
             initData();
         });
 
     </script>
 
-    <%--<script type="text/javascript">
-
-        $(function () {
-            $('#poscontainer').highcharts({
-                exporting: {
-                    enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
-                },
-                title: {
-                    visible: false,
-                    text: '',
-                    x: -20 //center
-                },
-                subtitle: {
-                    text: '',
-                    x: -20
-                },
-                plotOptions: {
-                    series: {
-                        marker: {
-                            enabled: false
-                        }
-                    },
-                },
-                xAxis: {
-                    //type: 'datetime',
-                    title: {
-                        text: 'Longitude',
-                    },
-                    gridLineWidth: 1,
-                    labels: {
-                    format: '{value} °',
-                    },
-                },
-                yAxis: [{
-                    title: {
-                        text: 'Latitude',
-                    },
-                    labels: {
-                        format: '{value} °',
-                    },
-                }],
-
-                series: [{
-                    name: 'Position',
-                    data: [],
-                    color: 'blue',
-                    animation: true,
-                    lineWidth: 0,
-                    marker: {
-                        enabled: true,
-                        symbol: 'diamond'
-                    },
-                    tooltip: {
-                        pointFormat: 'Lat:{point.y}° Lng:{point.x}°'
-                    }
-                }
-                ]
-            });
-        
-
-        //initData();
-
-        });
-    </script>--%>
+    
 
 </asp:Content>
 

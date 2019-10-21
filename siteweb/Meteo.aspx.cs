@@ -86,6 +86,7 @@ public partial class Meteo : System.Web.UI.Page
     static string timeref;
     static string timestamp;
     static string direction;
+    static string direction_M;
     static string orientation;
 
     //static string l_prj_name = "PROJECT NAME : ";
@@ -327,6 +328,7 @@ public partial class Meteo : System.Web.UI.Page
         timeref = Resources.meteo.TIMEREF;
         timestamp = Resources.meteo.TIMESTAMP;
         direction = Resources.meteo.DIRECTION;
+        direction_M = Resources.meteo.DIRECTION_M;
         orientation = Resources.meteo.ORIENTATION;
 
         //Retrieving data from master resx files

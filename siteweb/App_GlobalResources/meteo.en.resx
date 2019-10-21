@@ -120,6 +120,9 @@
   <data name="DIRECTION" xml:space="preserve">
     <value>FROM</value>
   </data>
+  <data name="DIRECTION_M" xml:space="preserve">
+    <value>none</value>
+  </data>
   <data name="ORIENTATION" xml:space="preserve">
     <value>Magnetic</value>
   </data>

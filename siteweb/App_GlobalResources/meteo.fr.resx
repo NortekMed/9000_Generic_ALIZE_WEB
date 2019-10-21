@@ -348,4 +348,7 @@
   <data name="TIMESTAMP" xml:space="preserve">
     <value>Début acquisition, temps UTC</value>
   </data>
+  <data name="DIRECTION_M" xml:space="preserve">
+    <value>NONE</value>
+  </data>
 </root>

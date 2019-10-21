@@ -12,34 +12,45 @@ using System.Text;
 using System.IO;
 using System.Globalization;
 
+using GlobalVariables;
+
 public partial class SIG_Current : System.Web.UI.Page
 {
 
     public static data_SIG_Current downloaddata;
+
+    static string prj_name = "";
+    static string device_name = "";
+    static string location;
+    static string timeref;
+    static string timestamp;
+    static string direction;
+    static string orientation;
+
 
     static string equip_name = "";
 
     static string pitch_name = "";
     static string pitch_unit = "";
     static string pitch_label = "";
-    static string param1_name = "";
-    static string param1_label = "";
-    static string param1_unit = "";
-    static string param2_name = "";
-    static string param2_unit = "";
-    static string param2_label = "";
-    static string param3_name = "";
-    static string param3_unit = "";
-    static string param3_label = "";
-    static string param4_name = "";
-    static string param4_unit = "";
-    static string param4_label = "";
-    static string param5_name = "";
-    static string param5_unit = "";
-    static string param5_label = "";
-    static string param6_name = "";
-    static string param6_unit = "";
-    static string param6_label = "";
+    static string roll_name = "";
+    static string roll_label = "";
+    static string roll_unit = "";
+    static string temp_name = "";
+    static string temp_unit = "";
+    static string temp_label = "";
+    static string press_name = "";
+    static string press_unit = "";
+    static string press_label = "";
+    static string speed_name = "";
+    static string speed_unit = "";
+    static string speed_label = "";
+    static string amp_name = "";
+    static string amp_unit = "";
+    static string amp_label = "";
+    static string cor_name = "";
+    static string cor_unit = "";
+    static string cor_label = "";
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -64,74 +75,131 @@ public partial class SIG_Current : System.Web.UI.Page
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TELECHARGEMENTS
     /////////////////////////////////////////////////////////////////////////////////////////////////////
+    private List<string> MakeHeader(string device)
+    {
+
+
+        List<string> output = new List<string>();
+        output.Add(Global.l_prj_name + prj_name);
+        output.Add(Global.l_device_name + device);
+        output.Add(Global.l_location + location);
+        output.Add(Global.l_timeref + timeref);
+        output.Add(Global.l_timestamp + timestamp);
+        output.Add(Global.l_direction + direction);
+        output.Add(Global.l_orientation + orientation);
+
+
+        return output;
+    }
+
 
     protected void DownloadCurrent(object Source, EventArgs e)
     {
-        try
+        device_name = Resources.CurrentSIG.DEVICE_0;
+        List<string> output = MakeHeader(device_name);
+
+        string s_layers = "";
+        for (int j = 0; j < downloaddata.C_amp[0].Length; j++)
         {
-            string[] output = new string[downloaddata.C_time.Length + 1];
-            output[0] = "local datetime;marée(dBar);temperauture eau";
-            for (int j = 0; j < downloaddata.C_amp[0].Length; j++)
-            {
-                string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
-                output[0] += ";";
-                output[0] += ("spd " + immersion + "m");
-                output[0] += ";";
-                output[0] += ("dir " + immersion + "m");
-            }
-
-            // mise en forme
-            for (int i = 0; i < downloaddata.C_time.Length; i++)
-            {
-                output[i + 1] += downloaddata.C_time[i].Replace("T", ", ");
-                output[i + 1] += ";";
-                output[i + 1] += downloaddata.C_press[i].ToString("0.000", NumberFormatInfo.InvariantInfo);
-                output[i + 1] += ";";
-                output[i + 1] += downloaddata.C_temp[i].ToString("00.00", NumberFormatInfo.InvariantInfo);
-
-                for (int j = 0; j < downloaddata.C_amp[i].Length; j++)
-                {
-                    output[i + 1] += ";";
-                    output[i + 1] += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo);
-                    output[i + 1] += ";";
-                    output[i + 1] += downloaddata.C_dir[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo);
-                }
-            }
-
-            string interval = downloaddata.C_time[0].Split('T')[0] + "_to_" + downloaddata.C_time[downloaddata.C_time.Length - 1].Split('T')[0];
-
-            // Créer fichier csv et Télécharger
-            DownloadCsv("currentSIG_" + interval + ".csv", output);
+            string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
+            s_layers += "C_Spd" + j.ToString() + " (" + speedunit.Value + ")(-" + immersion + "m);";
+            s_layers += "C_Dir" + j.ToString() + " (" + direction_unit.Value + ")(-" + immersion + "m);";
         }
-        catch (Exception) { }
 
+        output.Add("UTC datetime;"  + templabel.Value + '(' + tempunit.Value + ");"
+                                    + s_layers
+                                    );
+        
+
+        // mise en forme
+        for (int i = 0; i < downloaddata.C_time.Length; i++)
+        {
+            s_layers = "";
+            for ( int j = 0; j < downloaddata.C_amp[i].Length; j++)
+            {
+                s_layers += downloaddata.C_amp[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_dir[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
+            }
+
+            output.Add(downloaddata.C_time[i].Replace("T", ", ") + ';'
+                        + downloaddata.C_temp[i] + ';'
+                        + s_layers
+                        );
+
+        }
+
+        string interval = downloaddata.C_time[0].Split('T')[0] + "_to_" + downloaddata.C_time[downloaddata.C_time.Length - 1].Split('T')[0];
+
+        DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
 
-    protected void DownloadCsv(string filename, string[] data)
-    {
+    //protected void DownloadCurrent(object Source, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        string[] output = new string[downloaddata.C_time.Length + 1];
+    //        output[0] = "local datetime;marée(dBar);temperauture eau";
+    //        for (int j = 0; j < downloaddata.C_amp[0].Length; j++)
+    //        {
+    //            string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
+    //            output[0] += ";";
+    //            output[0] += ("spd " + immersion + "m");
+    //            output[0] += ";";
+    //            output[0] += ("dir " + immersion + "m");
+    //        }
 
-        string filePath = WebConfigurationManager.AppSettings["TempDir"] + "\\" + filename;
-        string delimiter = ";";
-        int length = data.GetLength(0);
-        StringBuilder sb = new StringBuilder();
+    //        // mise en forme
+    //        for (int i = 0; i < downloaddata.C_time.Length; i++)
+    //        {
+    //            output[i + 1] += downloaddata.C_time[i].Replace("T", ", ");
+    //            output[i + 1] += ";";
+    //            output[i + 1] += downloaddata.C_press[i].ToString("0.000", NumberFormatInfo.InvariantInfo);
+    //            output[i + 1] += ";";
+    //            output[i + 1] += downloaddata.C_temp[i].ToString("00.00", NumberFormatInfo.InvariantInfo);
 
-        // Autorisation de télécharger les données !
-        if (WebConfigurationManager.AppSettings["DownloadEnabled"] != "true")
-            length = 0;
+    //            for (int j = 0; j < downloaddata.C_amp[i].Length; j++)
+    //            {
+    //                output[i + 1] += ";";
+    //                output[i + 1] += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo);
+    //                output[i + 1] += ";";
+    //                output[i + 1] += downloaddata.C_dir[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo);
+    //            }
+    //        }
 
-        for (int index = 0; index < length; index++)
-            sb.AppendLine(string.Join(delimiter, data[index]));
+            //        string interval = downloaddata.C_time[0].Split('T')[0] + "_to_" + downloaddata.C_time[downloaddata.C_time.Length - 1].Split('T')[0];
 
-        File.WriteAllText(filePath, sb.ToString());
+            //        // Créer fichier csv et Télécharger
+            //        DownloadCsv("currentSIG_" + interval + ".csv", output);
+            //    }
+            //    catch (Exception) { }
 
-        System.IO.FileInfo file = new System.IO.FileInfo(filePath);
-        Page.Response.Clear();
-        Page.Response.AppendHeader("Content-Disposition", "attachment; FileName=" + file.Name);
-        Page.Response.AppendHeader("Content-Length", file.Length.ToString());
-        Page.Response.ContentType = "application/vnd.ms-excel";
-        Page.Response.WriteFile(file.FullName);
-        Page.Response.End();
-    }
+            //}
+
+        protected void DownloadCsv(string filename, string[] data)
+        {
+
+            string filePath = WebConfigurationManager.AppSettings["TempDir"] + "\\" + filename;
+            string delimiter = ";";
+            int length = data.GetLength(0);
+            StringBuilder sb = new StringBuilder();
+
+            // Autorisation de télécharger les données !
+            if (WebConfigurationManager.AppSettings["DownloadEnabled"] != "true")
+                length = 0;
+
+            for (int index = 0; index < length; index++)
+                sb.AppendLine(string.Join(delimiter, data[index]));
+
+            File.WriteAllText(filePath, sb.ToString());
+
+            System.IO.FileInfo file = new System.IO.FileInfo(filePath);
+            Page.Response.Clear();
+            Page.Response.AppendHeader("Content-Disposition", "attachment; FileName=" + file.Name);
+            Page.Response.AppendHeader("Content-Length", file.Length.ToString());
+            Page.Response.ContentType = "application/vnd.ms-excel";
+            Page.Response.WriteFile(file.FullName);
+            Page.Response.End();
+        }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,38 +213,38 @@ public partial class SIG_Current : System.Web.UI.Page
         equipname = new HiddenField();
 
         pitchname = new HiddenField();
-        param0label = new HiddenField();
-        param0unit = new HiddenField();
+        pitchlabel = new HiddenField();
+        pitchunit = new HiddenField();
 
-        param1name = new HiddenField();
-        param1label = new HiddenField();
-        param1unit = new HiddenField();
+        rollname = new HiddenField();
+        rolllabel = new HiddenField();
+        rollunit = new HiddenField();
 
-        param2name = new HiddenField();
-        param2label = new HiddenField();
-        param2unit = new HiddenField();
+        tempname = new HiddenField();
+        templabel = new HiddenField();
+        tempunit = new HiddenField();
 
-        param3name = new HiddenField();
-        param3label = new HiddenField();
-        param3unit = new HiddenField();
+        pressname = new HiddenField();
+        presslabel = new HiddenField();
+        pressunit = new HiddenField();
 
-        param4name = new HiddenField();
-        param4label = new HiddenField();
-        param4unit = new HiddenField();
+        speedname = new HiddenField();
+        speedlabel = new HiddenField();
+        speedunit = new HiddenField();
 
-        param5name = new HiddenField();
-        param5label = new HiddenField();
-        param5unit = new HiddenField();
+        ampname = new HiddenField();
+        amplabel = new HiddenField();
+        ampunit = new HiddenField();
 
-        param6name = new HiddenField();
-        param6label = new HiddenField();
-        param6unit = new HiddenField();
+        corname = new HiddenField();
+        corlabel = new HiddenField();
+        corunit = new HiddenField();
 
         msg_info_0 = new HiddenField();
 
         direction_label = new HiddenField();
         direction_unit = new HiddenField();
-        speed_label = new HiddenField();
+        //speed_label = new HiddenField();
         profdir_label = new HiddenField();
         profspeed_label = new HiddenField();
 
@@ -192,6 +260,15 @@ public partial class SIG_Current : System.Web.UI.Page
 
     protected void InitField()
     {
+
+        prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
+        location = WebConfigurationManager.AppSettings["SiteName"];
+        timeref = Resources.CurrentSIG.TIMEREF;
+        timestamp = Resources.CurrentSIG.TIMESTAMP;
+        direction = Resources.CurrentSIG.DIRECTION;
+        orientation = Resources.CurrentSIG.ORIENTATION;
+
+
         //Retrieving data from master resx files
         start.Value = Resources.Site.Master.start.ToString();
         end.Value = Resources.Site.Master.end.ToString();
@@ -207,38 +284,38 @@ public partial class SIG_Current : System.Web.UI.Page
         equipname.Value = Resources.CurrentSIG.equip_name.ToString();
 
         pitchname.Value = Resources.CurrentSIG.param0name.ToString();
-        param0label.Value = Resources.CurrentSIG.param0label.ToString();
-        param0unit.Value = Resources.CurrentSIG.param0unit.ToString();
+        pitchlabel.Value = Resources.CurrentSIG.param0label.ToString();
+        pitchunit.Value = Resources.CurrentSIG.param0unit.ToString();
 
-        param1name.Value = Resources.CurrentSIG.param1name.ToString();
-        param1label.Value = Resources.CurrentSIG.param1label.ToString();
-        param1unit.Value = Resources.CurrentSIG.param1unit.ToString();
+        rollname.Value = Resources.CurrentSIG.param1name.ToString();
+        rolllabel.Value = Resources.CurrentSIG.param1label.ToString();
+        rollunit.Value = Resources.CurrentSIG.param1unit.ToString();
 
-        param2name.Value = Resources.CurrentSIG.param2name.ToString();
-        param2label.Value = Resources.CurrentSIG.param2label.ToString();
-        param2unit.Value = Resources.CurrentSIG.param2unit.ToString();
+        tempname.Value = Resources.CurrentSIG.param2name.ToString();
+        templabel.Value = Resources.CurrentSIG.param2label.ToString();
+        tempunit.Value = Resources.CurrentSIG.param2unit.ToString();
 
-        param3name.Value = Resources.CurrentSIG.param3name.ToString();
-        param3label.Value = Resources.CurrentSIG.param3label.ToString();
-        param3unit.Value = Resources.CurrentSIG.param3unit.ToString();
+        pressname.Value = Resources.CurrentSIG.param3name.ToString();
+        presslabel.Value = Resources.CurrentSIG.param3label.ToString();
+        pressunit.Value = Resources.CurrentSIG.param3unit.ToString();
 
-        param4name.Value = Resources.CurrentSIG.param4name.ToString();
-        param4label.Value = Resources.CurrentSIG.param4label.ToString();
-        param4unit.Value = Resources.CurrentSIG.param4unit.ToString();
+        speedname.Value = Resources.CurrentSIG.param4name.ToString();
+        speedlabel.Value = Resources.CurrentSIG.param4label.ToString();
+        speedunit.Value = Resources.CurrentSIG.param4unit.ToString();
 
-        param5name.Value = Resources.CurrentSIG.param5name.ToString();
-        param5label.Value = Resources.CurrentSIG.param5label.ToString();
-        param5unit.Value = Resources.CurrentSIG.param5unit.ToString();
+        ampname.Value = Resources.CurrentSIG.param5name.ToString();
+        amplabel.Value = Resources.CurrentSIG.param5label.ToString();
+        ampunit.Value = Resources.CurrentSIG.param5unit.ToString();
 
-        param6name.Value = Resources.CurrentSIG.param6name.ToString();
-        param6label.Value = Resources.CurrentSIG.param6label.ToString();
-        param6unit.Value = Resources.CurrentSIG.param6unit.ToString();
+        corname.Value = Resources.CurrentSIG.param6name.ToString();
+        corlabel.Value = Resources.CurrentSIG.param6label.ToString();
+        corunit.Value = Resources.CurrentSIG.param6unit.ToString();
 
         msg_info_0.Value = Resources.CurrentSIG.msg_info_0.ToString();
 
         direction_label.Value = Resources.CurrentSIG.direction_label.ToString();
         direction_unit.Value = Resources.CurrentSIG.direction_unit.ToString();
-        speed_label.Value = Resources.CurrentSIG.speed_label.ToString();
+        //speed_label.Value = Resources.CurrentSIG.speed_label.ToString();
         profdir_label.Value = Resources.CurrentSIG.profdir_label.ToString();
         profspeed_label.Value = Resources.CurrentSIG.profspeed_label.ToString();
 
@@ -247,34 +324,34 @@ public partial class SIG_Current : System.Web.UI.Page
         equip_name = equipname.Value;
 
         pitch_name = pitchname.Value;
-        pitch_unit = param0unit.Value;
-        pitch_label = param0label.Value;
+        pitch_unit = pitchunit.Value;
+        pitch_label = pitchlabel.Value;
 
 
-        param1_name = param1name.Value;
-        param1_unit = param1unit.Value;
-        param1_label = param1label.Value;
+        roll_name = rollname.Value;
+        roll_unit = rollunit.Value;
+        roll_label = rolllabel.Value;
 
-        param2_name = param2name.Value;
-        param2_unit = param2unit.Value;
-        param2_label = param2label.Value;
+        temp_name = tempname.Value;
+        temp_unit = tempunit.Value;
+        temp_label = templabel.Value;
 
-        param3_name = param3name.Value;
-        param3_unit = param3unit.Value;
-        param3_label = param3label.Value;
+        press_name = pressname.Value;
+        press_unit = pressunit.Value;
+        press_label = presslabel.Value;
 
-        param4_name = param4name.Value;
-        param4_unit = param4unit.Value;
-        param4_label = param4label.Value;
+        speed_name = speedname.Value;
+        speed_unit = speedunit.Value;
+        speed_label = speedlabel.Value;
 
 
-        param5_name = param5name.Value;
-        param5_unit = param5unit.Value;
-        param5_label = param5label.Value;
+        amp_name = ampname.Value;
+        amp_unit = ampunit.Value;
+        amp_label = amplabel.Value;
 
-        param6_name = param6name.Value;
-        param6_unit = param6unit.Value;
-        param6_label = param6label.Value;
+        cor_name = corname.Value;
+        cor_unit = corunit.Value;
+        cor_label = corlabel.Value;
 
     }
 
@@ -320,7 +397,7 @@ public partial class SIG_Current : System.Web.UI.Page
         // AWAC / AQUADOPP
 
         // Generate DB request
-        string DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + param1_name + ", a." + param2_name + ", a." + param3_name;
+        string DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + roll_name + ", a." + temp_name + ", a." + press_name;
 
         for (int d = 0; d < int.Parse(WebConfigurationManager.AppSettings["nb_beam_SIG"]); d++ )
         {
@@ -330,7 +407,7 @@ public partial class SIG_Current : System.Web.UI.Page
             {
                 string sufix = string.Format("{0}", (c + 1));
 
-                DbRequest += (", a." + param4_name + sufix + '_' + nbeam);
+                DbRequest += (", a." + speed_name + sufix + '_' + nbeam);
             }
         }
 
@@ -370,9 +447,9 @@ public partial class SIG_Current : System.Web.UI.Page
             double dir_cor = 0;
 
             list_pitch.Add(double.Parse(dRow[pitch_name].ToString()));
-            list_roll.Add(double.Parse(dRow[param1_name].ToString()));
-            list_temp.Add(double.Parse(dRow[param2_name].ToString()));
-            list_press.Add(double.Parse(dRow[param3_name].ToString()));
+            list_roll.Add(double.Parse(dRow[roll_name].ToString()));
+            list_temp.Add(double.Parse(dRow[temp_name].ToString()));
+            list_press.Add(double.Parse(dRow[press_name].ToString()));
 
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
@@ -385,8 +462,8 @@ public partial class SIG_Current : System.Web.UI.Page
             {
                 // SIGNATURE 
                  
-                double V_X_East = double.Parse(dRow[param4_name + (cell + 1).ToString() + "_1"].ToString());
-                double V_Y_North = double.Parse(dRow[param4_name + (cell + 1).ToString() + "_2"].ToString());
+                double V_X_East = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_1"].ToString());
+                double V_Y_North = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_2"].ToString());
                 amp[cell] = Math.Round(Math.Sqrt(V_X_East * V_X_East + V_Y_North * V_Y_North),3);
 
                 dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360),1);

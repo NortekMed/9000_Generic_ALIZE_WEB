@@ -247,7 +247,7 @@ public partial class Position : System.Web.UI.Page
         double distance_nord = 0;
         double distance_est = 0;
         XY_UTM_o = convertutm.XY(lat_o, lng_o);
-        if (list_lat.Count > 0 && list_lng.Count > 0) { }
+        if (list_lat.Count > 0 && list_lng.Count > 0) { 
             XY_UTM_last = convertutm.XY(list_lat.Last(), list_lng.Last());
 
             distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);

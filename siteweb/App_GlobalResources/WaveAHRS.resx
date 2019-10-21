@@ -129,7 +129,7 @@
   <data name="d_peak_label" xml:space="preserve">
     <value />
   </data>
-  <data name="d_spread" xml:space="preserve">
+  <data name="d_spread_label" xml:space="preserve">
     <value />
   </data>
   <data name="d_unit" xml:space="preserve">
@@ -190,6 +190,9 @@
     <value />
   </data>
   <data name="t_z_label" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DEVICE_0" xml:space="preserve">
     <value />
   </data>
 </root>

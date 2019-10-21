@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DIRECTION" xml:space="preserve">
+    <value>TO</value>
+  </data>
   <data name="direction_label" xml:space="preserve">
     <value>Current direction</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="msg_info_0" xml:space="preserve">
     <value>Click on layer high measure on legend to display corresponding trace</value>
+  </data>
+  <data name="ORIENTATION" xml:space="preserve">
+    <value>Magnetic</value>
   </data>
   <data name="param0label" xml:space="preserve">
     <value>Pitch</value>
@@ -201,7 +207,13 @@
   <data name="profspeed_label" xml:space="preserve">
     <value>Speed profile 3D</value>
   </data>
-  <data name="speed_label" xml:space="preserve">
-    <value>Current speed</value>
+  <data name="TIMEREF" xml:space="preserve">
+    <value>10 minutes</value>
+  </data>
+  <data name="TIMESTAMP" xml:space="preserve">
+    <value>UTC time, acquisition start</value>
+  </data>
+  <data name="DEVICE_0" xml:space="preserve">
+    <value>Current</value>
   </data>
 </root>
