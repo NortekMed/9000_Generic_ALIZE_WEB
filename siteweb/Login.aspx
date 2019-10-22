@@ -3,21 +3,34 @@
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
 
-    <div class="jumbotron">
+    <script type="text/javascript">
+        document.write('<div class="jumbotron" id="banner">');
+        document.write('<div class="row">');
+        document.write('<span><a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">');
+        document.write('<img style="float: right" src="..\\<%=ConfigurationManager.AppSettings["LogoNortek"] %>" height="130" /></a>');
+        <%--document.write('<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" /></a>');--%>
+        document.write('<img style="float: left" src="..\\<%=ConfigurationManager.AppSettings["Logo_0"] %>" height="100" />');
+        <%--document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/LOGO-SNA.jpg" height="100" />');--%>
+        document.write('</span>');
+        document.write('</div>');
+        document.write('<h2>bvfbvfc<%=ConfigurationManager.AppSettings["SiteName"] %> </h2>');
+        document.write('<p class="lead"><%=ConfigurationManager.AppSettings["SiteInfo"] %></p>');
+        document.write('</div > ');
+
+    </script>
+
+    <%--<div class="jumbotron">
         <div class="row">
             <span>
                 <a href="<%=ConfigurationManager.AppSettings["WebSiteNortekMed"] %>">
-                    <img style="float: right" src="<%=ConfigurationManager.AppSettings["Logo_Nortek"] %>Nortekmed.jpg"/>
-                    <%--<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>Nortekmed.jpg"/>--%>
+                    <img style="float: right" src="<%=ConfigurationManager.AppSettings["Logo_Nortek"] %>" height="130" />
                 </a>
-                <%--<img style="float: right" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>malawi_flag.png"/>--%>
                 <img style="float: left" src="<%=ConfigurationManager.AppSettings["Logo_0"] %>"/>
-                <%--<img style="float: left" src="<%=ConfigurationManager.AppSettings["ImgDir"] %>LOGO-SNA.jpg"/>--%>
             </span>
         </div>
         <h2><%=ConfigurationManager.AppSettings["SiteName"] %> </h2>
         <p class="lead"><%=ConfigurationManager.AppSettings["SiteInfo"] %></p>
-    </div>
+    </div>--%>
 
     <div class="row">
         <div class="col-md-8">

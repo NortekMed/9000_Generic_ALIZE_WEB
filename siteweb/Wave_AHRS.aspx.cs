@@ -72,12 +72,15 @@ public partial class WaveAHRS : System.Web.UI.Page
 
     protected void DownloadWave(object Source, EventArgs e)
     {
+        string start_date = "";
+        string end_date = "";
+
         device_name = Resources.WaveAHRS.DEVICE_0;
         List<string> output = MakeHeader(device_name);
 
         output.Add("UTC datetime;"  + h_sig_label.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_max_label.Value + '(' + h_unit.Value + ')' + ';'
                                     + h_3_label.Value + '(' + h_unit.Value + ')' + ';'
+                                    + h_max_label.Value + '(' + h_unit.Value + ')' + ';'
                                     + t_peak_label.Value + '(' + t_unit.Value + ')' + ';'
                                     + t_z_label.Value + '(' + t_unit.Value + ')' + ';'
                                     + t_m01_label.Value + '(' + t_unit.Value + ')' + ';'
@@ -96,12 +99,15 @@ public partial class WaveAHRS : System.Web.UI.Page
         // mise en forme
         for (int i = 0; i < downloaddata.H_time.Length; i++)
         {
-            output.Add(downloaddata.H_time[i].Replace("T", ", ") + ';'
+            DateTime date = Convert.ToDateTime(downloaddata.H_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+            string s_date = date.ToString("yyyy-MM-ddTHH:mm");
+
+            output.Add(s_date.Replace("T", ", ") + ';'
                         + downloaddata.H_m0[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.H_tier[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.H_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.H_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_p[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_z[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_z[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_m01[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_m02[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
@@ -114,7 +120,7 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         }
 
-        string interval = downloaddata.H_time[0].Split('T')[0] + "_to_" + downloaddata.H_time[downloaddata.H_time.Length - 1].Split('T')[0];
+        string interval =start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
 
         DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
@@ -255,10 +261,10 @@ public partial class WaveAHRS : System.Web.UI.Page
         t_avg_label.Value = Resources.WaveAHRS.t_avg_label.ToString();
         t_max_label.Value = Resources.WaveAHRS.t_max_label.ToString();
         t_peak_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
-        t_m01_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
-        t_m02_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
-        t_3_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
-        t_z_label.Value = Resources.WaveAHRS.t_peak_label.ToString();
+        t_m01_label.Value = Resources.WaveAHRS.t_m01_label.ToString();
+        t_m02_label.Value = Resources.WaveAHRS.t_m02_label.ToString();
+        t_3_label.Value = Resources.WaveAHRS.t_3_label.ToString();
+        t_z_label.Value = Resources.WaveAHRS.t_z_label.ToString();
         t_unit.Value = Resources.WaveAHRS.t_unit.ToString();
         t_label.Value = Resources.WaveAHRS.t_label.ToString();
         d_label.Value = Resources.WaveAHRS.d_label.ToString();

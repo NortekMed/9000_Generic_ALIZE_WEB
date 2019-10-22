@@ -216,4 +216,10 @@
   <data name="TIMESTAMP" xml:space="preserve">
     <value>UTC time, début acquisition</value>
   </data>
+  <data name="param7name" xml:space="preserve">
+    <value>BATTERY</value>
+  </data>
+  <data name="param7unit" xml:space="preserve">
+    <value>V</value>
+  </data>
 </root>

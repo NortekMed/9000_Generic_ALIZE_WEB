@@ -120,6 +120,9 @@
   <data name="chart_label" xml:space="preserve">
     <value>Mouvement</value>
   </data>
+  <data name="DIRECTION" xml:space="preserve">
+    <value>NA</value>
+  </data>
   <data name="d_EW" xml:space="preserve">
     <value>Distance EST- OUEST</value>
   </data>
@@ -134,5 +137,14 @@
   </data>
   <data name="map_label" xml:space="preserve">
     <value>Dernière position connue</value>
+  </data>
+  <data name="ORIENTATION" xml:space="preserve">
+    <value>Magnetic</value>
+  </data>
+  <data name="TIMEREF" xml:space="preserve">
+    <value>30 minutes</value>
+  </data>
+  <data name="TIMESTAMP" xml:space="preserve">
+    <value>UTC time, acquisition start</value>
   </data>
 </root>

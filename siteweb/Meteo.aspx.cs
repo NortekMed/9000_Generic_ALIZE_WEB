@@ -110,8 +110,8 @@ public partial class Meteo : System.Web.UI.Page
             Response.Redirect("~/Login.aspx");
 
 
-        DownloadWindButton.Text = download_data.Value;
-        DownloadMeteoButton.Text = download_data.Value;
+        DownloadWindButton.Text = _2_equipname_alias.Value + ' ' + download_data.Value;
+        DownloadMeteoButton.Text = _0_equipname_alias.Value + ' ' + download_data.Value;
 
     }
 
@@ -140,6 +140,9 @@ public partial class Meteo : System.Web.UI.Page
 
     protected void DownloadWind(object Source, EventArgs e)
     {
+        string start_date = "";
+        string end_date = "";
+
         string speed_unit = s_wind_speed_avg_unit;
         string dir_unit = s_wind_dir_avg_unit;
 
@@ -156,7 +159,10 @@ public partial class Meteo : System.Web.UI.Page
         // mise en forme
         for (int i = 0; i < downloaddata.wxt_wind_str_time.Length; i++)
         {
-            output.Add(   downloaddata.wxt_wind_str_time[i].Replace("T", ", ") + ';'
+            DateTime date = Convert.ToDateTime(downloaddata.wxt_wind_str_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+            string s_date = date.ToString("yyyy-MM-ddTHH:mm");
+
+            output.Add(   s_date.Replace("T", ", ") + ';'
                         + downloaddata.wxt_wind_speed_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_wind_speed_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_wind_speed_min[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
@@ -165,9 +171,14 @@ public partial class Meteo : System.Web.UI.Page
                         + downloaddata.wxt_wind_dir_min[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
+            if (i == 0)
+                start_date = s_date;
+            if (i == downloaddata.wxt_wind_str_time.Length - 1)
+                end_date = s_date;
+
         }
 
-        string interval = downloaddata.wxt_wind_str_time[0].Split('T')[0] + "_to_" + downloaddata.wxt_wind_str_time[downloaddata.wxt_wind_str_time.Length - 1].Split('T')[0];
+        string interval = start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
 
         DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
@@ -175,6 +186,9 @@ public partial class Meteo : System.Web.UI.Page
 
     protected void DownloadMeteo(object Source, EventArgs e)
     {
+        string start_date = "";
+        string end_date = "";
+
         device_name = Resources.meteo._0_equip_name;
         List<string> output = MakeHeader(device_name);
 
@@ -185,14 +199,22 @@ public partial class Meteo : System.Web.UI.Page
         // mise en forme
         for (int i = 0; i < downloaddata.wxt_str_time.Length; i++)
         {
+            DateTime date = Convert.ToDateTime(downloaddata.wxt_str_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+            string s_date = date.ToString("yyyy-MM-ddTHH:mm");
+
             output.Add(downloaddata.wxt_wind_str_time[i].Replace("T", ", ") + ';'
                         + downloaddata.wxt_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_press[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
+            if (i == 0)
+                start_date = s_date;
+            if (i == downloaddata.wxt_str_time.Length - 1)
+                end_date = s_date;
+
         }
 
-        string interval = downloaddata.wxt_str_time[0].Split('T')[0] + "_to_" + downloaddata.wxt_str_time[downloaddata.wxt_str_time.Length - 1].Split('T')[0];
+        string interval = start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
 
         DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
@@ -324,7 +346,7 @@ public partial class Meteo : System.Web.UI.Page
     protected void InitField()
     {
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
-        location = WebConfigurationManager.AppSettings["Buoy"] + '-' + WebConfigurationManager.AppSettings["SiteName"];
+        location = WebConfigurationManager.AppSettings["SiteName"];
         timeref = Resources.meteo.TIMEREF;
         timestamp = Resources.meteo.TIMESTAMP;
         direction = Resources.meteo.DIRECTION;

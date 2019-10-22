@@ -216,4 +216,10 @@
   <data name="TIMESTAMP" xml:space="preserve">
     <value />
   </data>
+  <data name="param7name" xml:space="preserve">
+    <value />
+  </data>
+  <data name="param7unit" xml:space="preserve">
+    <value />
+  </data>
 </root>

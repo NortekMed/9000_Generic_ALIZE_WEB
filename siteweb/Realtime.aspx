@@ -88,7 +88,7 @@
 	<asp:HiddenField ID = "wave_param2"  value="<%$ Resources:WaveAHRS, h_max_label %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_param3"  value="<%$ Resources:WaveAHRS, h_sig_label %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_h_unit"  value="<%$ Resources:WaveAHRS, h_unit %>" Runat="Server" />
-	<asp:HiddenField ID = "wave_param4"  value="<%$ Resources:WaveAHRS, t_avg_label %>" Runat="Server" />
+	<asp:HiddenField ID = "wave_param4"  value="<%$ Resources:WaveAHRS, t_m02_label %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_param5"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_t_unit"  value="<%$ Resources:WaveAHRS, t_unit %>" Runat="Server" />
 

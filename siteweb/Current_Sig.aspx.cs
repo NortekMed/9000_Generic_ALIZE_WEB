@@ -102,33 +102,46 @@ public partial class SIG_Current : System.Web.UI.Page
         for (int j = 0; j < downloaddata.C_amp[0].Length; j++)
         {
             string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
-            s_layers += "C_Spd" + j.ToString() + " (" + speedunit.Value + ")(-" + immersion + "m);";
-            s_layers += "C_Dir" + j.ToString() + " (" + direction_unit.Value + ")(-" + immersion + "m);";
+            s_layers += "C_Spd" + (j+1).ToString() + " (" + speedunit.Value + ")(-" + immersion + "m);";
+            s_layers += "C_Dir" + (j+1).ToString() + " (" + direction_unit.Value + ")(-" + immersion + "m);";
         }
 
         output.Add("UTC datetime;"  + templabel.Value + '(' + tempunit.Value + ");"
                                     + s_layers
+                                    + voltname.Value + '(' + voltunit + ");"
                                     );
-        
+
 
         // mise en forme
+        string start_date = "";
+        string end_date = "";
         for (int i = 0; i < downloaddata.C_time.Length; i++)
         {
             s_layers = "";
             for ( int j = 0; j < downloaddata.C_amp[i].Length; j++)
             {
-                s_layers += downloaddata.C_amp[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_dir[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
             }
 
-            output.Add(downloaddata.C_time[i].Replace("T", ", ") + ';'
-                        + downloaddata.C_temp[i] + ';'
+            DateTime date = Convert.ToDateTime(downloaddata.C_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+            string s_date = date.ToString("yyyy-MM-ddTHH:mm");
+
+            output.Add(s_date.Replace("T", ", ") + ';'
+                        + downloaddata.C_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + s_layers
+                        + downloaddata.C_volt[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         );
+
+            if (i == 0)
+                start_date = s_date;
+            if (i == downloaddata.C_time.Length - 1)
+                end_date = s_date;
 
         }
 
-        string interval = downloaddata.C_time[0].Split('T')[0] + "_to_" + downloaddata.C_time[downloaddata.C_time.Length - 1].Split('T')[0];
+        string interval = start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
+        //string interval = downloaddata.C_time[0].Split('T')[0] + "_to_" + downloaddata.C_time[downloaddata.C_time.Length - 1].Split('T')[0];
 
         DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
@@ -240,6 +253,9 @@ public partial class SIG_Current : System.Web.UI.Page
         corlabel = new HiddenField();
         corunit = new HiddenField();
 
+        voltname = new HiddenField();
+        voltunit = new HiddenField();
+
         msg_info_0 = new HiddenField();
 
         direction_label = new HiddenField();
@@ -310,6 +326,9 @@ public partial class SIG_Current : System.Web.UI.Page
         corname.Value = Resources.CurrentSIG.param6name.ToString();
         corlabel.Value = Resources.CurrentSIG.param6label.ToString();
         corunit.Value = Resources.CurrentSIG.param6unit.ToString();
+
+        voltname.Value = Resources.CurrentSIG.param7name.ToString();
+        voltunit.Value = Resources.CurrentSIG.param7unit.ToString();
 
         msg_info_0.Value = Resources.CurrentSIG.msg_info_0.ToString();
 
@@ -415,7 +434,6 @@ public partial class SIG_Current : System.Web.UI.Page
         DbRequest += (" FROM SIGNATURE a" + timestampsrequest + " order by a.TIME_REC");
 
 
-        // Get wind from database
         DataSet ds = new DataSet();
         FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(DbRequest, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
@@ -431,6 +449,7 @@ public partial class SIG_Current : System.Web.UI.Page
         List<double> list_roll = new List<double>();
         List<double> list_temp = new List<double>();
         List<double> list_press = new List<double>();
+        List<double> list_volt = new List<double>();
 
 
         double cell_size = double.Parse(WebConfigurationManager.AppSettings["cell_size_SIG"]) / 100;
@@ -450,6 +469,7 @@ public partial class SIG_Current : System.Web.UI.Page
             list_roll.Add(double.Parse(dRow[roll_name].ToString()));
             list_temp.Add(double.Parse(dRow[temp_name].ToString()));
             list_press.Add(double.Parse(dRow[press_name].ToString()));
+            list_volt.Add(double.Parse(dRow[press_name].ToString()));
 
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
@@ -486,7 +506,7 @@ public partial class SIG_Current : System.Web.UI.Page
             list_time,
             cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
             blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
-            list_pitch, list_roll, list_temp, list_press);
+            list_pitch, list_roll, list_temp, list_press, list_volt);
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
         downloaddata = data;
@@ -507,6 +527,7 @@ public class data_SIG_Current
     public double[] C_roll;
     public double[] C_temp;
     public double[] C_press;
+    public double[] C_volt;
 
 
     public double meanTimeInterval = 0.0;
@@ -519,7 +540,8 @@ public class data_SIG_Current
         List<double> l_pitch,
         List<double> l_roll,
         List<double> l_temp,
-        List<double> l_press)
+        List<double> l_press,
+        List<double> l_volt)
     {
 
         C_amp = l_amp.ToArray();
@@ -530,6 +552,7 @@ public class data_SIG_Current
         C_roll = l_roll.ToArray();
         C_temp = l_temp.ToArray();
         C_press = l_press.ToArray();
+        C_volt = l_volt.ToArray();
 
         for (int i = 1; i < C_time.Length; i++)
             meanTimeInterval += (Convert.ToDateTime(C_time[i]) - Convert.ToDateTime(C_time[i - 1])).TotalMilliseconds;

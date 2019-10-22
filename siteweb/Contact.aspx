@@ -4,9 +4,32 @@
     
     
     
-    <h2><%: Title %></h2>
+    <h2>Info</h2>
+
+    <p>
+        Current page:<br />
+        Current direction are defined as 'Going to'.<br />
+        Acquisition period is 10 minutes.<br />
+    </p>
+    
+    <p>
+        Waves page:<br />
+        Waves directions are defined as 'Going from'.<br />
+        Acquisition period is 30 minutes, calculation is performed during 17 minutes.<br />
+    </p>
+    
+    <p>
+        WEATHER page:<br />
+        Wind direction are defined as 'Going from'.<br />
+        Acquisition period is 10 minutes.<br />
+        Maximum wind direction is associated to maximum wind speed.<br />
+        Minimum wind direction is associated to minimum wind speed.<br />
+    </p>
+    
     
     <br />
+
+    <h2><%: Title %></h2>
 
     <p>Ce service est fourni par :</p>
     

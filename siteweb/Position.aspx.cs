@@ -10,11 +10,23 @@ using FirebirdSql.Data.FirebirdClient;
 using System.Data;
 using System.Text;
 using System.IO;
+using System.Globalization;
+
+using GlobalVariables;
 
 public partial class Position : System.Web.UI.Page
 {
 
     public static dataPosition downloaddata;
+
+    static string prj_name = "";
+    static string device_name = "";
+    static string location;
+    static string timeref;
+    static string timestamp;
+    static string direction;
+    static string orientation;
+
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -40,33 +52,84 @@ public partial class Position : System.Web.UI.Page
     // TELECHARGEMENTS
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    private List<string> MakeHeader(string device)
+    {
+
+
+        List<string> output = new List<string>();
+        output.Add(Global.l_prj_name + prj_name);
+        output.Add(Global.l_device_name + device);
+        output.Add(Global.l_location + location);
+        output.Add(Global.l_timeref + timeref);
+        output.Add(Global.l_timestamp + timestamp);
+        output.Add(Global.l_direction + direction);
+        output.Add(Global.l_orientation + orientation);
+
+
+        return output;
+    }
+
+
     protected void DownloadPosition(object Source, EventArgs e)
     {
-        try
+        string start_date = "";
+        string end_date = "";
+
+        device_name = Resources.Position.equip_name;
+        List<string> output = MakeHeader(device_name);
+
+        output.Add("UTC datetime;;lat;long");
+
+        // mise en forme
+        for (int i = 0; i < downloaddata.P_time.Length; i++)
         {
-            string[] output = new string[downloaddata.P_time.Length + 1];
-            output[0] = "date/time;lat;long";
+            DateTime date = Convert.ToDateTime(downloaddata.P_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+            string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
-            // mise en forme
-            for (int i = 0; i < downloaddata.P_time.Length; i++)
-            {
-                output[i + 1] += downloaddata.P_time[i].Replace("T", ", ");
+            output.Add(s_date.Replace("T", ", ") + ';'
+                        + downloaddata.P_lat[i].ToString("0.000000", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.P_lng[i].ToString("0.000000", NumberFormatInfo.InvariantInfo) + ';'
+                        );
 
-                output[i + 1] += ";";
-                output[i + 1] += downloaddata.P_lat[i];
-                output[i + 1] += ";";
-                output[i + 1] += downloaddata.P_lng[i];
+            if (i == 0)
+                start_date = s_date;
+            if (i == downloaddata.P_time.Length - 1)
+                end_date = s_date;
 
-            }
-
-            string interval = downloaddata.P_time[0].Split('T')[0] + "_to_" + downloaddata.P_time[downloaddata.P_time.Length - 1].Split('T')[0];
-
-            // Créer fichier csv et Télécharger
-            DownloadCsv("position_" + interval + ".csv", output);
         }
-        catch (Exception) { }
 
+        string interval = start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
+
+        DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
+    //protected void DownloadPosition(object Source, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        string[] output = new string[downloaddata.P_time.Length + 1];
+    //        output[0] = "date/time;lat;long";
+
+    //        // mise en forme
+    //        for (int i = 0; i < downloaddata.P_time.Length; i++)
+    //        {
+    //            output[i + 1] += downloaddata.P_time[i].Replace("T", ", ");
+
+    //            output[i + 1] += ";";
+    //            output[i + 1] += downloaddata.P_lat[i];
+    //            output[i + 1] += ";";
+    //            output[i + 1] += downloaddata.P_lng[i];
+
+    //        }
+
+    //        string interval = downloaddata.P_time[0].Split('T')[0] + "_to_" + downloaddata.P_time[downloaddata.P_time.Length - 1].Split('T')[0];
+
+    //        // Créer fichier csv et Télécharger
+    //        DownloadCsv("position_" + interval + ".csv", output);
+    //    }
+    //    catch (Exception) { }
+
+    //}
 
     protected void DownloadCsv(string filename, string[] data)
     {
@@ -128,6 +191,15 @@ public partial class Position : System.Web.UI.Page
 
     protected void InitField()
     {
+
+        prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
+        location = WebConfigurationManager.AppSettings["Buoy"] + '-' + WebConfigurationManager.AppSettings["SiteName"];
+        timeref = Resources.Position.TIMEREF;
+        timestamp = Resources.Position.TIMESTAMP;
+        direction = Resources.Position.DIRECTION;
+        orientation = Resources.Position.ORIENTATION;
+
+
         //Retrieving data from master resx files
         start.Value = Resources.Site.Master.start.ToString();
         end.Value = Resources.Site.Master.end.ToString();
