@@ -118,7 +118,14 @@ public partial class WaveAHRS : System.Web.UI.Page
                         + downloaddata.N_waves[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
+            if (i == 0)
+                start_date = s_date;
+            if (i == downloaddata.H_time.Length - 1)
+                end_date = s_date;
+
         }
+
+        
 
         string interval =start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
 
