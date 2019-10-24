@@ -240,7 +240,8 @@
                 else
                     nb_to_display = data.P_time.length;
 
-                for (var i = data.P_time.length - 1; i >= nb_to_display - 1; i--) {    // display only 48 last position
+
+                for (var i = data.P_time.length - 1; i >= data.P_time.length - nb_to_display; i--) {    // display only 48 last position
 
                     P_pos.push(
                         {
@@ -248,6 +249,8 @@
                             y: data.P_lat[i],
                             name: YYYYMMDDtoDDMMYYY(data.P_time[i])
                         });
+
+                    
                 }
             }
             //var data_name = data.map(function(a) {return a.name;});
