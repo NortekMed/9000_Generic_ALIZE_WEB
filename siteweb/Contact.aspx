@@ -31,12 +31,11 @@
 
     <h2><%: Title %></h2>
 
-    <p>Ce service est fourni par :</p>
+    <p>This service is provided by :</p>
     
     <br />
 
-    <img src="<%=ConfigurationManager.AppSettings["Logo_Nortek"] %>" height="130" />
-    <%--<img src="<%=ConfigurationManager.AppSettings["ImgDir"] %>/Nortekmed.jpg" height="130" />--%>
+    <img src="<%=ConfigurationManager.AppSettings["LogoNortek"] %>" height="130" />
 
     <br />
     <br />
