@@ -42,6 +42,8 @@ public partial class SIG_Current : System.Web.UI.Page
     static string press_name = "";
     static string press_unit = "";
     static string press_label = "";
+    static string volt_name = "";
+    static string volt_unit = "";
     static string speed_name = "";
     static string speed_unit = "";
     static string speed_label = "";
@@ -108,7 +110,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
         output.Add("UTC datetime;"  + templabel.Value + '(' + tempunit.Value + ");"
                                     + s_layers
-                                    + voltname.Value + '(' + voltunit + ");"
+                                    + voltname.Value + '(' + voltunit.Value + ");"
                                     );
 
 
@@ -359,6 +361,9 @@ public partial class SIG_Current : System.Web.UI.Page
         press_unit = pressunit.Value;
         press_label = presslabel.Value;
 
+        volt_name = voltname.Value;
+        volt_unit = voltunit.Value;
+
         speed_name = speedname.Value;
         speed_unit = speedunit.Value;
         speed_label = speedlabel.Value;
@@ -416,7 +421,7 @@ public partial class SIG_Current : System.Web.UI.Page
         // AWAC / AQUADOPP
 
         // Generate DB request
-        string DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + roll_name + ", a." + temp_name + ", a." + press_name;
+        string DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + roll_name + ", a." + temp_name + ", a." + press_name + ", a." + volt_name;
 
         for (int d = 0; d < int.Parse(WebConfigurationManager.AppSettings["nb_beam_SIG"]); d++ )
         {
@@ -469,7 +474,7 @@ public partial class SIG_Current : System.Web.UI.Page
             list_roll.Add(double.Parse(dRow[roll_name].ToString()));
             list_temp.Add(double.Parse(dRow[temp_name].ToString()));
             list_press.Add(double.Parse(dRow[press_name].ToString()));
-            list_volt.Add(double.Parse(dRow[press_name].ToString()));
+            list_volt.Add(double.Parse(dRow[volt_name].ToString()));
 
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
