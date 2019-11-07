@@ -137,6 +137,23 @@ public partial class Meteo : System.Web.UI.Page
         return output;
     }
 
+    private List<string> MakeHeader2(string device)
+    {
+
+
+        List<string> output = new List<string>();
+        output.Add(Global.l_prj_name + prj_name);
+        output.Add(Global.l_device_name + device);
+        output.Add(Global.l_location + location);
+        output.Add(Global.l_timeref + timeref);
+        output.Add(Global.l_timestamp + timestamp);
+        output.Add(Global.l_direction + "none");
+        output.Add(Global.l_orientation + orientation);
+
+
+        return output;
+    }
+
 
     protected void DownloadWind(object Source, EventArgs e)
     {
@@ -190,7 +207,7 @@ public partial class Meteo : System.Web.UI.Page
         string end_date = "";
 
         device_name = Resources.meteo._0_equip_name;
-        List<string> output = MakeHeader(device_name);
+        List<string> output = MakeHeader2(device_name);
 
         output.Add("UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
                                    + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';'

@@ -106,11 +106,14 @@ public partial class SIG_Current : System.Web.UI.Page
             string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
             s_layers += "C_Spd" + (j+1).ToString() + " (" + speedunit.Value + ")(-" + immersion + "m);";
             s_layers += "C_Dir" + (j+1).ToString() + " (" + direction_unit.Value + ")(-" + immersion + "m);";
+            s_layers += "C_Amp" + (j+1).ToString() + " ( Counts)(-" + immersion + "m);";
         }
 
         output.Add("UTC datetime;"  + templabel.Value + '(' + tempunit.Value + ");"
                                     + s_layers
                                     + voltname.Value + '(' + voltunit.Value + ");"
+                                    + pitch_name + '(' + pitch_unit + ");"
+                                    + roll_name + '(' + roll_unit + ");"
                                     );
 
 
@@ -124,6 +127,7 @@ public partial class SIG_Current : System.Web.UI.Page
             {
                 s_layers += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_dir[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_amp[i][j].ToString("0", NumberFormatInfo.InvariantInfo) + ';';
             }
 
             DateTime date = Convert.ToDateTime(downloaddata.C_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
@@ -133,6 +137,8 @@ public partial class SIG_Current : System.Web.UI.Page
                         + downloaddata.C_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + s_layers
                         + downloaddata.C_volt[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.C_pitch[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.C_roll[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)
@@ -432,7 +438,10 @@ public partial class SIG_Current : System.Web.UI.Page
                 string sufix = string.Format("{0}", (c + 1));
 
                 DbRequest += (", a." + speed_name + sufix + '_' + nbeam);
+                if ( nbeam == "1" )
+                    DbRequest += (", a." + "Amp" + sufix + '_' + nbeam);
             }
+            
         }
 
 
@@ -448,6 +457,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
         List<double[]> list_amplitude = new List<double[]>();
         List<double[]> list_direction = new List<double[]>();
+        List<double[]> list_snr = new List<double[]>();
         List<string> list_time = new List<string>();
 
         List<double> list_pitch = new List<double>();
@@ -468,7 +478,8 @@ public partial class SIG_Current : System.Web.UI.Page
         {
             double[] amp = new double[int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"])];
             double[] dir = new double[int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"])];
-            double dir_cor = 0;
+            double[] snr = new double[int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"])];
+            //double dir_cor = 0;
 
             list_pitch.Add(double.Parse(dRow[pitch_name].ToString()));
             list_roll.Add(double.Parse(dRow[roll_name].ToString()));
@@ -494,6 +505,7 @@ public partial class SIG_Current : System.Web.UI.Page
                 dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360),1);
                 if (dir[cell] < 0) dir[cell] += 360;
 
+                snr[cell] = double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
 
                 if (amp[cell] > 20)
                     amp[cell] = 0.0;
@@ -501,6 +513,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
             list_amplitude.Add(amp);
             list_direction.Add(dir);
+            list_snr.Add(dir);
         }
 
 
@@ -508,6 +521,7 @@ public partial class SIG_Current : System.Web.UI.Page
         data_SIG_Current data = new data_SIG_Current();
         data.set(list_amplitude,
             list_direction,
+            list_snr,
             list_time,
             cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
             blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
@@ -525,6 +539,7 @@ public class data_SIG_Current
 {
     public double[][] C_amp;
     public double[][] C_dir;
+    public double[][] C_snr;
     public string[] C_time;
     public double C_cellsize;
     public double C_blancking;
@@ -539,6 +554,7 @@ public class data_SIG_Current
 
     public void set(List<double[]> l_amp,
         List<double[]> l_dir,
+        List<double[]> l_snr,
         List<string> l_time,
         double cellsize,
         double blancking,
@@ -551,6 +567,7 @@ public class data_SIG_Current
 
         C_amp = l_amp.ToArray();
         C_dir = l_dir.ToArray();
+        C_snr = l_snr.ToArray();
         C_time = l_time.ToArray();
 
         C_pitch = l_pitch.ToArray();

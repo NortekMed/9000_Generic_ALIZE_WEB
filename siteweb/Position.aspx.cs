@@ -63,7 +63,7 @@ public partial class Position : System.Web.UI.Page
         output.Add(Global.l_location + location);
         output.Add(Global.l_timeref + timeref);
         output.Add(Global.l_timestamp + timestamp);
-        output.Add(Global.l_direction + direction);
+        output.Add(Global.l_direction + "none");
         output.Add(Global.l_orientation + orientation);
 
 
@@ -79,7 +79,7 @@ public partial class Position : System.Web.UI.Page
         device_name = Resources.Position.equip_name;
         List<string> output = MakeHeader(device_name);
 
-        output.Add("UTC datetime;;lat;long");
+        output.Add("UTC datetime;latitude;longitude;quality;nbsat;");
 
         // mise en forme
         for (int i = 0; i < downloaddata.P_time.Length; i++)
@@ -90,6 +90,8 @@ public partial class Position : System.Web.UI.Page
             output.Add(s_date.Replace("T", ", ") + ';'
                         + downloaddata.P_lat[i].ToString("0.000000", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.P_lng[i].ToString("0.000000", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.P_qa[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.P_nb[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)
@@ -263,7 +265,7 @@ public partial class Position : System.Web.UI.Page
 
         // Get wind from database
         DataSet ds = new DataSet();
-        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC,a.LAT ,a.LNG FROM GPS a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC,a.LAT ,a.LNG, a.QUALITY, a.NBSAT FROM GPS a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
         DataTable myDataTable = ds.Tables[0];
 
@@ -271,6 +273,8 @@ public partial class Position : System.Web.UI.Page
 
         List<double> list_lat = new List<double>();
         List<double> list_lng = new List<double>();
+        List<double> list_qa = new List<double>();
+        List<double> list_nb = new List<double>();
         List<string> list_time = new List<string>();
 
         foreach (DataRow dRow in myDataTable.Rows)
@@ -283,6 +287,8 @@ public partial class Position : System.Web.UI.Page
             list_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
             list_lat.Add(double.Parse(dRow["LAT"].ToString()));
             list_lng.Add(double.Parse(dRow["LNG"].ToString()));
+            list_qa.Add(double.Parse(dRow["QUALITY"].ToString()));
+            list_nb.Add(double.Parse(dRow["NBSAT"].ToString()));
         }
 
 
@@ -331,6 +337,8 @@ public partial class Position : System.Web.UI.Page
         data.set(list_lat,
             list_lng,
             list_time,
+            list_qa,
+            list_nb,
             distance_nord,
             distance_est);
 
@@ -346,6 +354,8 @@ public class dataPosition
 {
     public double[] P_lat;
     public double[] P_lng;
+    public double[] P_qa;
+    public double[] P_nb;
     public string[] P_time;
     public double P_dist_north_south;
     public double P_dist_west_est;
@@ -353,12 +363,16 @@ public class dataPosition
     public void set(List<double> l_lat,
         List<double> l_lng,
         List<string> l_time,
+        List<double> l_qa,
+        List<double> l_nb,
         double north_south,
         double west_est)
     {
 
         P_lat = l_lat.ToArray();
         P_lng = l_lng.ToArray();
+        P_qa = l_qa.ToArray();
+        P_nb = l_nb.ToArray();
         P_time = l_time.ToArray();
 
         P_dist_north_south = north_south;
