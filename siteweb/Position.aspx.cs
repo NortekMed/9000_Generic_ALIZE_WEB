@@ -84,6 +84,7 @@ public partial class Position : System.Web.UI.Page
         // mise en forme
         for (int i = 0; i < downloaddata.P_time.Length; i++)
         {
+            // Local time to UTC
             DateTime date = Convert.ToDateTime(downloaddata.P_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 

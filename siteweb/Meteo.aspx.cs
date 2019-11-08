@@ -219,7 +219,7 @@ public partial class Meteo : System.Web.UI.Page
             DateTime date = Convert.ToDateTime(downloaddata.wxt_str_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
-            output.Add(downloaddata.wxt_wind_str_time[i].Replace("T", ", ") + ';'
+            output.Add(downloaddata.wxt_str_time[i].Replace("T", ", ") + ';'
                         + downloaddata.wxt_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_press[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         );

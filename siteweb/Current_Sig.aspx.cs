@@ -101,7 +101,8 @@ public partial class SIG_Current : System.Web.UI.Page
         List<string> output = MakeHeader(device_name);
 
         string s_layers = "";
-        for (int j = 0; j < downloaddata.C_amp[0].Length; j++)
+        int nb_c = int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]);
+        for (int j = 0; j < nb_c; j++)
         {
             string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
             s_layers += "C_Spd" + (j+1).ToString() + " (" + speedunit.Value + ")(-" + immersion + "m);";
