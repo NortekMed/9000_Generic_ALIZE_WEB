@@ -215,8 +215,8 @@
     </script>
 
     <script type="text/javascript">
-        var label = document.getElementById('<%=templabel.ClientID%>').value  + ' (' + "<%=ConfigurationManager.AppSettings["Looking"] %>" +')';
-
+        var label = "water " + document.getElementById('<%=templabel.ClientID%>').value.toLowerCase() + ' (' + "<%=ConfigurationManager.AppSettings["Looking"] %>" + ')';
+        
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
         document.write('<div class="panel-body">');

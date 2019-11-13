@@ -332,6 +332,7 @@ public partial class Meteo : System.Web.UI.Page
         wind_speed_avg_label = new HiddenField();
         wind_dir_avg_label = new HiddenField();
         wind_speed_max_label = new HiddenField();
+        wind_speed_max_label_alias = new HiddenField();
         wind_dir_max_label = new HiddenField();
 
         wind_speed_min_label    = new HiddenField();
@@ -446,6 +447,7 @@ public partial class Meteo : System.Web.UI.Page
         wind_speed_avg_label.Value = Resources.meteo._2_param0label.ToString();
         wind_dir_avg_label.Value = Resources.meteo._2_param1label.ToString();
         wind_speed_max_label.Value = Resources.meteo._2_param2label.ToString();
+        wind_speed_max_label_alias.Value = Resources.meteo._2_param2label_alias.ToString();
         wind_dir_max_label.Value = Resources.meteo._2_param3label.ToString();
         wind_speed_min_label.Value = Resources.meteo._2_param5label.ToString();
         wind_dir_min_label.Value = Resources.meteo._2_param4label.ToString();

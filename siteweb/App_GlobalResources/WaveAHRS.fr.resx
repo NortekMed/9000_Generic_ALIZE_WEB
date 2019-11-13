@@ -195,4 +195,43 @@
   <data name="DEVICE_0" xml:space="preserve">
     <value>Vague</value>
   </data>
+  <data name="d_avg_label_alias" xml:space="preserve">
+    <value>Mean_Wave_Dir</value>
+  </data>
+  <data name="d_peak_label_alias" xml:space="preserve">
+    <value>Peak_Wave_Dir</value>
+  </data>
+  <data name="d_spread_label_alias" xml:space="preserve">
+    <value>Wave_Dir_SD</value>
+  </data>
+  <data name="h_3_label_alias" xml:space="preserve">
+    <value>H1/3</value>
+  </data>
+  <data name="h_max_label_alias" xml:space="preserve">
+    <value>Hmax</value>
+  </data>
+  <data name="h_sig_label_alias" xml:space="preserve">
+    <value>Hm0</value>
+  </data>
+  <data name="t_3_label_alias" xml:space="preserve">
+    <value>TH1/3</value>
+  </data>
+  <data name="t_m01_label_alias" xml:space="preserve">
+    <value>T01</value>
+  </data>
+  <data name="t_m02_label_alias" xml:space="preserve">
+    <value>T02</value>
+  </data>
+  <data name="t_max_label_alias" xml:space="preserve">
+    <value>Thmax</value>
+  </data>
+  <data name="t_peak_label_alias" xml:space="preserve">
+    <value>Tp</value>
+  </data>
+  <data name="t_z_label_alias" xml:space="preserve">
+    <value>Tz</value>
+  </data>
+  <data name="n_waves_alias" xml:space="preserve">
+    <value>numwaves</value>
+  </data>
 </root>

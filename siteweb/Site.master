@@ -131,7 +131,7 @@
                             document.write('<li><a runat="server" href="~/position">'); document.write(l_pos); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/Contact">'); document.write(l_contact); document.write("</a></li>");
                             //http://192.168.1.204
-                            document.write('<li><a runat="server" href="'); document.write(link);document.write('" target="_blank">'); document.write(' "LINK" '); document.write("</a></li>");
+                            document.write('<li><a runat="server" href="'); document.write(link);document.write('" target="_blank">'); document.write('<%=ConfigurationManager.AppSettings["LinkLabel"] %>'); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="http://192.168.1.204/SNA-SOUTHWEST" target="_blank">'); document.write(' "LINK" '); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="http://nortekmed.dyndns.org/SNA-SOUTHWEST">'); document.write(' "LINK" '); document.write("</a></li>");
                         </script>

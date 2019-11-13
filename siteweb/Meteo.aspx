@@ -84,6 +84,7 @@
     <asp:HiddenField ID = "wind_speed_avg_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_dir_avg_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_max_label"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "wind_speed_max_label_alias"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_speed_min_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_dir_max_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "wind_dir_min_label"  ClientIdMode="Static" Runat="Server" />
@@ -604,7 +605,7 @@
         var par7_name = document.getElementById('<%=wind_dir_avg.ClientID%>').value;
         var par7_unit = " " + document.getElementById('<%=wind_dir_avg_unit.ClientID%>').value;
 
-        var par8_label = document.getElementById('<%=wind_speed_max_label.ClientID%>').value;
+        var par8_label = document.getElementById('<%=wind_speed_max_label_alias.ClientID%>').value;
         var par8_name = document.getElementById('<%=wind_speed_max.ClientID%>').value;
         var par8_unit = " " + document.getElementById('<%=wind_speed_max_unit.ClientID%>').value;
 

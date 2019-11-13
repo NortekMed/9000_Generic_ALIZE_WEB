@@ -18,6 +18,7 @@ namespace Nortekmed2015
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login")
+                //LoginPath = new PathString("/Register/Login")
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 

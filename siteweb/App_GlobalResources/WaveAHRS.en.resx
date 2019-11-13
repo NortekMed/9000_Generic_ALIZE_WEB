@@ -121,16 +121,16 @@
     <value>FROM</value>
   </data>
   <data name="d_avg_label" xml:space="preserve">
-    <value>Mean_Wave_Dir</value>
+    <value>Mean wave direction</value>
   </data>
   <data name="d_label" xml:space="preserve">
     <value>Waves direction</value>
   </data>
   <data name="d_peak_label" xml:space="preserve">
-    <value>Peak_Wave_Dir</value>
+    <value>Peak wave direction</value>
   </data>
   <data name="d_spread_label" xml:space="preserve">
-    <value>Wave_Dir_SD</value>
+    <value>Spread direction</value>
   </data>
   <data name="d_unit" xml:space="preserve">
     <value>°</value>
@@ -139,22 +139,22 @@
     <value>WAVES</value>
   </data>
   <data name="h_3_label" xml:space="preserve">
-    <value>H1/3</value>
+    <value>Mean of 1/3 largest waves height</value>
   </data>
   <data name="h_label" xml:space="preserve">
     <value>Waves height</value>
   </data>
   <data name="h_max_label" xml:space="preserve">
-    <value>Hmax</value>
+    <value>Largest waves height</value>
   </data>
   <data name="h_sig_label" xml:space="preserve">
-    <value>Hm0</value>
+    <value>Significant wave height</value>
   </data>
   <data name="h_unit" xml:space="preserve">
     <value>m</value>
   </data>
   <data name="n_waves" xml:space="preserve">
-    <value>numwaves</value>
+    <value>Number of waves</value>
   </data>
   <data name="ORIENTATION" xml:space="preserve">
     <value>Magnetic</value>
@@ -166,7 +166,7 @@
     <value>UTC time, acquisition start</value>
   </data>
   <data name="t_3_label" xml:space="preserve">
-    <value>TH1/3</value>
+    <value>Period for 1/3 largest waves</value>
   </data>
   <data name="t_avg_label" xml:space="preserve">
     <value>Average period</value>
@@ -178,21 +178,60 @@
     <value>T01</value>
   </data>
   <data name="t_m02_label" xml:space="preserve">
-    <value>T02</value>
+    <value>Mean period (T02)</value>
   </data>
   <data name="t_max_label" xml:space="preserve">
-    <value>Thmax</value>
+    <value>Period for the largest wave</value>
   </data>
   <data name="t_peak_label" xml:space="preserve">
-    <value>Tp</value>
+    <value>Period peak</value>
   </data>
   <data name="t_unit" xml:space="preserve">
     <value>s</value>
   </data>
   <data name="t_z_label" xml:space="preserve">
-    <value>Tz</value>
+    <value>Mean period (Tz)</value>
   </data>
   <data name="DEVICE_0" xml:space="preserve">
     <value>Wave</value>
+  </data>
+  <data name="d_avg_label_alias" xml:space="preserve">
+    <value>Mean_Wave_Dir</value>
+  </data>
+  <data name="d_peak_label_alias" xml:space="preserve">
+    <value>Peak_Wave_Dir</value>
+  </data>
+  <data name="d_spread_label_alias" xml:space="preserve">
+    <value>Wave_Dir_SD</value>
+  </data>
+  <data name="h_3_label_alias" xml:space="preserve">
+    <value>H1/3</value>
+  </data>
+  <data name="h_max_label_alias" xml:space="preserve">
+    <value>Hmax</value>
+  </data>
+  <data name="h_sig_label_alias" xml:space="preserve">
+    <value>Hm0</value>
+  </data>
+  <data name="n_waves_alias" xml:space="preserve">
+    <value>numwaves</value>
+  </data>
+  <data name="t_3_label_alias" xml:space="preserve">
+    <value>TH1/3</value>
+  </data>
+  <data name="t_m01_label_alias" xml:space="preserve">
+    <value>T01</value>
+  </data>
+  <data name="t_m02_label_alias" xml:space="preserve">
+    <value>T02</value>
+  </data>
+  <data name="t_max_label_alias" xml:space="preserve">
+    <value>Thmax</value>
+  </data>
+  <data name="t_peak_label_alias" xml:space="preserve">
+    <value>Tp</value>
+  </data>
+  <data name="t_z_label_alias" xml:space="preserve">
+    <value>Tz</value>
   </data>
 </root>

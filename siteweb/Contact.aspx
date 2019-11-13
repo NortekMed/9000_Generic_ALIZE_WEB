@@ -20,6 +20,8 @@
     
     <p>
         WEATHER page:<br />
+        Sensor is at 3.5m.
+        Gusts are averaged over 3s.
         Wind direction are defined as 'Going from'.<br />
         Acquisition period is 10 minutes.<br />
         Maximum wind direction is associated to maximum wind speed.<br />
@@ -51,5 +53,10 @@
 
     <address>
         <strong>Info:</strong> <a href="mailto:info@NortekMed.com">info@NortekMed.com</a>
+        <br />
+
+    <strong>Project Manager PBG : Maud Lamaze +33 6 16 80 38 97 </strong><br />
+    <strong>Marine safety PBG : Hervé Monin +33 6 14 11 83 15</strong><br />
+    <strong>Project Manager NortekMed : André DOLLE + 33 6 37 48 21 77 </strong><br />
     </address>
 </asp:Content>

@@ -58,11 +58,44 @@ public partial class Account_Login : Page
                     myConnection.Close();
 
 
-                    e.Authenticated = true;
-                    Session["user"] = true;
-                    FormsAuthentication.SetAuthCookie(Login1.UserName, false);
+                    ////Random rnd = new Random();
+                    ////int session_num = rnd.Next(0, 5);
 
+                    //e.Authenticated = true;
+                    //Session["user"] = true;
+                    ////FormsAuthentication.SetAuthCookie(Login1.UserName+session_num.ToString(), false);
+                    //FormsAuthentication.SetAuthCookie(Login1.UserName, false);
+
+                    //Response.Redirect("~/Default");
+
+                    ///////////////////////////////////////////////////////////////////////////////////////
+                    ///
+
+                    var oCookie = FormsAuthentication.GetAuthCookie(Login1.UserName, false);
+                    var ticket = FormsAuthentication.Decrypt(oCookie.Value);
+
+                    FormsAuthenticationTicket oTicket = new FormsAuthenticationTicket(ticket.Version, Login1.UserName, DateTime.Now, DateTime.Now.AddMinutes(60), true, "");
+                    string cookieStr = FormsAuthentication.Encrypt(oTicket);
+
+                    oCookie.Value = cookieStr;
+                    Response.Cookies.Add(oCookie);
+                    //Response.Redirect("http://localhost/secondApplication.aspx");
                     Response.Redirect("~/Default");
+
+                    //////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
                 }
                 else
                 {

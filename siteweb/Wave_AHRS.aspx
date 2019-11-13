@@ -43,6 +43,23 @@
     <asp:HiddenField ID = "t_label"  value="<%$ Resources:WaveAHRS, t_label %>" Runat="Server" />
     <asp:HiddenField ID = "d_label"  value="<%$ Resources:WaveAHRS, d_label %>" Runat="Server" />
 
+
+    <asp:HiddenField ID = "h_sig_label_alias"  value="<%$ Resources:WaveAHRS, h_sig_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "h_3_label_alias"  value="<%$ Resources:WaveAHRS, h_3_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "h_max_label_alias"  value="<%$ Resources:WaveAHRS, h_max_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_peak_label_alias"  value="<%$ Resources:WaveAHRS, t_peak_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_z_label_alias"  value="<%$ Resources:WaveAHRS, t_z_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_m01_label_alias"  value="<%$ Resources:WaveAHRS, t_m01_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_max_label_alias"  value="<%$ Resources:WaveAHRS, t_max_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_m02_label_alias"  value="<%$ Resources:WaveAHRS, t_m02_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_3_label_alias"  value="<%$ Resources:WaveAHRS, t_3_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_avg_label_alias"  value="<%$ Resources:WaveAHRS, d_avg_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_peak_label_alias"  value="<%$ Resources:WaveAHRS, d_peak_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_spread_label_alias"  value="<%$ Resources:WaveAHRS, d_spread_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "n_waves_alias"  value="<%$ Resources:WaveAHRS, n_waves_alias %>" Runat="Server" />
+
+
+
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ID%>').value;

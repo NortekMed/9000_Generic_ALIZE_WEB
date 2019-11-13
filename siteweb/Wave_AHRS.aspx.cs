@@ -78,20 +78,20 @@ public partial class WaveAHRS : System.Web.UI.Page
         device_name = Resources.WaveAHRS.DEVICE_0;
         List<string> output = MakeHeader(device_name);
 
-        output.Add("UTC datetime;"  + h_sig_label.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_3_label.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_max_label.Value + '(' + h_unit.Value + ')' + ';'
-                                    + t_peak_label.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_z_label.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_m01_label.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_max_label.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_m02_label.Value + '(' + t_unit.Value + ')' + ';'
+        output.Add("UTC datetime;"  + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                                    + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                                    + h_max_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                                    + t_peak_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_z_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_m01_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_m02_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_3_label.Value + '(' + t_unit.Value + ')' + ';'
-                                    + d_avg_label.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_peak_label.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_spread_label.Value + '(' + d_unit.Value + ')' + ';'
-                                    + n_waves.Value + ';'
+                                    + t_3_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + d_avg_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                    + d_peak_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                    + d_spread_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                    + n_waves_alias.Value + ';'
 
                                     
                                     );
@@ -219,6 +219,20 @@ public partial class WaveAHRS : System.Web.UI.Page
         t_label = new HiddenField();
         d_label = new HiddenField();
 
+        h_sig_label_alias = new HiddenField();
+        h_3_label_alias = new HiddenField();
+        h_max_label_alias = new HiddenField();
+        t_peak_label_alias = new HiddenField();
+        t_z_label_alias = new HiddenField();
+        t_m01_label_alias = new HiddenField();
+        t_max_label_alias = new HiddenField();
+        t_m02_label_alias = new HiddenField();
+        t_3_label_alias = new HiddenField();
+        d_avg_label_alias = new HiddenField();
+        d_peak_label_alias = new HiddenField();
+        d_spread_label_alias = new HiddenField();
+        n_waves_alias = new HiddenField();
+
 
 
 
@@ -275,6 +289,21 @@ public partial class WaveAHRS : System.Web.UI.Page
         t_unit.Value = Resources.WaveAHRS.t_unit.ToString();
         t_label.Value = Resources.WaveAHRS.t_label.ToString();
         d_label.Value = Resources.WaveAHRS.d_label.ToString();
+
+
+        h_sig_label_alias.Value = Resources.WaveAHRS.h_sig_label_alias.ToString();
+        h_3_label_alias.Value = Resources.WaveAHRS.h_3_label_alias.ToString();
+        h_max_label_alias.Value = Resources.WaveAHRS.h_max_label_alias.ToString();
+        t_peak_label_alias.Value = Resources.WaveAHRS.t_peak_label_alias.ToString();
+        t_z_label_alias.Value = Resources.WaveAHRS.t_z_label_alias.ToString();
+        t_m01_label_alias.Value = Resources.WaveAHRS.t_m01_label_alias.ToString();
+        t_max_label_alias.Value = Resources.WaveAHRS.t_max_label_alias.ToString();
+        t_m02_label_alias.Value = Resources.WaveAHRS.t_m02_label_alias.ToString();
+        t_3_label_alias.Value = Resources.WaveAHRS.t_3_label_alias.ToString();
+        d_avg_label_alias.Value = Resources.WaveAHRS.d_avg_label_alias.ToString();
+        d_peak_label_alias.Value = Resources.WaveAHRS.d_peak_label_alias.ToString();
+        d_spread_label_alias.Value = Resources.WaveAHRS.d_spread_label_alias.ToString();
+        n_waves_alias.Value = Resources.WaveAHRS.n_waves_alias.ToString();
 
 
 
