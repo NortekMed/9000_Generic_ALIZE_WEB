@@ -92,6 +92,9 @@
 	<asp:HiddenField ID = "wave_param5"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_t_unit"  value="<%$ Resources:WaveAHRS, t_unit %>" Runat="Server" />
 
+
+    <asp:HiddenField ID = "b_knots_hd" ClientIdMode="Static" Runat="Server"/>
+
     <script>
          var time = new Date().getTime();
          //$(document.body).bind("mousemove keypress", function(e) {
@@ -118,8 +121,12 @@
         var l_hour = document.getElementById('<%=hour.ClientID%>').value;
 
         document.write('<h2>'); document.write(l_maintitle); document.write('</h2><p>');
-        document.write(l_hour); document.write(' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)')
+        document.write(l_hour); document.write(' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)');
+        document.write('&nbsp&nbsp&nbsp');
+        document.write('<asp:Button runat="server" ID="SwitchKnotsButton" Text="m/s <-> nd" class="btn btn-default" OnClick="SwitchKnots" />');
         document.write('</p><br>');
+        
+        
     </script>
 
     <div class="row">
@@ -176,8 +183,21 @@
             document.write('<table class="table"><tbody>');
 
             //document.write('<tr><td>'); document.write(l_desc); document.write('</td></tr>');
-            document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>m/s</td>');
-            document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>m/s</td>');
+            //var b_knot = true;
+            var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
+            if (b_knot == "False") {
+                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>m/s</td>');
+            }
+            else {
+                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>nd</td>');
+            }
+
+            if (b_knot == "False") {
+                document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>m/s</td>');
+            }
+            else {
+                    document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>nd</td>');
+            }
             document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
             document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
             document.write('<tr><td>'); document.write(l_param4); document.write('</td><td><label id="press">X</label></td><td>hPa</td>');
@@ -388,9 +408,11 @@
             });
 
             var courant_label = document.getElementById('<%=sig_param4.ClientID%>').value;
-            var courant_unit = document.getElementById('<%=sig_param4unit.ClientID%>').value;
+            var courant_unit  = document.getElementById('<%=sig_param4unit.ClientID%>').value;
 
-
+            var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
+            if (b_knot == "True")
+                courant_unit = "nd";
 
             $('#SpeedSIGcontainer').highcharts({
                 chart: {
@@ -431,7 +453,8 @@
                 },
                 xAxis: {
                     title: {
-                        text: 'Speed (m/s)' //courant_label.ToString() + ' ' + courant_unit.ToString()
+                        text: 'Speed (' + courant_unit + ')' //courant_label.ToString() + ' ' + courant_unit.ToString()
+                        //text: 'Speed (m/s)' //courant_label.ToString() + ' ' + courant_unit.ToString()
                     },
                     labels: {
                         format: '{value}'
@@ -456,7 +479,8 @@
                     enabled: false,
                 },
                 series: [{
-                    name: 'Speed (m/s)', //Vitesse (m/s)',
+                    name: 'Speed (' + courant_unit +')', //Vitesse (m/s)',
+                    //name: 'Speed (m/s)', //Vitesse (m/s)',
                     data: [],
                     animation: true,
                 }]
@@ -753,10 +777,14 @@
             if (last >= 0) {
 
                 //YYYYMMDDtoDDMMYYY(data.str_time2[last]);
+                var convert_nd = 1;
+                var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
+                if (b_knot == "True")
+                    convert_nd = 1.943844;
 
                 $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.wxt_wind_str_time[last]))
-                $('#wsmoy').text(data.wxt_wind_speed_avg[last])
-                $('#wsmax').text(data.wxt_wind_speed_max[last])
+                $('#wsmoy').text(data.wxt_wind_speed_avg[last] / convert_nd)
+                $('#wsmax').text(data.wxt_wind_speed_max[last] / convert_nd)
                 $('#wdmoy').text(data.wxt_wind_dir_avg[last])
 
                 last = data.wxt_str_time.length - 1;
@@ -851,13 +879,18 @@
             $('#Current_Date').text(YYYYMMDDtoDDMMYYY(data.C_time[last]));
 
             if (last >= 0) {
-                
+
+                var convert_nd = 1;
+                var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
+                if (b_knot == "True")
+                    convert_nd = 1.943844;
+
                 // on coupe a la bonne hauteur
                // var NB_couche_utile = Math.round(data.C_press[last]) - 3; 
                 var NB_couche_utile = <%=ConfigurationManager.AppSettings["nb_couche_SIG"] %>;
                 //for (var j = 0; j < data.C_amp[0].length; j++) {
                 for (var j = 0; j < NB_couche_utile; j++) {
-                    Amplitude.push([data.C_amp[last][j], (j + 1) * data.C_cellsize + data.C_blancking ]);
+                    Amplitude.push([data.C_amp[last][j] / convert_nd, (j + 1) * data.C_cellsize + data.C_blancking]);
                     Direction.push([data.C_dir[last][j], (j + 1) * data.C_cellsize + data.C_blancking]);
                 }
 
