@@ -457,7 +457,7 @@
                 {
                     min: 1000,
                     opposite: true,
-                    max: 1030,
+                    max: 1040,
                     //tickInterval: 45,
                     title: {
                         text: par1_label.toString(),
@@ -768,7 +768,7 @@
                 {
                     min: 1000,
                     opposite: true,
-                    max: 1030,
+                    max: 1040,
                     //tickInterval: 45,
                     title: {
                         text: par11_label.toString(),

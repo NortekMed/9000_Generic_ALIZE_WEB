@@ -783,8 +783,8 @@
                     convert_nd = 1.943844;
 
                 $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.wxt_wind_str_time[last]))
-                $('#wsmoy').text(data.wxt_wind_speed_avg[last] / convert_nd)
-                $('#wsmax').text(data.wxt_wind_speed_max[last] / convert_nd)
+                $('#wsmoy').text(data.wxt_wind_speed_avg[last] * convert_nd)
+                $('#wsmax').text(data.wxt_wind_speed_max[last] * convert_nd)
                 $('#wdmoy').text(data.wxt_wind_dir_avg[last])
 
                 last = data.wxt_str_time.length - 1;
