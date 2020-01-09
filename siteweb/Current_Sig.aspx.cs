@@ -128,7 +128,7 @@ public partial class SIG_Current : System.Web.UI.Page
             {
                 s_layers += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_dir[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
-                s_layers += downloaddata.C_amp[i][j].ToString("0", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_snr[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
             }
 
             DateTime date = Convert.ToDateTime(downloaddata.C_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
@@ -514,7 +514,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
             list_amplitude.Add(amp);
             list_direction.Add(dir);
-            list_snr.Add(dir);
+            list_snr.Add(snr);
         }
 
 
