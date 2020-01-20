@@ -32,7 +32,7 @@
         <asp:HiddenField ID = "position" Value="<%$ Resources:Site.master, position %>" Runat="Server" />
         <asp:HiddenField ID = "contact" Value="<%$ Resources:Site.master, contact %>" Runat="Server" />
         
-        <asp:HiddenField ID = "signin" Value="<%$ Resources:Site.master, signin %>" Runat="Server" />
+        <%--<asp:HiddenField ID = "signin" Value="<%$ Resources:Site.master, signin %>" Runat="Server" />--%>
         <asp:HiddenField ID = "signout" Value="<%$ Resources:Site.master, signout %>" Runat="Server" />
 
         <%--<asp:HiddenField ID = "hour"  value="<%$ Resources:Site.master, hour %>" Runat="Server" />--%>
@@ -118,7 +118,7 @@
                             var link = '<%=ConfigurationManager.AppSettings["Link"] %>';
                             
 
-                            document.write('<li><a runat="server" href="">'); document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write("</a></li>");
+                            <%--document.write('<li><a runat="server" href="">'); document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write("</a></li>");--%>
                             
                             document.write('<li><a runat="server" href="~/Realtime">'); document.write(l_rt_measure); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/Current_Sig">'); document.write(l_sig); document.write("</a></li>");
@@ -140,15 +140,15 @@
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
-                                <script type="text/javascript">
+                                <%--<script type="text/javascript">
                                     var l_signin = document.getElementById('<%=signin.ClientID%>').value;
                                     document.write('<li><a runat="server" href="~/Login">'); document.write(l_rt_measure); document.write("</a ></li>");
-                                </script>
+                                </script>--%>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a runat="server" href="#"><%: Context.User.Identity.GetUserName()  %></a></li>
+                                <%--<li><a runat="server" href="#"><%: Context.User.Identity.GetUserName()  %></a></li>--%>
 
                                 <li>
                                     <script type="text/javascript">

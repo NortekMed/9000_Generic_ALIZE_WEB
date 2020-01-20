@@ -157,7 +157,7 @@
         var label = document.getElementById('<%=_2_equipname_alias.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        document.write('<div class="panel-heading"><b>' + label + '</b></div>');document.write('  wind at 3.5m above sea level');
         document.write('<div class="panel-body">');
         document.write('<div id="param2container" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -457,7 +457,7 @@
                 {
                     min: 1000,
                     opposite: true,
-                    max: 1040,
+                    max: 1060,
                     //tickInterval: 45,
                     title: {
                         text: par1_label.toString(),
@@ -768,7 +768,7 @@
                 {
                     min: 1000,
                     opposite: true,
-                    max: 1040,
+                    max: 1060,
                     //tickInterval: 45,
                     title: {
                         text: par11_label.toString(),

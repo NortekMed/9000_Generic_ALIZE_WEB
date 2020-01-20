@@ -7,6 +7,11 @@
     <h2>Info</h2>
 
     <p>
+        Southwest buoy is buoy 1a.
+        East buoy is buoy 2c.
+    </p>
+
+    <p>
         Current page:<br />
         Current direction are defined as 'Going to'.<br />
         Acquisition period is 10 minutes.<br />
@@ -16,6 +21,7 @@
         Waves page:<br />
         Waves directions are defined as 'Going from'.<br />
         Acquisition period is 30 minutes, calculation is performed during 17 minutes.<br />
+        Mean period is T02 parameter.<br />
     </p>
     
     <p>

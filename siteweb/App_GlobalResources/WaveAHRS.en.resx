@@ -145,7 +145,7 @@
     <value>Waves height</value>
   </data>
   <data name="h_max_label" xml:space="preserve">
-    <value>Largest waves height</value>
+    <value>Maximum waves height</value>
   </data>
   <data name="h_sig_label" xml:space="preserve">
     <value>Significant wave height</value>
@@ -178,13 +178,13 @@
     <value>T01</value>
   </data>
   <data name="t_m02_label" xml:space="preserve">
-    <value>Mean period (T02)</value>
+    <value>Mean period</value>
   </data>
   <data name="t_max_label" xml:space="preserve">
     <value>Period for the largest wave</value>
   </data>
   <data name="t_peak_label" xml:space="preserve">
-    <value>Period peak</value>
+    <value>Peak period</value>
   </data>
   <data name="t_unit" xml:space="preserve">
     <value>s</value>

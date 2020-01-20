@@ -123,7 +123,7 @@
         document.write('<h2>'); document.write(l_maintitle); document.write('</h2><p>');
         document.write(l_hour); document.write(' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)');
         document.write('&nbsp&nbsp&nbsp');
-        document.write('<asp:Button runat="server" ID="SwitchKnotsButton" Text="m/s <-> nd" class="btn btn-default" OnClick="SwitchKnots" />');
+        document.write('<asp:Button runat="server" ID="SwitchKnotsButton" Text="m/s <-> kts" class="btn btn-default" OnClick="SwitchKnots" />');
         document.write('</p><br>');
         
         
@@ -189,14 +189,14 @@
                 document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>m/s</td>');
             }
             else {
-                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>nd</td>');
+                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>kts</td>');
             }
 
             if (b_knot == "False") {
                 document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>m/s</td>');
             }
             else {
-                    document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>nd</td>');
+                    document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>kts</td>');
             }
             document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
             document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
@@ -412,7 +412,7 @@
 
             var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
             if (b_knot == "True")
-                courant_unit = "nd";
+                courant_unit = "kts";
 
             $('#SpeedSIGcontainer').highcharts({
                 chart: {
@@ -569,223 +569,230 @@
     </script>
 
     <script type="text/javascript">
-    $(function () {
-        Highcharts.setOptions({                                            
-            global: {
-                useUTC: false   // Dont apply client local time
+        $(function () {
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false   // Dont apply client local time
+                }
+            });
+
+
+            //Call webservice with ajax!
+            function initPosition() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Position.aspx/GetValues",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updatePosition(data.d);
+                    },
+                    error: function () {
+                        alert('position : erreur de chargement ou pas de données');
+                    }
+                });
             }
-        });
-
-        
-        //Call webservice with ajax!
-        function initPosition() {
-
-            var obj = { begin: "", end: "" };
-
-            $.ajax({
-                type: "POST",
-                url: "Position.aspx/GetValues",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updatePosition(data.d);
-                },
-                error: function () {
-                    alert('position : erreur de chargement ou pas de données');
-                }
-            });
-        }
 
 
 
-        //Call webservice with ajax!
-        function initMeteo() {
+            //Call webservice with ajax!
+            function initMeteo() {
 
-            var obj = { begin: "", end: "" };
+                var obj = { begin: "", end: "" };
 
-            $.ajax({
-                type: "POST",
-                url: "Meteo.aspx/GetValuesFrom",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updateMeteo(data.d);
-                },
-                error: function () {
-                    alert('meteo : erreur de chargement ou pas de données');
-                }
-            });
-        }
-
-        //Call webservice with ajax!
-        function initPyrano() {
-
-            var obj = { begin: "", end: "" };
-
-            $.ajax({
-                type: "POST",
-                url: "pyrano.aspx/GetValuesFrom",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updatePyrano(data.d);
-                },
-                error: function () {
-                    alert('Pyranometre : erreur de chargement ou pas de données');
-                }
-            });
-        }
-
-        //Call webservice with ajax!
-        function initC4E() {
-
-            var obj = { begin: "", end: "" };
-
-            $.ajax({
-                type: "POST",
-                url: "Aquapro_C4E.aspx/GetValuesFrom",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updateC4E(data.d);
-                },
-                error: function () {
-                    alert('C4E : erreur de chargement ou pas de données');
-                }
-            });
-        }
-
-        //Call webservice with ajax!
-        function initOPTOD() {
-
-            var obj = { begin: "", end: "" };
-
-            $.ajax({
-                type: "POST",
-                url: "Aquapro_Optod.aspx/GetValuesFrom",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updateOptod(data.d);
-                },
-                error: function () {
-                    alert('OPTOD : erreur de chargement ou pas de données');
-                }
-            });
-        }
-
-        //Call webservice with ajax!
-        function initTurbi() {
-
-            var obj = { begin: "", end: "" };
-
-            $.ajax({
-                type: "POST",
-                url: "Aquapro_Turbi.aspx/GetValuesFrom",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updateTurbi(data.d);
-                },
-                error: function () {
-                    alert('TURBI : erreur de chargement ou pas de données');
-                }
-            });
-        }
-
-        //Call webservice with ajax!
-        function initSIG() {
-
-            var obj = { begin: "", end: "" };
-
-            $.ajax({
-                type: "POST",
-                url: "Current_Sig.aspx/GetValuesFrom",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updateSIG(data.d);
-                },
-                error: function () {
-                    alert('SIGNATURE : erreur de chargement ou pas de données');
-                }
-            });
-        }
-
-        //Call webservice with ajax!
-        function initWAVEAHRS() {
-
-            var obj = { begin: "", end: "" };
-
-            $.ajax({
-                type: "POST",
-                url: "Wave_AHRS.aspx/GetValuesFrom",
-                data: JSON.stringify(obj),
-                async: false,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    updateWAVEAHRS(data.d);
-                },
-                error: function () {
-                    alert('WAVEAHRS : erreur de chargement ou pas de données');
-                }
-            });
-        }
-     
-
-        function YYYYMMDDtoDDMMYYY(str) {
-            s = str.replace('T', ' ').split(/[\s,:-]+/)
-            newStr = s[2] + '/' + s[1] + '/' + s[0] + '  ' + s[3] + ':' + s[4];
-            return newStr;
-        }
-
-        // Update charts with meteo data
-        function updatePosition(data) {
-
-            var last = data.P_time.length - 1;
-            
-            if (last >= 0) {
-
-                //YYYYMMDDtoDDMMYYY(data.list_time[last]);
-
-                $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[last]))
-                $('#lat').text(data.P_lat[last])
-                $('#lon').text(data.P_lng[last])
+                $.ajax({
+                    type: "POST",
+                    url: "Meteo.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateMeteo(data.d);
+                    },
+                    error: function () {
+                        alert('meteo : erreur de chargement ou pas de données');
+                    }
+                });
             }
-        }
 
-        // Update charts with meteo data
-        function updateMeteo(data) {
+            //Call webservice with ajax!
+            function initPyrano() {
 
-            var last = data.wxt_wind_str_time.length - 1;
-            
-            if (last >= 0) {
+                var obj = { begin: "", end: "" };
 
-                //YYYYMMDDtoDDMMYYY(data.str_time2[last]);
-                var convert_nd = 1;
-                var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
-                if (b_knot == "True")
-                    convert_nd = 1.943844;
+                $.ajax({
+                    type: "POST",
+                    url: "pyrano.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updatePyrano(data.d);
+                    },
+                    error: function () {
+                        alert('Pyranometre : erreur de chargement ou pas de données');
+                    }
+                });
+            }
 
-                $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.wxt_wind_str_time[last]))
-                $('#wsmoy').text(data.wxt_wind_speed_avg[last] * convert_nd)
-                $('#wsmax').text(data.wxt_wind_speed_max[last] * convert_nd)
-                $('#wdmoy').text(data.wxt_wind_dir_avg[last])
+            //Call webservice with ajax!
+            function initC4E() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Aquapro_C4E.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateC4E(data.d);
+                    },
+                    error: function () {
+                        alert('C4E : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
+            //Call webservice with ajax!
+            function initOPTOD() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Aquapro_Optod.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateOptod(data.d);
+                    },
+                    error: function () {
+                        alert('OPTOD : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
+            //Call webservice with ajax!
+            function initTurbi() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Aquapro_Turbi.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateTurbi(data.d);
+                    },
+                    error: function () {
+                        alert('TURBI : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
+            //Call webservice with ajax!
+            function initSIG() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Current_Sig.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateSIG(data.d);
+                    },
+                    error: function () {
+                        alert('SIGNATURE : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
+            //Call webservice with ajax!
+            function initWAVEAHRS() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Wave_AHRS.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateWAVEAHRS(data.d);
+                    },
+                    error: function () {
+                        alert('WAVEAHRS : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
+
+            function YYYYMMDDtoDDMMYYY(str) {
+                s = str.replace('T', ' ').split(/[\s,:-]+/)
+                newStr = s[2] + '/' + s[1] + '/' + s[0] + '  ' + s[3] + ':' + s[4];
+                return newStr;
+            }
+
+            // Update charts with meteo data
+            function updatePosition(data) {
+
+                var last = data.P_time.length - 1;
+
+                if (last >= 0) {
+
+                    //YYYYMMDDtoDDMMYYY(data.list_time[last]);
+
+                    $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[last]))
+                    $('#lat').text(data.P_lat[last])
+                    $('#lon').text(data.P_lng[last])
+                }
+            }
+
+            // Update charts with meteo data
+            function updateMeteo(data) {
+
+                var last = data.wxt_wind_str_time.length - 1;
+
+                if (last >= 0) {
+
+                    //YYYYMMDDtoDDMMYYY(data.str_time2[last]);
+                    var convert_nd = 1;
+                    var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
+                    if (b_knot == "True")
+                        convert_nd = 1.943844;
+
+                    $('#Meteohour').text("      " + YYYYMMDDtoDDMMYYY(data.wxt_wind_str_time[last]))
+
+                    var tmp = data.wxt_wind_speed_avg[last] * convert_nd
+                    $('#wsmoy').text(tmp.toFixed(1))
+                //$('#wsmoy').text(data.wxt_wind_speed_avg[last] * convert_nd)
+                    tmp = data.wxt_wind_speed_max[last] * convert_nd
+                    $('#wsmax').text(tmp.toFixed(1))
+                //$('#wsmax').text(data.wxt_wind_speed_max[last] * convert_nd)
+                    tmp = data.wxt_wind_dir_avg[last]
+                    $('#wdmoy').text(tmp.toFixed(1))
+                //$('#wdmoy').text(data.wxt_wind_dir_avg[last])
 
                 last = data.wxt_str_time.length - 1;
                 $('#wtemp').text(data.wxt_temp[last])

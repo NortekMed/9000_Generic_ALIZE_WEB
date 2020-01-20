@@ -38,6 +38,8 @@
     <asp:HiddenField ID = "d_NS" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "d_EW" ClientIdMode="Static" Runat="Server" />
 
+    <asp:HiddenField ID = "b_histo_hd" ClientIdMode="Static" Runat="Server"/>
+
 
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
@@ -115,7 +117,7 @@
             document.write('<div class="col-md-8"><div class="panel panel-default">');
         //document.write('<div class="panel-heading"><b>' + l_chart_label + '</b></div>');
         //document.write('<div class="panel-heading"><b>');document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Meteohour">X</label> </div>');
-                    document.write('<div class="panel-heading"><b>');document.write(l_chart_label);document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+        document.write('<div class="panel-heading"><b>'); document.write(l_chart_label); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
                         document.write('<div class="panel-body">');
                         document.write('<div id="poscontainer" style="min-width:500px; width:100%; height:300px;"></div>');
                         document.write('<table class="table" style="font - size: 20px">');
@@ -175,10 +177,17 @@
         // Hide/Show history controls
         $('#d_realtime').on("click", function () {
             $("#history").addClass('hidden');
+            //alert('hide:');
+            b_histo_hd.value = "False";
+            //Switchhisto();
             initData();
         });
         $('#d_history').on("click", function () {
             $("#history").removeClass('hidden');
+            //alert('remove hide');
+            b_histo_hd.value = "True";
+            //Switchhisto();
+            //initData();
         });
 
         // Get timestamped data with webservice
@@ -231,22 +240,26 @@
 
             var chartPos = $('#poscontainer').highcharts();
 
+            var b_histo = document.getElementById('<%=b_histo_hd.ClientID%>').value;
+            //alert('histo:' + b_histo)
+
             var P_pos = [];
             //for (var i = data.P_time.length - 3; i < data.P_time.length; i++) {
             var nb_to_display = 0;
             if (data.P_time.length > 0) { 
-                if (data.P_time.length > 48)
+                if (data.P_time.length > 48 && !b_histo)
                     nb_to_display = 48;
                 else
                     nb_to_display = data.P_time.length;
 
-
+                //var delta_pos = 0;
                 for (var i = data.P_time.length - 1; i >= data.P_time.length - nb_to_display; i--) {    // display only 48 last position
-
+                    var delta_pos = Math.sqrt(Math.pow(data.P_dist_north_south[i], 2) + Math.pow(data.P_dist_west_est[i], 2));
                     P_pos.push(
                         {
                             x: data.P_lng[i],
                             y: data.P_lat[i],
+                            d: delta_pos.toFixed(0),
                             name: YYYYMMDDtoDDMMYYY(data.P_time[i])
                         });
 
@@ -255,8 +268,8 @@
             }
             //var data_name = data.map(function(a) {return a.name;});
 
-            $('#DISTNS').text(data.P_dist_north_south.toFixed(0))
-            $('#DISTWE').text(data.P_dist_west_est.toFixed(0))
+            $('#DISTNS').text(data.P_dist_north_south[data.P_time.length - nb_to_display].toFixed(0))
+            $('#DISTWE').text(data.P_dist_west_est[data.P_time.length - nb_to_display].toFixed(0))
 
             chartPos.series[0].setData(P_pos);
 
@@ -267,7 +280,7 @@
 
             var mapOptions = {
                 center: buoy_LatLng,
-                zoom: 12,
+                zoom: 9,
                 mapTypeId: google.maps.MapTypeId.TERRAIN,
                 scrollwheel: false,
                 draggable: false,
@@ -350,7 +363,7 @@
                     symbol: 'diamond'
                 },
                 tooltip: {
-                    pointFormat: 'Lat: {point.y}° Lng: {point.x}°'
+                    pointFormat: 'Lat: {point.y}° Lng: {point.x}° Delta: {point.d}m'
                 }
             }],
         });

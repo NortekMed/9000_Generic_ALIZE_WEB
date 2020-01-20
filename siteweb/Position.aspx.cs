@@ -28,6 +28,7 @@ public partial class Position : System.Web.UI.Page
     static string orientation;
 
 
+
     protected void Page_Init(object sender, EventArgs e)
     {
         InitField();
@@ -47,6 +48,8 @@ public partial class Position : System.Web.UI.Page
         downloadBouton.Text = download_data.Value;
 
     }
+
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // TELECHARGEMENTS
@@ -277,6 +280,8 @@ public partial class Position : System.Web.UI.Page
         List<double> list_qa = new List<double>();
         List<double> list_nb = new List<double>();
         List<string> list_time = new List<string>();
+        List<double> list_d_north = new List<double>();
+        List<double> list_d_east = new List<double>();
 
         foreach (DataRow dRow in myDataTable.Rows)
         {
@@ -290,48 +295,62 @@ public partial class Position : System.Web.UI.Page
             list_lng.Add(double.Parse(dRow["LNG"].ToString()));
             list_qa.Add(double.Parse(dRow["QUALITY"].ToString()));
             list_nb.Add(double.Parse(dRow["NBSAT"].ToString()));
+
+            Class1 convertutm = new Class1();
+            convertutm.Init_Datum();
+
+            double lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
+            double lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
+            double[] XY_UTM_o = new double[2];
+            double[] XY_UTM_last = new double[2];
+            double distance_nord = 0;
+            double distance_est = 0;
+            XY_UTM_o = convertutm.XY(lat_o, lng_o);
+            if (list_lat.Count > 0 && list_lng.Count > 0)
+            {
+                XY_UTM_last = convertutm.XY(list_lat.Last(), list_lng.Last());
+
+                distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
+                distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
+            }
+            list_d_north.Add(distance_nord);
+            list_d_east.Add(distance_est);
         }
 
 
-        double xmin = double.MaxValue;
-        double xmax = double.MinValue;
-        double ymin = double.MaxValue;
-        double ymax = double.MinValue;
+        //double xmin = double.MaxValue;
+        //double xmax = double.MinValue;
+        //double ymin = double.MaxValue;
+        //double ymax = double.MinValue;
 
 
-        foreach (double d in list_lng)
-        {
-            xmin = Math.Min(xmin, d);
-            xmax = Math.Max(xmax, d);
-        }
-        foreach (double d in list_lat)
-        {
-            ymin = Math.Min(ymin, d);
-            ymax = Math.Max(ymax, d);
-        }
+        //foreach (double d in list_lng)
+        //{
+        //    xmin = Math.Min(xmin, d);
+        //    xmax = Math.Max(xmax, d);
+        //}
+        //foreach (double d in list_lat)
+        //{
+        //    ymin = Math.Min(ymin, d);
+        //    ymax = Math.Max(ymax, d);
+        //}
 
-        Class1 convertutm = new Class1();
-        convertutm.Init_Datum();
-        //double[] XY_UTM_max = new double[2];
-        //double[] XY_UTM_min = new double[2];
-        //XY_UTM_max = convertutm.XY(ymax, xmax);
-        //XY_UTM_min = convertutm.XY(ymin, xmin);
-        //double distance_nord = Math.Abs(XY_UTM_max[1] - XY_UTM_min[1]);
-        //double distance_est = Math.Abs(XY_UTM_max[0] - XY_UTM_min[0]);
+        //Class1 convertutm = new Class1();
+        //convertutm.Init_Datum();
 
-        double lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
-        double lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
-        double[] XY_UTM_o = new double[2];
-        double[] XY_UTM_last = new double[2];
-        double distance_nord = 0;
-        double distance_est = 0;
-        XY_UTM_o = convertutm.XY(lat_o, lng_o);
-        if (list_lat.Count > 0 && list_lng.Count > 0) { 
-            XY_UTM_last = convertutm.XY(list_lat.Last(), list_lng.Last());
+        //double lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
+        //double lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
+        //double[] XY_UTM_o = new double[2];
+        //double[] XY_UTM_last = new double[2];
+        //double distance_nord = 0;
+        //double distance_est = 0;
+        //XY_UTM_o = convertutm.XY(lat_o, lng_o);
+        //if (list_lat.Count > 0 && list_lng.Count > 0) { 
+        //    XY_UTM_last = convertutm.XY(list_lat.Last(), list_lng.Last());
 
-            distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
-            distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
-        }
+        //    distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
+        //    distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
+        //}
 
         // Build current data object
         dataPosition data = new dataPosition();
@@ -340,8 +359,8 @@ public partial class Position : System.Web.UI.Page
             list_time,
             list_qa,
             list_nb,
-            distance_nord,
-            distance_est);
+            list_d_north,
+            list_d_east);
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
         downloaddata = data;
@@ -358,16 +377,16 @@ public class dataPosition
     public double[] P_qa;
     public double[] P_nb;
     public string[] P_time;
-    public double P_dist_north_south;
-    public double P_dist_west_est;
+    public double[] P_dist_north_south;
+    public double[] P_dist_west_est;
 
     public void set(List<double> l_lat,
         List<double> l_lng,
         List<string> l_time,
         List<double> l_qa,
         List<double> l_nb,
-        double north_south,
-        double west_est)
+        List<double> north_south,
+        List<double> west_est)
     {
 
         P_lat = l_lat.ToArray();
@@ -376,7 +395,7 @@ public class dataPosition
         P_nb = l_nb.ToArray();
         P_time = l_time.ToArray();
 
-        P_dist_north_south = north_south;
-        P_dist_west_est = west_est;
+        P_dist_north_south = north_south.ToArray();
+        P_dist_west_est = west_est.ToArray();
     }
 }
