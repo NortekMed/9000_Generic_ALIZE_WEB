@@ -41,6 +41,7 @@
     <asp:HiddenField ID = "b_histo_hd" ClientIdMode="Static" Runat="Server"/>
 
 
+
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ID%>').value;
@@ -273,6 +274,18 @@
 
             chartPos.series[0].setData(P_pos);
 
+
+            
+            var P_pos_init = [];
+            P_pos_init.push(
+                {
+                    x: data.lng_o,
+                    y: data.lat_o,
+                    d: 0,
+                    name: 'reference'
+                });
+            chartPos.series[1].setData(P_pos_init)
+
             initialize();
         };
 
@@ -356,6 +369,20 @@
                 name: 'Position',
                 data: [],
                 color: 'blue',
+                animation: false,
+                lineWidth: 0,
+                marker: {
+                    enabled: true,
+                    symbol: 'diamond'
+                },
+                tooltip: {
+                    pointFormat: 'Lat: {point.y}° Lng: {point.x}° Delta: {point.d}m'
+                }
+            },
+            {
+                name: 'Reference',
+                data: [],
+                color: 'red',
                 animation: false,
                 lineWidth: 0,
                 marker: {

@@ -475,11 +475,15 @@ public partial class SIG_Current : System.Web.UI.Page
             //blanking_dist = (double.Parse(myDataTable.Rows[0]["BLK"].ToString()));
             //cell_size = (double.Parse(myDataTable.Rows[0]["CS"].ToString()));
         }
+
+        int nb_c = int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]);
+        double utcdataoffset = double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"]);
+        double systemUTCTimeOffset = double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"]);
         foreach (DataRow dRow in myDataTable.Rows)
         {
-            double[] amp = new double[int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"])];
-            double[] dir = new double[int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"])];
-            double[] snr = new double[int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"])];
+            double[] amp = new double[nb_c];
+            double[] dir = new double[nb_c];
+            double[] snr = new double[nb_c];
             //double dir_cor = 0;
 
             list_pitch.Add(double.Parse(dRow[pitch_name].ToString()));
@@ -491,11 +495,12 @@ public partial class SIG_Current : System.Web.UI.Page
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
             // UTC to Local Time
-            date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
+            date = date.AddHours(utcdataoffset).AddHours(-1 * systemUTCTimeOffset); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
+            //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             list_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
             // Direction and amplitude for all cells
-            for (int cell = 0; cell < int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]) && cell < 26; cell++)
+            for (int cell = 0; cell < nb_c && cell < 26; cell++)
             {
                 // SIGNATURE 
                  

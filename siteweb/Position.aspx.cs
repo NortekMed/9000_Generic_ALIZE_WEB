@@ -27,6 +27,9 @@ public partial class Position : System.Web.UI.Page
     static string direction;
     static string orientation;
 
+    //static double lat_o;
+    //static double lng_o;
+
 
 
     protected void Page_Init(object sender, EventArgs e)
@@ -193,6 +196,7 @@ public partial class Position : System.Web.UI.Page
         info_0 = new HiddenField();
         d_NS = new HiddenField();
         d_EW = new HiddenField();
+
     }
 
     protected void InitField()
@@ -223,6 +227,7 @@ public partial class Position : System.Web.UI.Page
         info_0.Value = Resources.Position.info_0.ToString();
         d_NS.Value = Resources.Position.d_NS.ToString();
         d_EW.Value = Resources.Position.d_EW.ToString();
+
 
 
         //Retrieving data from curennt object resx files
@@ -283,6 +288,11 @@ public partial class Position : System.Web.UI.Page
         List<double> list_d_north = new List<double>();
         List<double> list_d_east = new List<double>();
 
+        double lat_o;
+        double lng_o;
+        lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
+        lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
+
         foreach (DataRow dRow in myDataTable.Rows)
         {
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
@@ -299,8 +309,8 @@ public partial class Position : System.Web.UI.Page
             Class1 convertutm = new Class1();
             convertutm.Init_Datum();
 
-            double lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
-            double lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
+            //lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
+            //lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
             double[] XY_UTM_o = new double[2];
             double[] XY_UTM_last = new double[2];
             double distance_nord = 0;
@@ -353,6 +363,8 @@ public partial class Position : System.Web.UI.Page
         //}
 
         // Build current data object
+        //lat_o = double.Parse(WebConfigurationManager.AppSettings["Lat"]);
+        //lng_o = double.Parse(WebConfigurationManager.AppSettings["Lng"]);
         dataPosition data = new dataPosition();
         data.set(list_lat,
             list_lng,
@@ -360,7 +372,9 @@ public partial class Position : System.Web.UI.Page
             list_qa,
             list_nb,
             list_d_north,
-            list_d_east);
+            list_d_east,
+            lat_o,
+            lng_o);
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
         downloaddata = data;
@@ -379,6 +393,9 @@ public class dataPosition
     public string[] P_time;
     public double[] P_dist_north_south;
     public double[] P_dist_west_est;
+    public double lat_o;
+    public double lng_o;
+
 
     public void set(List<double> l_lat,
         List<double> l_lng,
@@ -386,7 +403,9 @@ public class dataPosition
         List<double> l_qa,
         List<double> l_nb,
         List<double> north_south,
-        List<double> west_est)
+        List<double> west_est,
+        double lat,
+        double lng)
     {
 
         P_lat = l_lat.ToArray();
@@ -397,5 +416,8 @@ public class dataPosition
 
         P_dist_north_south = north_south.ToArray();
         P_dist_west_est = west_est.ToArray();
+
+        lat_o = lat;
+        lng_o = lng;
     }
 }
