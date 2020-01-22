@@ -69,10 +69,11 @@
 
 
     <script type="text/javascript">
+        
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ID%>').value;
 
-        document.write('<h2>' + l_maintitle + '</h2><p>');
+        document.write('<h2>' + l_maintitle + '</h2>');
         document.write(l_hour + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)');
     </script>   
 
@@ -119,58 +120,6 @@
         document.write('</div><br><br>')
     </script>
 
-    <%--<h2>Courant</h2>
-
-    <p>Heure (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)</p>
-
-    <p>Les hauteurs de couches de mesures sont référencées par rapport à l'AWAC</p>
-
-    <div id="Top" style="width:100%; ">
-
-        <div id="q_opt" class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>Dernières 24h</label>
-            <label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2">Historique</label>
-        </div>
-
-         <br/>         
-
-        <div class="hidden" id="history">
-        
-            <br/>
-            <div class='input-group date'>
-                <div class='col-md-1'>
-                    <p>Du</p>
-                </div>
-                <div class='col-md-3'>
-                    <div class="form-group">
-                        <input type='text' class="form-control" id='datetimepicker1' value="début"/>
-                    </div>
-                </div>
-                <div class='col-md-1'>
-                    <p>au</p>
-                </div>
-                <div class='col-md-3'>
-                    <div class="form-group">
-                        <input type='text' class="form-control" id='datetimepicker2' value="fin"/>
-                    </div>
-                </div>
-                <div class='col-md-4'>
-                <div class="form-group">
-                    <a class="btn btn-default" onclick="updateData()">Actualiser &raquo;</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <br />
-
-            <p>Téléchargement des mesures affichées</p>
-             <div>
-                <asp:Button runat="server" ID="downloadBouton" Text="Télécharger (csv)" class="btn btn-default" OnClick="DownloadCurrent" />
-            </div>    
-
-        <br />
-        <br />--%>
     <script type="text/javascript">
         var label = document.getElementById('<%=speedlabel.ClientID%>').value;
         document.write('<div class="panel panel-default">');
@@ -300,11 +249,13 @@
             var maree = [];
             var tempeau = [];
 
-            
 
             for (var i = 0; i < data.C_time.length; i++) {
-                maree.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_press[i]]);
-                tempeau.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_temp[i]]);
+                var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                maree.push([time, data.C_press[i]]);
+                tempeau.push([time, data.C_temp[i]]);
+                //maree.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_press[i]]);
+                //tempeau.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_temp[i]]);
             }
 
             mtchart.series[0].setData(tempeau);
@@ -320,62 +271,79 @@
             var maxAmp = 0.0;
             for (var i = 0; i < data.C_time.length; i++) {
                 for (var j = 0; j < data.C_amp[0].length; j++) {
-                    Amplitude.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), (j+1) * data.C_cellsize + data.C_blancking, data.C_amp[i][j]]);
-                    Direction.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), (j+1) * data.C_cellsize + data.C_blancking, data.C_dir[i][j]]);
+                    var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                    Amplitude.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_amp[i][j]]);
+                    Direction.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_dir[i][j]]);
+                    //Amplitude.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), (j+1) * data.C_cellsize + data.C_blancking, data.C_amp[i][j]]);
+                    //Direction.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), (j+1) * data.C_cellsize + data.C_blancking, data.C_dir[i][j]]);
                     maxAmp = Math.max(maxAmp, data.C_amp[i][j]);
                 }
             }
 
-            if(data.C_time.length>1000)
-            {
-                var factor = data.C_time.length / 500;
-                data.C_time.length
-            }
+
+
+            //if(data.C_time.length>1000)
+            //{
+            //    var factor = data.C_time.length / 500;
+            //    data.C_time.length
+            //}
 
             
-            chart.colorAxis[0].update( { min: 0,max: maxAmp }),
+            chart.colorAxis[0].update({ min: 0, max: maxAmp });
+            
+            charProftDir.colorAxis[0].update({ min: 0, max: 360 });
+            charProftDir.yAxis[0].update({ max: data.C_amp[0].length * data.C_cellsize + data.C_blancking });
 
             chart.series[0].update({
                 data: Amplitude,
                 colsize: data.meanTimeInterval,
                 rowsize: data.C_cellsize
-            }, true); //true / false to redraw
+            }, false); //true / false to redraw
 
 
             charProftDir.series[0].update({
                 data: Direction,
                 colsize: data.meanTimeInterval,
                 rowsize: data.C_cellsize
-            }, true); //true / false to redraw
+            }, false); //true / false to redraw
             
-            charProftDir.colorAxis[0].update({ min: 0, max: 360 });
 
-            charProftDir.yAxis[0].update({ max: data.C_amp[0].length * data.C_cellsize + data.C_blancking });
-
-
+            
 
             var Amp_unit = ' ' + document.getElementById('<%=speedunit.ClientID%>').value;
             var direction_unit = ' °';
             // Chart immersion  fixe"
             var chartAmp = $('#Ampcontainer').highcharts();
-            while (chartAmp.series.length>0){
-                chartAmp.series[0].remove();
-            }
-
-            var chartDir = $('#Dircontainer').highcharts();
-            while (chartDir.series.length > 0) {
-                chartDir.series[0].remove();
+            for (var i = chartAmp.series.length - 1; i > -1; i--) {
+                chartAmp.series[i].remove();
             }
             
+            //while (chartAmp.series.length>0){
+            //    chartAmp.series[0].remove();
+            //}
+
+            var chartDir = $('#Dircontainer').highcharts();
+            for (var i = chartDir.series.length - 1; i > -1; i--) {
+                chartDir.series[i].remove();
+            }
+            //while (chartDir.series.length > 0) {
+            //    chartDir.series[0].remove();
+            //}
+            
+
             for (var j = 0; j < data.C_amp[0].length; j++) {
 
                 var amp = [];
                 var dir = [];
 
                 for (var i = 0; i < data.C_time.length; i++) {
-                    amp.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_amp[i][j]]);
-                    console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
-                    dir.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), data.C_dir[i][j]]);
+                    var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                    amp.push([time, data.C_amp[i][j]]);
+                    //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
+                    dir.push([time, data.C_dir[i][j]]);
+                    //amp.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_amp[i][j]]);
+                    //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
+                    //dir.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), data.C_dir[i][j]]);
                 }
 
                 chartAmp.addSeries({
@@ -387,10 +355,8 @@
                     }
                 });
 
-                
 
                 chartDir.addSeries({
-                    
                         name: "H=" + ((j + 1) * data.C_cellsize + data.C_blancking) + "m",
                         data: dir,
                         lineWidth: 0,
@@ -408,13 +374,16 @@
                 
                 ////chartDir.series[j].update({ lineWidth: 0 });
 
-                chartDir.yAxis[0].update({ min: 0, max: 360 });
+                
             }
 
+            
+            chartDir.yAxis[0].update({ min: 0, max: 360 });
             chartAmp.series[0].update({ visible: true });
             chartDir.series[0].update({ visible: true });
 
-          
+            chart.redraw();
+            charProftDir.redraw();
 
         };
 
@@ -460,6 +429,7 @@
             xAxis: {
                 type: 'datetime',
                 minTickInterval: 30,
+                uniqueNames: false
             },
 
             yAxis: {
@@ -527,7 +497,8 @@
         },
         xAxis: {
             type: 'datetime',
-            minTickInterval: 30
+            minTickInterval: 30,
+            uniqueNames: false
         },
 
         yAxis: {
@@ -603,7 +574,8 @@
                 text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
             },
             tickPixelInterval: 80,
-            gridLineWidth: 1
+            gridLineWidth: 1,
+            uniqueNames: false
         },
         yAxis: [{
             min: 0,
@@ -653,7 +625,8 @@
                 text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
             },
             tickPixelInterval: 80,
-            gridLineWidth: 1
+            gridLineWidth: 1,
+            uniqueNames: false
         },
         yAxis: [{
             min: 0,
