@@ -46,7 +46,10 @@
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ID%>').value;
 
-        document.write('<h2>' + l_maintitle + '</h2>');
+        document.write('<h2>');
+        document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write(" - ");
+        document.write(l_maintitle);
+        document.write('</h2><p>');
         document.write(l_hour + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)');
     </script>  
 
@@ -115,25 +118,29 @@
 
         document.write('<div class="row">');
 
-            document.write('<div class="col-md-8"><div class="panel panel-default">');
+        document.write('<div class="col-md-5"><div class="panel panel-default">');
         //document.write('<div class="panel-heading"><b>' + l_chart_label + '</b></div>');
         //document.write('<div class="panel-heading"><b>');document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Meteohour">X</label> </div>');
         document.write('<div class="panel-heading"><b>'); document.write(l_chart_label); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
                         document.write('<div class="panel-body">');
-                        document.write('<div id="poscontainer" style="min-width:500px; width:100%; height:300px;"></div>');
-                        document.write('<table class="table" style="font - size: 20px">');
-        document.write('<tr><td>GPS installation -- Lat: ' + '<%=ConfigurationManager.AppSettings["Lat"] %> °' + ' - Lng: ' + '<%=ConfigurationManager.AppSettings["Lng"] %> °');
-                        document.write('<tr><td>' + l_d_ns + '</td><td><label id="DISTNS">X</label></td><td>m</td></tr>');
-                        document.write('<tr><td>' + l_d_ew + '</td><td><label id="DISTWE">X</label></td><td>m</td></tr>');
-                        document.write('</tbody></table>');
-            document.write('</div></div></div>');
+        document.write('<div id="poscontainer" style="width:100%; height:300px;"></div>');
+        //document.write('<div id="poscontainer" style="width:100%; height:300px;"></div>');
+        //document.write('<div id="poscontainer" style="min-width:500px; width:100%; height:300px;"></div>');
+        //document.write('<div id="poscontainer" style="min-width:300px; width:400px; height:300px;"></div>');
 
-            document.write('<div class="col-md-4"><div class="panel panel-default">');
-                    document.write('<div class="panel-heading"><b>' + l_map_label + '</b></div>');
-                    document.write('<div class="panel-body">');
-                        document.write('<div id="map-canvas" class ="img-responsive" style="height:375px; width:100%"></div>');
-                        document.write('<p>' + info_0 + '</p>');
-            document.write('</div></div></div>');
+        document.write('<table class="table" style="font - size: 20px">');
+        document.write('<tr><td>GPS installation -- Lat: ' + '<%=ConfigurationManager.AppSettings["Lat"] %> °' + ' - Lng: ' + '<%=ConfigurationManager.AppSettings["Lng"] %> °');
+        document.write('<tr><td>' + l_d_ns + '</td><td><label id="DISTNS">X</label></td><td>m</td></tr>');
+        document.write('<tr><td>' + l_d_ew + '</td><td><label id="DISTWE">X</label></td><td>m</td></tr>');
+        document.write('</tbody></table>');
+        document.write('</div></div></div>');
+
+        document.write('<div class="col-md-7"><div class="panel panel-default">');
+        document.write('<div class="panel-heading"><b>' + l_map_label + '</b></div>');
+        document.write('<div class="panel-body">');
+        document.write('<div id="map-canvas" class ="img-responsive" style="height:375px; width:100%"></div>');
+        document.write('<p>' + info_0 + '</p>');
+        document.write('</div></div></div>');
 
         document.write('</div>');
 
@@ -245,6 +252,10 @@
             //alert('histo:' + b_histo)
 
             var P_pos = [];
+            var min_lng = 0;
+            var max_lng = 0;
+            var min_lat = 0;
+            var max_lat = 0;
             //for (var i = data.P_time.length - 3; i < data.P_time.length; i++) {
             var nb_to_display = 0;
             if (data.P_time.length > 0) { 
@@ -253,24 +264,53 @@
                 else
                     nb_to_display = data.P_time.length;
 
+                
+
                 //var delta_pos = 0;
                 for (var i = data.P_time.length - 1; i >= data.P_time.length - nb_to_display; i--) {    // display only 48 last position
+
+                    if (min_lng > data.P_lng[i])
+                        min_lng = data.P_lng[i];
+                    //if (min_lat > data.P_lat[i])
+                    //    min_lat = data.P_lat[i];
+
+                    if (max_lng < data.P_lng[i])
+                        max_lng = data.P_lng[i];
+                    //if (max_lat < data.P_lat[i])
+                    //    max_lat = data.P_lat[i];
+
                     var delta_pos = Math.sqrt(Math.pow(data.P_dist_north_south[i], 2) + Math.pow(data.P_dist_west_est[i], 2));
                     P_pos.push(
                         {
                             x: data.P_lng[i],
                             y: data.P_lat[i],
                             d: delta_pos.toFixed(0),
-                            name: YYYYMMDDtoDDMMYYY(data.P_time[i])
-                        });
-
-                    
+                            name: YYYYMMDDtoDDMMYYY(data.P_time[i]),
+                            //color: blue
+                        }
+                    );
                 }
             }
+
+            alert(min_lng.toString());
+            alert(max_lng.toString());
             //var data_name = data.map(function(a) {return a.name;});
 
             $('#DISTNS').text(data.P_dist_north_south[data.P_time.length - nb_to_display].toFixed(0))
             $('#DISTWE').text(data.P_dist_west_est[data.P_time.length - nb_to_display].toFixed(0))
+
+
+            if (min_lng > data.lng_o)
+                min_lng = data.lng_o;
+            if (max_lng < data.lng_o)
+                max_lng = data.lng_o;
+
+            alert(min_lng.toString());
+            alert(max_lng.toString());
+
+
+            //chartPos.yAxis[0].update({ max: 50 });
+            chartPos.xAxis[0].update({ min: min_lng-0.8125,max: max_lng+0.8125 });
 
             chartPos.series[0].setData(P_pos);
 

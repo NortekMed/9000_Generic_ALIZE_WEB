@@ -64,7 +64,9 @@
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ID%>').value;
 
-        document.write('<h2>' + l_maintitle + '</h2><p>');
+        document.write('<h2>');
+        document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write(" - ");
+        document.write(l_maintitle + '</h2><p>');
         document.write(l_hour + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)');
     </script>   
 
@@ -111,12 +113,37 @@
         document.write('</div><br><br>')
     </script>
 
+    <form>
+    <div class="metersInputGroup">
+        <label for="meters">Enter height limit — in meters :</label>
+        <input id="meters" type="number" name="meters" step="0.01" min="0" max="20" placeholder="e.g. 1.78" required>
+        <span class="validity"></span>
+    </div>
+    <%--<div class="feetInputGroup" style="display: none;">
+        <span>Saisir votre taille — </span>
+        <label for="feet">feet :</label>
+        <input id="feet" type="number" name="feet" min="0" step="1">
+        <span class="validity"></span>
+        <label for="inches">inches :</label>
+        <input id="inches" type="number" name="inches" min="0" max="11" step="1">
+        <span class="validity"></span>
+    </div>--%>
+    <%--<div>
+      <input type="button" class="meters" value="Saisir la taille en feet/inches">
+    </div>--%>
+    <div>
+        <input type="submit" value="Envoyer">
+    </div>
+</form>
+
     <script type="text/javascript">
         var label = document.getElementById('<%=h_label.ClientID%>').value;
-            
+
+        //document.write('<input type="number" placeholder="0.0" step="0.01" min="0" max="10">');
+
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
-         document.write('<div class="panel-body">');
+        document.write('<div class="panel-body">');
         document.write('<div id="Hcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
         document.write('</div>');
@@ -211,22 +238,43 @@
             });
         }
 
+        //alert("hello");
+
+        //    var metersInputGroup = document.querySelector('.metersInputGroup');
+        //    var metersInput = document.querySelector('#meters');
+        //    var switchBtn = document.querySelector('input[type="button"]');
+        //    alert("hello2" + metersInput.value);
+        //    switchBtn.addEventListener('click', function() {
+        //        switchBtn.value = 'Saisir la taille en mètres';
+        //        metersInputGroup.style.display = 'none';
+        //        metersInput.removeAttribute('required');
+
+        //        metersInput.value = '';
+        //    });
+
         // Update charts with wave data
         function updateCharts(data) {
 
+            
 
+            
             // Wave Height chart
             var chartH = $('#Hcontainer').highcharts();
             var H_sig = [];
             var H_max = [];
+            var H_limit = [];
 
             for (var i = 0; i < data.H_time.length; i++) {
                 H_sig.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_m0[i] * 100) / 100]);
                 H_max.push([Date.parse(data.H_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.H_max[i]*100)/100]);
+                H_limit.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), 2.7]);
+
+                
             }
 
             chartH.series[0].setData(H_max);
             chartH.series[1].setData(H_sig);
+            chartH.series[2].setData(H_limit);
 
 
             // Wave Period chart
@@ -325,6 +373,14 @@
                 name: 'Significative height',
                 data: [],
                 color: 'blue',
+                animation: true,
+                tooltip: {
+                    valueSuffix: ' m'
+                }
+            },{
+                name: 'Limit height',
+                data: [],
+                color: 'red',
                 animation: true,
                 tooltip: {
                     valueSuffix: ' m'

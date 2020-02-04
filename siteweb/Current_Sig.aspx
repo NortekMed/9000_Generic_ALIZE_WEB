@@ -73,7 +73,9 @@
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ID%>').value;
 
-        document.write('<h2>' + l_maintitle + '</h2>');
+        document.write('<h2>');
+        document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write(" - ");
+        document.write(l_maintitle + '</h2><p>');
         document.write(l_hour + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)');
     </script>   
 

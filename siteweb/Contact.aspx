@@ -3,8 +3,12 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     
     
-    
-    <h2>Info</h2>
+    <script type="text/javascript">
+        document.write('<h2>');
+        document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write(" - ");
+        document.write('Info' + '</h2><p>');
+    </script> 
+    <%--<h2>Info</h2>--%>
 
     <p>
         Southwest buoy is buoy 1a.

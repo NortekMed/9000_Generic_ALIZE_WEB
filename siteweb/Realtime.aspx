@@ -120,7 +120,10 @@
         var l_maintitle = document.getElementById('<%=maintitle.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ClientID%>').value;
 
-        document.write('<h2>'); document.write(l_maintitle); document.write('</h2><p>');
+        document.write('<h2>');
+        document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write(" - ");
+        document.write(l_maintitle);
+        document.write('</h2><p>');
         document.write(l_hour); document.write(' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)');
         document.write('&nbsp&nbsp&nbsp');
         document.write('<asp:Button runat="server" ID="SwitchKnotsButton" Text="m/s <-> kts" class="btn btn-default" OnClick="SwitchKnots" />');
@@ -219,17 +222,25 @@
             var l_param5 = document.getElementById('<%=w_rain_d.ClientID%>').value;
             var l_param6 = document.getElementById('<%=w_rain_acc.ClientID%>').value;
 
+
+             //style="min-width:250px; width:100%; height:300px;
             document.write('<div class="col-md-4">')
             document.write('<div class="panel panel-default">');
             document.write('<div class="panel-heading"><b>'); document.write("Position"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
-            document.write('<div class="panel-body">');
+            document.write('<div class="panel-body"');
             document.write('<table class="table"><tbody>');
 
             document.write('<tr><td>'); document.write("Lat: "); document.write('</td><td><label id="lat">X</label></td><td>°</td>');
             document.write('<td>'); document.write("Lon: "); document.write('</td><td><label id="lon">X</label></td><td>°</td></tr>');
 
             document.write('</body></table></div>');
-            document.write('</div></div>');
+            document.write('</div>');
+
+            //document.write('<div class="panel panel-default">');
+            document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');    
+            //document.write('</div>');
+            
+            document.write('</div>');
         </script>
 
     <div class="row">
