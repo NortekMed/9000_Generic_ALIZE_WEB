@@ -139,7 +139,7 @@
     <value>Data download (csv)</value>
   </data>
   <data name="end" xml:space="preserve">
-    <value>end</value>
+    <value>stop</value>
   </data>
   <data name="historical" xml:space="preserve">
     <value>Historical</value>

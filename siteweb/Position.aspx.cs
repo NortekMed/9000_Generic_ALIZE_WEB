@@ -320,6 +320,8 @@ public partial class Position : System.Web.UI.Page
             {
                 XY_UTM_last = convertutm.XY(list_lat.Last(), list_lng.Last());
 
+                //distance_nord = XY_UTM_last[1] - XY_UTM_o[1];
+                //distance_est = XY_UTM_last[0] - XY_UTM_o[0];
                 distance_nord = Math.Abs(XY_UTM_last[1] - XY_UTM_o[1]);
                 distance_est = Math.Abs(XY_UTM_last[0] - XY_UTM_o[0]);
             }

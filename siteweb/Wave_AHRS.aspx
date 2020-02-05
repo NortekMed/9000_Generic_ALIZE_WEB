@@ -88,14 +88,28 @@
         document.write('<div class="hidden" id="history"> <br>');
         document.write('<div class="input-group date">');
 
+        var myDate = new Date();
+        //var date = ('0' + myDate.getDate()).slice(-2) + '/' + ('0' + myDate.getMonth() + 1).slice(-2) + '/' + myDate.getFullYear();
+        var month = myDate.getMonth() + 1;
+            //$("#datepicker2").val(date);
+
+        //alert(month);
+
+        var date = ('0' + myDate.getDate()).slice(-2) + '/' + month + '/' + myDate.getFullYear();
+        //alert(date);
+
+
+
         document.write('<div class="col-md-4">');
         document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
+        document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + date + '"/>');
+        //document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
         document.write('</div></div>');
 
         document.write("<div class='col-md-4'>");
         document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
+        document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + date + '"/>');
+        //document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
         document.write('</div></div>');
 
         document.write('<div class="col-md-4">');
@@ -116,9 +130,18 @@
     <form>
     <div class="metersInputGroup">
         <label for="meters">Enter height limit — in meters :</label>
-        <input id="meters" type="number" name="meters" step="0.01" min="0" max="20" placeholder="e.g. 1.78" required>
+        <input id="meters" type="number" name="meters" step="0.1" min="0" max="20" placeholder="value" required>
         <span class="validity"></span>
+        <a class="btn btn-default" onclick="updateData()">Trace</a>
+        <%--<input type="submit" value="Trace">--%>
     </div>
+    <div>
+        
+    </div>
+    </form>
+
+
+
     <%--<div class="feetInputGroup" style="display: none;">
         <span>Saisir votre taille — </span>
         <label for="feet">feet :</label>
@@ -131,10 +154,10 @@
     <%--<div>
       <input type="button" class="meters" value="Saisir la taille en feet/inches">
     </div>--%>
-    <div>
-        <input type="submit" value="Envoyer">
-    </div>
-</form>
+
+
+
+
 
     <script type="text/javascript">
         var label = document.getElementById('<%=h_label.ClientID%>').value;
@@ -175,21 +198,33 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+            //var myDate = new Date();
+            //var date = ('0'+ myDate.getDate()).slice(-2) + '/' + ('0'+ myDate.getMonth()+1).slice(-2) + '/' + myDate.getFullYear();
+            ////$("#datepicker1").val(date);
+
+            //alert(date);
+
             var dp = $("#datetimepicker1");
             dp.datepicker({
                 changeMonth: true,
                 changeYear: true,
                 format: "dd/mm/yyyy",
+                defaultdate: '01/01/2020',
                 language: "fr"
             });
         });
 
         $(document).ready(function () {
+
+            
+
             var dp = $("#datetimepicker2");
             dp.datepicker({
                 changeMonth: true,
                 changeYear: true,
                 format: "dd/mm/yyyy",
+                defaultdate: date,
                 language: "fr"
             });
         });
@@ -255,7 +290,9 @@
         // Update charts with wave data
         function updateCharts(data) {
 
-            
+            var height = +document.getElementById('meters').value;
+
+            //alert("height: " + height);
 
             
             // Wave Height chart
@@ -266,8 +303,8 @@
 
             for (var i = 0; i < data.H_time.length; i++) {
                 H_sig.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_m0[i] * 100) / 100]);
-                H_max.push([Date.parse(data.H_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.H_max[i]*100)/100]);
-                H_limit.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), 2.7]);
+                H_max.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_max[i] * 100) / 100]);
+                H_limit.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), height]);
 
                 
             }

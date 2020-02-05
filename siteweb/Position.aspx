@@ -181,6 +181,7 @@
     <script type="text/javascript">
 
         var buoy_LatLng = { lat: 36.19125, lng: -61.53088 };
+        var buoy_ref_LatLng = { lat: 36.19125, lng: -61.53088 };
      
         // Hide/Show history controls
         $('#d_realtime').on("click", function () {
@@ -243,6 +244,9 @@
             else
                 buoy_LatLng = { lat: 43.14367, lng: 6.039166 };
 
+            buoy_ref_LatLng.lat = data.lat_o;
+            buoy_ref_LatLng.lng = data.lng_o;
+
             $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[data.P_time.length - 1]));
 
 
@@ -252,10 +256,14 @@
             //alert('histo:' + b_histo)
 
             var P_pos = [];
-            var min_lng = 0;
-            var max_lng = 0;
+            var min_lng = 100;
+            var max_lng = -100;
             var min_lat = 0;
             var max_lat = 0;
+            var max_dist_lng = -100000;
+            var max_dist_lat = -100000;
+            var min_dist_lng = 100000;
+            var min_dist_lat = 100000;
             //for (var i = data.P_time.length - 3; i < data.P_time.length; i++) {
             var nb_to_display = 0;
             if (data.P_time.length > 0) { 
@@ -279,6 +287,18 @@
                     //if (max_lat < data.P_lat[i])
                     //    max_lat = data.P_lat[i];
 
+                    if (max_dist_lng < data.P_dist_west_est[i])
+                        max_dist_lng = data.P_dist_west_est[i];
+                    if (max_dist_lat < data.P_dist_north_south[i])
+                        max_dist_lat = data.P_dist_north_south[i];
+
+                    if (min_dist_lng > data.P_dist_west_est[i])
+                        min_dist_lng = data.P_dist_west_est[i];
+                    if (min_dist_lat > data.P_dist_north_south[i])
+                        min_dist_lat = data.P_dist_north_south[i];
+
+
+
                     var delta_pos = Math.sqrt(Math.pow(data.P_dist_north_south[i], 2) + Math.pow(data.P_dist_west_est[i], 2));
                     P_pos.push(
                         {
@@ -292,25 +312,66 @@
                 }
             }
 
-            alert(min_lng.toString());
-            alert(max_lng.toString());
+            //alert(min_lng.toString());
+            //alert(max_lng.toString());
             //var data_name = data.map(function(a) {return a.name;});
 
-            $('#DISTNS').text(data.P_dist_north_south[data.P_time.length - nb_to_display].toFixed(0))
-            $('#DISTWE').text(data.P_dist_west_est[data.P_time.length - nb_to_display].toFixed(0))
+            $('#DISTNS').text(Math.abs(data.P_dist_north_south[data.P_time.length - nb_to_display]).toFixed(0))
+            $('#DISTWE').text(Math.abs(data.P_dist_west_est[data.P_time.length - nb_to_display]).toFixed(0))
 
 
-            if (min_lng > data.lng_o)
-                min_lng = data.lng_o;
-            if (max_lng < data.lng_o)
-                max_lng = data.lng_o;
+                //if (min_lng > data.lng_o)
+                //    min_lng = data.lng_o;
+                //if (max_lng < data.lng_o)
+                //    max_lng = data.lng_o;
 
-            alert(min_lng.toString());
-            alert(max_lng.toString());
+                //alert("max_dist_x: " + max_dist_lng);
+                //alert("max_dist_y: " + max_dist_lat);
+
+                //alert("min_dist_x: " + min_dist_lng);
+                //alert("min_dist_y: " + min_dist_lat);
+
+                //if (max_dist_lng > max_dist_lat) {
+                //    chartPos.xAxis[0].update({ min: min_lat - 0.3125, max: max_lat + 0.3125 });
+                //}
+                //else {
+                //    chartPos.yAxis[0].update({ min: min_lng-0.3125,max: max_lng+0.3125 });
+                //}
+
+                //alert(min_lng.toString());
+                //alert(max_lng.toString());
 
 
-            //chartPos.yAxis[0].update({ max: 50 });
-            chartPos.xAxis[0].update({ min: min_lng-0.8125,max: max_lng+0.8125 });
+                //chartPos.yAxis[0].update({ max: 50 });
+                //chartPos.xAxis[0].update({ min: min_lng-0.3125,max: max_lng+0.3125 });
+
+            var max_dist = 0;
+            var axis_to_modifie = 0;
+            if (max_dist_lng > max_dist_lat) {
+                max_dist = max_dist_lng;
+                axis_to_modifie = 1;
+            }
+            else {
+                max_dist = max_dist_lat;
+                axis_to_modifie = 2;
+            }
+
+            
+            //alert("coeff: " + coeff);
+
+            var coeff = 0;
+            if (axis_to_modifie == 1) {
+                var coeff = (max_dist / 11.1037625) * 0.0001;
+                chartPos.yAxis[0].update({ min: data.lat_o - coeff, max: data.lat_o + coeff });
+            }
+            else if (axis_to_modifie == 2) {
+                var coeff = (max_dist / 7.5978073) * 0.0001;
+                chartPos.xAxis[0].update({ min: min_lng - coeff, max: max_lng + coeff });
+            }
+
+
+            
+            //chartPos.yAxis[0].update({ min: data.lat_o - 0.0006, max: data.lat_o + 0.0006 });
 
             chartPos.series[0].setData(P_pos);
 
@@ -330,6 +391,8 @@
         };
 
         function initialize() {	
+
+            
 
             var mapOptions = {
                 center: buoy_LatLng,
@@ -360,6 +423,21 @@
             marker.addListener('click', function () {
                     infowindow.open(map, marker);
             });
+
+
+
+            <%--var marker_ref = new google.maps.Marker({
+                position: buoy_ref_LatLng,
+                map: map,
+                title:  '<%=ConfigurationManager.AppSettings["SiteName"] %>' + ' - ref'
+            });
+
+            //marker.setIcon('http://google-maps-icons.googlecode.com/files/sailboat-tourism.png');
+            marker_ref.setIcon('http://maps.google.com/mapfiles/marker.png');
+
+            marker_ref.addListener('click', function () {
+                    infowindow.open(map, marker_ref);
+            });--%>
 
             var infowindow = new google.maps.InfoWindow({
                 content: ' <%=ConfigurationManager.AppSettings["SiteName"] %>'
