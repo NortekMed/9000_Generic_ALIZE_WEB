@@ -126,20 +126,20 @@ public partial class SIG_Current : System.Web.UI.Page
             s_layers = "";
             for ( int j = 0; j < downloaddata.C_amp[i].Length; j++)
             {
-                s_layers += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
-                s_layers += downloaddata.C_dir[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
-                s_layers += downloaddata.C_snr[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_amp[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_dir[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_snr[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
             }
 
             DateTime date = Convert.ToDateTime(downloaddata.C_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
             output.Add(s_date.Replace("T", ", ") + ';'
-                        + downloaddata.C_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.C_temp[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + s_layers
-                        + downloaddata.C_volt[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.C_pitch[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.C_roll[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.C_volt[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.C_pitch[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.C_roll[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)

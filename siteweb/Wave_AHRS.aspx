@@ -88,28 +88,20 @@
         document.write('<div class="hidden" id="history"> <br>');
         document.write('<div class="input-group date">');
 
-        var myDate = new Date();
-        //var date = ('0' + myDate.getDate()).slice(-2) + '/' + ('0' + myDate.getMonth() + 1).slice(-2) + '/' + myDate.getFullYear();
-        var month = myDate.getMonth() + 1;
-            //$("#datepicker2").val(date);
-
-        //alert(month);
-
-        var date = ('0' + myDate.getDate()).slice(-2) + '/' + month + '/' + myDate.getFullYear();
-        //alert(date);
-
-
+        //var myDate = new Date();
+        //var month = myDate.getMonth() + 1;
+        //var date = ('0' + myDate.getDate()).slice(-2) + '/' + month + '/' + myDate.getFullYear();
 
         document.write('<div class="col-md-4">');
         document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + date + '"/>');
-        //document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
+        //document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + date + '"/>');
+        document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
         document.write('</div></div>');
 
         document.write("<div class='col-md-4'>");
         document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + date + '"/>');
-        //document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
+        //document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + date + '"/>');
+        document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
         document.write('</div></div>');
 
         document.write('<div class="col-md-4">');
@@ -130,7 +122,8 @@
     <form>
     <div class="metersInputGroup">
         <label for="meters">Enter height limit — in meters :</label>
-        <input id="meters" type="number" name="meters" step="0.1" min="0" max="20" placeholder="value" required>
+        <input id="meters" type="number" name="meters" step="0.1" min="0" max="20" value="0" required>
+        <%--<input id="meters" type="number" name="meters" step="0.1" min="0" max="20" placeholder="value" required>--%>
         <span class="validity"></span>
         <a class="btn btn-default" onclick="updateData()">Trace</a>
         <%--<input type="submit" value="Trace">--%>
@@ -139,24 +132,6 @@
         
     </div>
     </form>
-
-
-
-    <%--<div class="feetInputGroup" style="display: none;">
-        <span>Saisir votre taille — </span>
-        <label for="feet">feet :</label>
-        <input id="feet" type="number" name="feet" min="0" step="1">
-        <span class="validity"></span>
-        <label for="inches">inches :</label>
-        <input id="inches" type="number" name="inches" min="0" max="11" step="1">
-        <span class="validity"></span>
-    </div>--%>
-    <%--<div>
-      <input type="button" class="meters" value="Saisir la taille en feet/inches">
-    </div>--%>
-
-
-
 
 
     <script type="text/javascript">
@@ -210,21 +185,19 @@
                 changeMonth: true,
                 changeYear: true,
                 format: "dd/mm/yyyy",
-                defaultdate: '01/01/2020',
+                //defaultdate: '01/01/2020',
                 language: "fr"
             });
         });
 
         $(document).ready(function () {
 
-            
-
             var dp = $("#datetimepicker2");
             dp.datepicker({
                 changeMonth: true,
                 changeYear: true,
                 format: "dd/mm/yyyy",
-                defaultdate: date,
+                //defaultdate: date,
                 language: "fr"
             });
         });
@@ -238,6 +211,8 @@
         // Hide/Show history controls
         $('#d_realtime').on("click", function () {
             $("#history").addClass('hidden');
+            $('#datetimepicker1').val("").datepicker("update");
+            $('#datetimepicker2').val("").datepicker("update");
             initData();
         });
         $('#d_history').on("click", function () {
@@ -273,27 +248,10 @@
             });
         }
 
-        //alert("hello");
-
-        //    var metersInputGroup = document.querySelector('.metersInputGroup');
-        //    var metersInput = document.querySelector('#meters');
-        //    var switchBtn = document.querySelector('input[type="button"]');
-        //    alert("hello2" + metersInput.value);
-        //    switchBtn.addEventListener('click', function() {
-        //        switchBtn.value = 'Saisir la taille en mètres';
-        //        metersInputGroup.style.display = 'none';
-        //        metersInput.removeAttribute('required');
-
-        //        metersInput.value = '';
-        //    });
-
         // Update charts with wave data
         function updateCharts(data) {
 
             var height = +document.getElementById('meters').value;
-
-            //alert("height: " + height);
-
             
             // Wave Height chart
             var chartH = $('#Hcontainer').highcharts();
@@ -302,10 +260,13 @@
             var H_limit = [];
 
             for (var i = 0; i < data.H_time.length; i++) {
-                H_sig.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_m0[i] * 100) / 100]);
-                H_max.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_max[i] * 100) / 100]);
-                H_limit.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), height]);
-
+                var time = Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                H_sig.push([time, Math.round(data.H_m0[i] * 100) / 100]);
+                H_max.push([time, Math.round(data.H_max[i] * 100) / 100]);
+                H_limit.push([time, height]);
+                //H_sig.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_m0[i] * 100) / 100]);
+                //H_max.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_max[i] * 100) / 100]);
+                //H_limit.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), height]);
                 
             }
 

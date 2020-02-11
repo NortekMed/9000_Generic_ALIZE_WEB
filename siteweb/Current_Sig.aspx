@@ -97,13 +97,22 @@
         document.write('<div class="hidden" id="history"> <br>');
         document.write('<div class="input-group date">');
 
+        //var myDate = new Date();
+        //var month = myDate.getMonth() + 1;
+        //var date = ('0' + myDate.getDate()).slice(-2) + '/' + month + '/' + myDate.getFullYear();
+        //alert(date);
+
         document.write('<div class="col-md-4">');
         document.write('<div class="form - group">');
+        //document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + date + '"/>');
+        //document.write('<div class="col-md-4">');
+        //document.write('<div class="form - group">');
         document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
         document.write('</div></div>');
 
         document.write("<div class='col-md-4'>");
         document.write('<div class="form - group">');
+        //document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + date + '"/>');
         document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
         document.write('</div></div>');
 
@@ -121,6 +130,16 @@
 
         document.write('</div><br><br>')
     </script>
+
+    <form>
+    <div class="speedInputGroup">
+        <label for="speed">Enter speed limit — in m/s :</label>
+        <input id="speed" type="number" name="speed" step="0.1" min="0" max="20" value="0" required>
+        <span class="validity"></span>
+        <a class="btn btn-default" onclick="updateDataLimit()">Trace</a>
+    </div>
+    <div>
+
 
     <script type="text/javascript">
         var label = document.getElementById('<%=speedlabel.ClientID%>').value;
@@ -207,6 +226,14 @@
         // Hide/Show history controls
         $('#d_realtime').on("click", function () {
             $("#history").addClass('hidden');
+            $('#datetimepicker1').val("").datepicker("update");
+            $('#datetimepicker2').val("").datepicker("update");
+            //var dp1 = $("#datetimepicker1");
+            //dp1.value = "";
+            //var dp2 = $("#datetimepicker2");
+            //dp1.value = "";
+            //$("#datetimepicker1").value = "";
+            //$("#datetimepicker2").value = "";
             initData();
         });
         $('#d_history').on("click", function () {
@@ -216,6 +243,11 @@
         // Get timestamped data with webservice
         function updateData() {
             getData($("#datetimepicker1").val(), $("#datetimepicker2").val());
+        }
+
+        function updateDataLimit() {
+            //alert($("#datetimepicker1").val());
+            getDataLimit($("#datetimepicker1").val(), $("#datetimepicker2").val());
         }
 
         // Get last 24h with webservice
@@ -237,9 +269,64 @@
                     dataType: "json",
                     success: function (data) {
                         updateCharts(data.d);
+                        updateLimit(data.d);
                     },
                     error : function() {
                         alert('SIG: erreur de chargement ou pas de données');
+                    }
+                });
+        }
+
+        //// Get last 24h with webservice
+        //function initData() {
+        //    getData("", "");
+        //}
+
+        // Call webservice with ajax!
+        function getDataLimit(start, stop) {
+
+        var obj = { begin: start, end: stop};
+
+                $.ajax({
+                    type: "POST",
+                    url: "Current_Sig.aspx/GetValues",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateLimit(data.d);
+                    },
+                    error : function() {
+                        alert('SIG: erreur de chargement ou pas de données');
+                    }
+                });
+        }
+
+        // Update charts with wave data
+        function updateLimit(data) {
+
+            var speed = +document.getElementById('speed').value;
+            //alert(speed);
+
+            var chartAmp = $('#Ampcontainer').highcharts();
+            //chartAmp.series[0].remove();
+            
+
+            //making serie for limit line
+            var v_limit = [];
+            for (var i = 0; i < data.C_time.length; i++) {
+                var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                v_limit.push([time, speed]);
+            }
+            chartAmp.series[chartAmp.series.length - 1].remove();
+            
+            chartAmp.addSeries({
+                    name: "Limit=" + speed + "m/s",
+                    data: v_limit,
+                    visible: true,
+                    tooltip: {
+                        valueSuffix: "m/s"
                     }
                 });
         }
@@ -310,12 +397,14 @@
             }, false); //true / false to redraw
             
 
-            
+            var speed = +document.getElementById('speed').value;
+            //alert(speed)
 
             var Amp_unit = ' ' + document.getElementById('<%=speedunit.ClientID%>').value;
             var direction_unit = ' °';
             // Chart immersion  fixe"
             var chartAmp = $('#Ampcontainer').highcharts();
+            //for (var i = chartAmp.series.length - 1; i > 0; i--) {  //0 to keep first serie that is limit value
             for (var i = chartAmp.series.length - 1; i > -1; i--) {
                 chartAmp.series[i].remove();
             }
@@ -331,6 +420,7 @@
             //while (chartDir.series.length > 0) {
             //    chartDir.series[0].remove();
             //}
+
             
 
             for (var j = 0; j < data.C_amp[0].length; j++) {
@@ -346,6 +436,8 @@
                     //amp.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_amp[i][j]]);
                     //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
                     //dir.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), data.C_dir[i][j]]);
+
+                    
                 }
 
                 chartAmp.addSeries({
@@ -375,13 +467,44 @@
                 });
                 
                 ////chartDir.series[j].update({ lineWidth: 0 });
-
+                
                 
             }
 
+            //making serie for limit line
+            var v_limit = [];
+            for (var i = 0; i < data.C_time.length; i++) {
+                var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                v_limit.push([time, speed]);
+            }
+            chartAmp.addSeries({
+                    name: "Limit=" + speed + "m/s",
+                    data: v_limit,
+                    visible: true,
+                    tooltip: {
+                        valueSuffix: "m/s"
+                    }
+                });
+
+            //for (var i = 0; i < data.C_time.length; i++) {
+            //    var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+            //    v_limit.push([time, speed]);
+            //}
+            //chartAmp.addSeries({
+            //        name: "Limit=" + speed + "m/s",
+            //        data: v_limit,
+            //        visible: false,
+            //        tooltip: {
+            //            valueSuffix: Amp_unit.toString()
+            //        }
+            //});
+
+
+            //chartAmp.series[1].setData(v_limit);
             
             chartDir.yAxis[0].update({ min: 0, max: 360 });
             chartAmp.series[0].update({ visible: true });
+            //chartAmp.series[1].update({ visible: true });
             chartDir.series[0].update({ visible: true });
 
             chart.redraw();
