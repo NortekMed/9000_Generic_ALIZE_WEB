@@ -775,8 +775,8 @@
                     //YYYYMMDDtoDDMMYYY(data.list_time[last]);
 
                     $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[last]))
-                    $('#lat').text(data.P_lat[last])
-                    $('#lon').text(data.P_lng[last])
+                    $('#lat').text(data.P_lat[last]).toFixed(6)
+                    $('#lon').text(data.P_lng[last]).toFixed(6)
                 }
             }
 
@@ -799,15 +799,15 @@
                     $('#wsmoy').text(tmp.toFixed(1))
                 //$('#wsmoy').text(data.wxt_wind_speed_avg[last] * convert_nd)
                     tmp = data.wxt_wind_speed_max[last] * convert_nd
-                    $('#wsmax').text(tmp.toFixed(1))
+                    $('#wsmax').text(tmp.toFixed(1)).toFixed(1)
                 //$('#wsmax').text(data.wxt_wind_speed_max[last] * convert_nd)
                     tmp = data.wxt_wind_dir_avg[last]
-                    $('#wdmoy').text(tmp.toFixed(1))
+                    $('#wdmoy').text(tmp.toFixed(1)).toFixed(1)
                 //$('#wdmoy').text(data.wxt_wind_dir_avg[last])
 
-                last = data.wxt_str_time.length - 1;
-                $('#wtemp').text(data.wxt_temp[last])
-                $('#press').text(data.wxt_press[last])
+                    last = data.wxt_str_time.length - 1;
+                    $('#wtemp').text(data.wxt_temp[last]).toFixed(1)
+                    $('#press').text(data.wxt_press[last]).toFixed(0)
 
                 //last = data.rain_time.length - 1;
                 //$('#rain_acc').text(data.rain_acc[last])

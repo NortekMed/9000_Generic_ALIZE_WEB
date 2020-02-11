@@ -155,6 +155,16 @@
         document.write('</div><br><br>')
     </script>
 
+
+    <form>
+    <div class="speedInputGroup">
+        <label for="speed">Enter speed limit — in m/s :</label>
+        <input id="speed" type="number" name="speed" step="0.1" min="0" max="20" value="0" required>
+        <span class="validity"></span>
+        <a class="btn btn-default" onclick="updateData()">Trace</a>
+    </div>
+    <div>
+
     <script type="text/javascript">
         var label = document.getElementById('<%=_2_equipname_alias.ClientID%>').value;
 
@@ -260,6 +270,8 @@
         // Hide/Show history controls
         $('#d_realtime').on("click", function () {
             $("#history").addClass('hidden');
+            $('#datetimepicker1').val("").datepicker("update");
+            $('#datetimepicker2').val("").datepicker("update");
             initData();
         });
         $('#d_history').on("click", function () {
@@ -345,12 +357,17 @@
             //    par5.push([Date.parse(data.str_time1[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param5[i]]);
             //}
 
+
+            var speed = +document.getElementById('speed').value;
+            var l_speed = [];
             //VENT Vaissala
             for (var i = 0; i < data.wxt_wind_str_time.length; i++) {
-                par6.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_speed_avg[i]]);
-                par7.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_dir_avg[i]]);
-                par8.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_speed_max[i]]);
-                par9.push([Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_wind_dir_max[i]]);
+                var time = Date.parse(data.wxt_wind_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                par6.push([time, data.wxt_wind_speed_avg[i]]);
+                par7.push([time, data.wxt_wind_dir_avg[i]]);
+                par8.push([time, data.wxt_wind_speed_max[i]]);
+                par9.push([time, data.wxt_wind_dir_max[i]]);
+                l_speed.push([time, speed]);
             }
 
             //METEO_AIRMAR
@@ -387,6 +404,7 @@
             chartpar2.series[0].setData(par6);
             chartpar2.series[1].setData(par7);
             chartpar2.series[2].setData(par8);
+            chartpar2.series[3].setData(l_speed);
             //chartpar2.series[3].setData(par9);    //not display dirmax
             
 
@@ -718,6 +736,14 @@
                     animation: true,
                     tooltip: {
                         valueSuffix: ' ' + par8_unit.toString()
+                    }
+                },{
+                    name: 'Speed limit',
+                    data: [],
+                    color: 'red',
+                    animation: true,
+                    tooltip: {
+                        valueSuffix: ' m/s'
                     }
                 }
             ]

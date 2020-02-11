@@ -139,7 +139,7 @@
     <value>Data download (csv)</value>
   </data>
   <data name="end" xml:space="preserve">
-    <value>stop</value>
+    <value />
   </data>
   <data name="historical" xml:space="preserve">
     <value>Historical</value>
@@ -190,7 +190,7 @@
     <value>Sign out</value>
   </data>
   <data name="start" xml:space="preserve">
-    <value>start</value>
+    <value />
   </data>
   <data name="turbi" xml:space="preserve">
     <value>Turbidimeter</value>
