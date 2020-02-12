@@ -799,10 +799,10 @@
                     $('#wsmoy').text(tmp.toFixed(1))
                 //$('#wsmoy').text(data.wxt_wind_speed_avg[last] * convert_nd)
                     tmp = data.wxt_wind_speed_max[last] * convert_nd
-                    $('#wsmax').text(tmp.toFixed(1))
+                    $('#wsmax').text(tmp.toFixed(1)).toFixed(1)
                 //$('#wsmax').text(data.wxt_wind_speed_max[last] * convert_nd)
                     tmp = data.wxt_wind_dir_avg[last]
-                    $('#wdmoy').text(tmp.toFixed(1))
+                    $('#wdmoy').text(tmp.toFixed(1)).toFixed(1)
                 //$('#wdmoy').text(data.wxt_wind_dir_avg[last])
 
                     last = data.wxt_str_time.length - 1;
