@@ -301,7 +301,17 @@ public partial class Position : System.Web.UI.Page
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"]));
             list_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
+            var a = dRow["LAT"];
+            float f_lat = (float)dRow["LAT"];
+            float f_lng = (float)dRow["LNG"];
+            string s_lat = ((double)f_lat).ToString("0.0000000", NumberFormatInfo.InvariantInfo);
+            string s_lng = ((double)f_lng).ToString("0.0000000", NumberFormatInfo.InvariantInfo);
+            //string etr = ((double)b).ToString();
+            //dRow.ItemArray.
+            /*b.ToString("0.000000", NumberFormatInfo.InvariantInfo)*/;
+            //list_lat.Add(double.Parse(s_lat));
             list_lat.Add(double.Parse(dRow["LAT"].ToString()));
+            //list_lng.Add(double.Parse(s_lng));
             list_lng.Add(double.Parse(dRow["LNG"].ToString()));
             list_qa.Add(double.Parse(dRow["QUALITY"].ToString()));
             list_nb.Add(double.Parse(dRow["NBSAT"].ToString()));

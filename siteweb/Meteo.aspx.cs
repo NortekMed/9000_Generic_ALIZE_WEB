@@ -221,8 +221,8 @@ public partial class Meteo : System.Web.UI.Page
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
             output.Add( s_date.Replace("T", ", ") + ';'
-                        + downloaddata.wxt_temp[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.wxt_press[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_temp[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_press[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)

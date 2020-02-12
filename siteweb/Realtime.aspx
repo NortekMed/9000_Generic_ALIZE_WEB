@@ -775,8 +775,8 @@
                     //YYYYMMDDtoDDMMYYY(data.list_time[last]);
 
                     $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[last]))
-                    $('#lat').text(data.P_lat[last]).toFixed(6)
-                    $('#lon').text(data.P_lng[last]).toFixed(6)
+                    $('#lat').text(data.P_lat[last].toFixed(6))
+                    $('#lon').text(data.P_lng[last].toFixed(6))
                 }
             }
 
@@ -799,15 +799,15 @@
                     $('#wsmoy').text(tmp.toFixed(1))
                 //$('#wsmoy').text(data.wxt_wind_speed_avg[last] * convert_nd)
                     tmp = data.wxt_wind_speed_max[last] * convert_nd
-                    $('#wsmax').text(tmp.toFixed(1)).toFixed(1)
+                    $('#wsmax').text(tmp.toFixed(1))
                 //$('#wsmax').text(data.wxt_wind_speed_max[last] * convert_nd)
                     tmp = data.wxt_wind_dir_avg[last]
-                    $('#wdmoy').text(tmp.toFixed(1)).toFixed(1)
+                    $('#wdmoy').text(tmp.toFixed(1))
                 //$('#wdmoy').text(data.wxt_wind_dir_avg[last])
 
                     last = data.wxt_str_time.length - 1;
-                    $('#wtemp').text(data.wxt_temp[last]).toFixed(1)
-                    $('#press').text(data.wxt_press[last]).toFixed(0)
+                    $('#wtemp').text(data.wxt_temp[last].toFixed(1))
+                    $('#press').text(data.wxt_press[last].toFixed(0))
 
                 //last = data.rain_time.length - 1;
                 //$('#rain_acc').text(data.rain_acc[last])
@@ -931,12 +931,12 @@
                 YYYYMMDDtoDDMMYYY(data.H_time[last]);
 
                 $('#ahrshour').text("      " + YYYYMMDDtoDDMMYYY(data.H_time[last]))
-                $('#ahrs_par0').text(data.D_mean[last])
-                $('#ahrs_par1').text(data.D_peak[last])
-                $('#ahrs_par2').text(data.H_max[last])
-                $('#ahrs_par3').text(data.H_m0[last])
-                $('#ahrs_par4').text(data.T_m02[last])
-                $('#ahrs_par5').text(data.T_p[last])
+                $('#ahrs_par0').text(data.D_mean[last].toFixed(1))
+                $('#ahrs_par1').text(data.D_peak[last].toFixed(1))
+                $('#ahrs_par2').text(data.H_max[last].toFixed(2))
+                $('#ahrs_par3').text(data.H_m0[last].toFixed(2))
+                $('#ahrs_par4').text(data.T_m02[last].toFixed(1))
+                $('#ahrs_par5').text(data.T_p[last].toFixed(1))
 
             }
         }
