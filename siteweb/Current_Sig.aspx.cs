@@ -126,7 +126,7 @@ public partial class SIG_Current : System.Web.UI.Page
             s_layers = "";
             for ( int j = 0; j < downloaddata.C_amp[i].Length; j++)
             {
-                s_layers += downloaddata.C_amp[i][j].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_dir[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_snr[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
             }
