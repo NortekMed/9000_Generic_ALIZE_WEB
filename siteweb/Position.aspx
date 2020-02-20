@@ -248,7 +248,7 @@
             buoy_ref_LatLng.lng = data.lng_o;
 
             $('#Positionhour').text("      " + YYYYMMDDtoDDMMYYY(data.P_time[data.P_time.length - 1]));
-
+            
 
             var chartPos = $('#poscontainer').highcharts();
 
