@@ -62,41 +62,38 @@
         var l_last = document.getElementById('<%=last.ClientID%>').value;
         var l_historical = document.getElementById('<%=historical.ClientID%>').value;
 
-        document.write('<div id="Top" style="width: 100 %; ">');
-            document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
-                document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
-                document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
-            document.write('</div><br>');
+        //document.write('<div id="Top" style="width: 100 %; ">');
+        //    document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
+        //        document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
+        //        document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
+        //    document.write('</div><br>');
 
-                document.write('<div class="hidden" id="history"> <br>');
-                    document.write('<div class="input-group date">');
-                        document.write('<div class="col-md-4">');
-                            document.write('<div class="form - group">');
-                            document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
-                            //document.write('<span class="input-group-addon">');
-                            //document.write('<span class="glyphicon glyphicon-calendar"></span>');
-                            //document.write('</span>');
-                            document.write('</div></div>');
+        //        document.write('<div class="hidden" id="history"> <br>');
+        //            document.write('<div class="input-group date">');
+        //                document.write('<div class="col-md-4">');
+        //                    document.write('<div class="form - group">');
+        //                    document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
+        //                    document.write('</div></div>');
 
-                        document.write("<div class='col-md-4'>");
-                            document.write('<div class="form - group">');
-                            document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
-                    document.write('</div></div>');
+        //                document.write("<div class='col-md-4'>");
+        //                    document.write('<div class="form - group">');
+        //                    document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
+        //            document.write('</div></div>');
 
-                        document.write('<div class="col-md-4">');
-                            document.write('<div class="form - group">');
-                            document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
-                    document.write('</div></div>');
+        //                document.write('<div class="col-md-4">');
+        //                    document.write('<div class="form - group">');
+        //                    document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
+        //            document.write('</div></div>');
 
-            document.write('</div></div>');
+        //    document.write('</div></div>');
 
-            document.write('<br><p>' + l_download + '</p>');
-                document.write('<div>');
+        //    document.write('<br><p>' + l_download + '</p>');
+        //        document.write('<div>');
 
-                document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="DownloadPosition" />');
+        //        document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="DownloadPosition" />');
 
-            document.write('</div><br><br>')
-        document.write('</div>');
+        //    document.write('</div><br><br>')
+        //document.write('</div>');
     </script>
         
     <%--<script type="text/javascript">

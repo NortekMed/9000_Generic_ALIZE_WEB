@@ -22,7 +22,7 @@
 
     <div id="Top" style="width:100%; ">
 
-        <div id="q_opt" class="btn-group" data-toggle="buttons">
+        <%--<div id="q_opt" class="btn-group" data-toggle="buttons">
             <label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>Dernières 24h</label>
             <label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2">Historique</label>
         </div>
@@ -55,11 +55,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
         
         <br />
 
-            <p>Téléchargement des mesures affichées</p>
+            <%--<p>Téléchargement des mesures affichées</p>--%>
              <div>
                 <asp:Button runat="server" ID="downloadBouton" Text="Télécharger (csv)" class="btn btn-default" OnClick="DownloadCurrent" />
             </div>    
