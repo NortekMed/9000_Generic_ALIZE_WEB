@@ -2,12 +2,12 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/heatmap.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/data.js"></script>
-    <script src="https://code.highcharts.com/modules/boost-canvas.js"></script>
-    <script src="https://code.highcharts.com/modules/boost.js"></script>
+    <script src="https://code.highcharts.com/8.0.4/highcharts.js"></script>
+    <script src="https://code.highcharts.com/8.0.4/modules/heatmap.js"></script>
+    <script src="https://code.highcharts.com/8.0.4/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/8.0.4/modules/data.js"></script>
+    <script src="https://code.highcharts.com/8.0.4/modules/boost-canvas.js"></script>
+    <script src="https://code.highcharts.com/8.0.4/modules/boost.js"></script>
     <script src="Scripts/bootstrap-datepicker.js"></script>
     <script src="Scripts/nortekmed/Highcharts_cfg.js"></script>
 
