@@ -215,7 +215,8 @@
 
         // Get timestamped data with webservice
         function updateData() {
-            getData($("#datetimepicker1").val(), $("#datetimepicker2").val());
+            //getData($("#datetimepicker1").val(), $("#datetimepicker2").val());
+            getData("", "");
         }
 
         // Get last 24h with webservice

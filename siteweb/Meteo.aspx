@@ -280,7 +280,8 @@
 
         // Get timestamped data with webservice
         function updateData() {
-            getData($("#datetimepicker1").val(), $("#datetimepicker2").val());
+            //getData($("#datetimepicker1").val(), $("#datetimepicker2").val());
+            getData("", "");
         }
 
         // Get last 24h with webservice
@@ -445,6 +446,9 @@
         var par2_unit = " " + document.getElementById('<%=humidity_unit.ClientID%>').value;
 
         $('#param0container').highcharts({
+            exporting: {
+            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+            },
             
             xAxis: {
                 type: 'datetime',
@@ -538,6 +542,10 @@
 
 
         $('#param1container').highcharts({
+            exporting: {
+            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+            },
+
             xAxis: {
                 type: 'datetime',
                 minTickInterval: 30,
@@ -638,6 +646,10 @@
         var par3_unit = " " + document.getElementById('<%=param3unit.ClientID%>').value;--%>
 
         $('#param2container').highcharts({
+            exporting: {
+            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+            },
+
             xAxis: {
                 type: 'datetime',
                 minTickInterval: 30,
@@ -765,6 +777,10 @@
         var par11_unit = " " + document.getElementById('<%=press_airmar_unit.ClientID%>').value;
 
         $('#param3container').highcharts({
+            exporting: {
+            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+            },
+
             xAxis: {
                 type: 'datetime',
                 minTickInterval: 30,
@@ -857,6 +873,10 @@
 
 
         $('#param4container').highcharts({
+            exporting: {
+            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+            },
+
             xAxis: {
                 type: 'datetime',
                 minTickInterval: 30,
@@ -968,6 +988,10 @@
 
 
         $('#param5container').highcharts({
+            exporting: {
+            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+            },
+
             xAxis: {
                 type: 'datetime',
                 minTickInterval: 30,

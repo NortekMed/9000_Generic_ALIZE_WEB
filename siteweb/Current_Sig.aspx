@@ -232,7 +232,8 @@
 
         function updateDataLimit() {
             //alert($("#datetimepicker1").val());
-            getDataLimit($("#datetimepicker1").val(), $("#datetimepicker2").val());
+            //getDataLimit($("#datetimepicker1").val(), $("#datetimepicker2").val());
+            getDataLimit("", "");
         }
 
         // Get last 24h with webservice
@@ -270,22 +271,22 @@
         // Call webservice with ajax!
         function getDataLimit(start, stop) {
 
-        var obj = { begin: start, end: stop};
+            var obj = { begin: start, end: stop};
 
-                $.ajax({
-                    type: "POST",
-                    url: "Current_Sig.aspx/GetValues",
-                    data: JSON.stringify(obj),
-                    async: false,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data) {
-                        updateLimit(data.d);
-                    },
-                    error : function() {
-                        alert('SIG: erreur de chargement ou pas de données');
-                    }
-                });
+            $.ajax({
+                type: "POST",
+                url: "Current_Sig.aspx/GetValues",
+                data: JSON.stringify(obj),
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    updateLimit(data.d);
+                },
+                error : function() {
+                    alert('SIG: erreur de chargement ou pas de données');
+                }
+            });
         }
 
         // Update charts with wave data
@@ -761,7 +762,9 @@
     });
 
     $('#MTcontainer').highcharts({
-
+        exporting: {
+            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+        },
         xAxis: {
             type: 'datetime',
             title: {
