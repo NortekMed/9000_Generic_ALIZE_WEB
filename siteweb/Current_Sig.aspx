@@ -337,17 +337,23 @@
             var mtchart = $('#MTcontainer').highcharts();
             var maree = [];
             var tempeau = [];
+            var sal = [];
 
 
-            for (var i = 0; i < data.C_time.length; i++) {
-                var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                maree.push([time, data.C_press[i]]);
-                tempeau.push([time, data.C_temp[i]]);
-                //maree.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_press[i]]);
-                //tempeau.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_temp[i]]);
+            for (var i = 0; i < data.SBE_time.length; i++) {
+                var time = Date.parse(data.SBE_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                //maree.push([time, data.C_press[i]]);
+                tempeau.push([time, data.SBE_temp[i]]);
+                sal.push([time, data.SBE_sal[i]]);
             }
+            //for (var i = 0; i < data.C_time.length; i++) {
+            //    var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+            //    maree.push([time, data.C_press[i]]);
+            //    tempeau.push([time, data.C_temp[i]]);
+            //}
 
             mtchart.series[0].setData(tempeau);
+            mtchart.series[1].setData(sal);
             //mtchart.series[1].setData(maree);
 
             
@@ -363,8 +369,6 @@
                     var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
                     Amplitude.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_amp[i][j]]);
                     Direction.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_dir[i][j]]);
-                    //Amplitude.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), (j+1) * data.C_cellsize + data.C_blancking, data.C_amp[i][j]]);
-                    //Direction.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), (j+1) * data.C_cellsize + data.C_blancking, data.C_dir[i][j]]);
                     maxAmp = Math.max(maxAmp, data.C_amp[i][j]);
                 }
             }
@@ -775,12 +779,12 @@
         }
     });
 
-    $('#MTcontainer').highcharts({
+        $('#MTcontainer').highcharts({
 
-        xAxis: {
-            type: 'datetime',
-            title: {
-                text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
                 },
                 tickPixelInterval: 80,
                 gridLineWidth: 1
@@ -798,42 +802,44 @@
                         color: 'black'
                     }
                 }
-                //,
-            //}
-                //, {
-                //    title: {
-                //        text: param3label.toString() + ' (' + param3unit.toString() + ')',
-                //    style: {
-                //        color: '#FCA000'
-                //    }
-                //},
-                //labels: {
-                //    format: '{value} ' + param3unit.toString(),
-                //    style: {
-                //        color: '#FCA000'
-                //    }
-                //},
-                //opposite: true
+                ,
+            }
+                , {
+                title: {
+                    text: "Salinity ",
+                    style: {
+                        color: '#FCA000'
+                    }
+                },
+                labels: {
+                    format: '{value} ' + "g/kg",
+                    style: {
+                        color: '#FCA000'
+                    }
+                },
+                opposite: true
             }],
-        series: [{
-                name: par2_label.toString(),
-                data: [],
-                color: 'black',
-                animation: false,
-                tooltip: {
-                    valueSuffix: ' ' + par2_unit.toString()
+            series: [
+                {
+                    name: par2_label.toString(),
+                    data: [],
+                    color: 'black',
+                    animation: false,
+                    tooltip: {
+                        valueSuffix: ' ' + par2_unit.toString()
+                        }
                 }
-        }
-            //, {
-            //    name: 'marée',
-            //    data: [],
-            //    color: '#FCA000',
-            //    yAxis: 1,
-            //    animation: false,
-            //    tooltip: {
-            //        valueSuffix: ' ' +  + param3unit.toString()
-            //    }
-            //}
+                ,
+                {
+                    name: 'salinity',
+                    data: [],
+                    color: '#FCA000',
+                    yAxis: 1,
+                    animation: false,
+                    tooltip: {
+                        valueSuffix: ' ' + "g/kg"
+                    }
+                }
             ]
         });
 

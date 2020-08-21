@@ -150,52 +150,11 @@ public partial class SIG_Current : System.Web.UI.Page
         }
 
         string interval = start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
-        //string interval = downloaddata.C_time[0].Split('T')[0] + "_to_" + downloaddata.C_time[downloaddata.C_time.Length - 1].Split('T')[0];
 
         DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
 
-    //protected void DownloadCurrent(object Source, EventArgs e)
-    //{
-    //    try
-    //    {
-    //        string[] output = new string[downloaddata.C_time.Length + 1];
-    //        output[0] = "local datetime;marée(dBar);temperauture eau";
-    //        for (int j = 0; j < downloaddata.C_amp[0].Length; j++)
-    //        {
-    //            string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
-    //            output[0] += ";";
-    //            output[0] += ("spd " + immersion + "m");
-    //            output[0] += ";";
-    //            output[0] += ("dir " + immersion + "m");
-    //        }
-
-    //        // mise en forme
-    //        for (int i = 0; i < downloaddata.C_time.Length; i++)
-    //        {
-    //            output[i + 1] += downloaddata.C_time[i].Replace("T", ", ");
-    //            output[i + 1] += ";";
-    //            output[i + 1] += downloaddata.C_press[i].ToString("0.000", NumberFormatInfo.InvariantInfo);
-    //            output[i + 1] += ";";
-    //            output[i + 1] += downloaddata.C_temp[i].ToString("00.00", NumberFormatInfo.InvariantInfo);
-
-    //            for (int j = 0; j < downloaddata.C_amp[i].Length; j++)
-    //            {
-    //                output[i + 1] += ";";
-    //                output[i + 1] += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo);
-    //                output[i + 1] += ";";
-    //                output[i + 1] += downloaddata.C_dir[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo);
-    //            }
-    //        }
-
-            //        string interval = downloaddata.C_time[0].Split('T')[0] + "_to_" + downloaddata.C_time[downloaddata.C_time.Length - 1].Split('T')[0];
-
-            //        // Créer fichier csv et Télécharger
-            //        DownloadCsv("currentSIG_" + interval + ".csv", output);
-            //    }
-            //    catch (Exception) { }
-
-            //}
+    
 
         protected void DownloadCsv(string filename, string[] data)
         {
@@ -522,6 +481,33 @@ public partial class SIG_Current : System.Web.UI.Page
             list_snr.Add(snr);
         }
 
+        List<double> list_sbe_temp = new List<double>();
+        List<double> list_sbe_sal = new List<double>();
+        List<string> list_str_sbe = new List<string>();
+
+        ds = new DataSet();
+        DbRequest = "SELECT a.TIME_REC, a.TEMP" + ", a.SAL"  + " FROM " + "SBE" + " a" +
+                        timestampsrequest + " order by a.TIME_REC";
+
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(DbRequest, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        dataadapter.Fill(ds);
+        myDataTable = ds.Tables[0];
+
+        foreach (DataRow dRow in myDataTable.Rows)
+        {
+            DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
+
+            // UTC to Local Time
+            date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
+
+            list_str_sbe.Add(date.ToString("yyyy-MM-ddTHH:mm"));
+
+            list_sbe_temp.Add(double.Parse(dRow["TEMP"].ToString()));
+            list_sbe_sal.Add(double.Parse(dRow["SAL"].ToString()));
+        }
+
+        //data.set_param_equip_3(list_par10, list_par11, list_par12, list_par13, list_par14, list_par15, list_str_time3);
+
 
         // Build current data object
         data_SIG_Current data = new data_SIG_Current();
@@ -531,7 +517,14 @@ public partial class SIG_Current : System.Web.UI.Page
             list_time,
             cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
             blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
-            list_pitch, list_roll, list_temp, list_press, list_volt);
+            list_pitch, list_roll, list_temp, list_press, list_volt, list_sbe_temp, list_sbe_sal, list_str_sbe);
+        //data.set(list_amplitude,
+        //    list_direction,
+        //    list_snr,
+        //    list_time,
+        //    cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
+        //    blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
+        //    list_pitch, list_roll, list_temp, list_press, list_volt);
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
         downloaddata = data;
@@ -555,6 +548,10 @@ public class data_SIG_Current
     public double[] C_press;
     public double[] C_volt;
 
+    public double[] SBE_temp;
+    public double[] SBE_sal;
+    public string[] SBE_time;
+
 
     public double meanTimeInterval = 0.0;
 
@@ -568,7 +565,10 @@ public class data_SIG_Current
         List<double> l_roll,
         List<double> l_temp,
         List<double> l_press,
-        List<double> l_volt)
+        List<double> l_volt,
+        List<double> l_sbe_temp,
+        List<double> l_sbe_sal,
+        List<string> l_sbe_time)
     {
 
         C_amp = l_amp.ToArray();
@@ -581,6 +581,10 @@ public class data_SIG_Current
         C_temp = l_temp.ToArray();
         C_press = l_press.ToArray();
         C_volt = l_volt.ToArray();
+
+        SBE_temp = l_sbe_temp.ToArray();
+        SBE_sal = l_sbe_sal.ToArray();
+        SBE_time = l_sbe_time.ToArray();
 
         for (int i = 1; i < C_time.Length; i++)
             meanTimeInterval += (Convert.ToDateTime(C_time[i]) - Convert.ToDateTime(C_time[i - 1])).TotalMilliseconds;

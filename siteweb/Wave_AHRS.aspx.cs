@@ -402,7 +402,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             
 
             double tp = double.Parse(dRow["TP"].ToString());
-            if (tp > 30)
+            if (double.IsNaN(tp) || tp > 31)
             {
                 if (list_t_tp.Count > 0)
                     tp = list_t_tp[list_t_tp.Count - 1];
@@ -412,7 +412,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_t_tp.Add(tp);
 
             double tz = double.Parse(dRow["TZ"].ToString());
-            if (double.IsNaN(tz) || tz > 30)
+            if (double.IsNaN(tz) || tz > 31)
             {
                 if (list_t_tz.Count > 0)
                     tz = list_t_tm02[list_t_tz.Count - 1];
@@ -422,7 +422,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_t_tz.Add(tz);
 
             double tm01 = double.Parse(dRow["TM01"].ToString());
-            if (double.IsNaN(tm01) || tm01 > 30)
+            if (double.IsNaN(tm01) || tm01 > 31)
             {
                 if (list_t_tm01.Count > 0)
                     tm01 = list_t_tm02[list_t_tm01.Count - 1];
@@ -432,9 +432,9 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_t_tm01.Add(tm01);
 
             double thmax = double.Parse(dRow["TMAX"].ToString());
-            if (double.IsNaN(thmax) || thmax > 30)
+            if (double.IsNaN(thmax) || thmax > 31)
             {
-                if (list_t_tm01.Count > 0)
+                if (list_t_thmax.Count > 0)
                     thmax = list_t_thmax[list_t_thmax.Count - 1];
                 else
                     thmax = 0;
@@ -442,7 +442,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_t_thmax.Add(thmax);
 
             double tm02 = double.Parse(dRow["TM02"].ToString());
-            if (double.IsNaN(tm02) || tm02 > 30)
+            if (double.IsNaN(tm02) || tm02 > 31)
             {
                 if (list_t_tm02.Count > 0)
                     tm02 = list_t_tm02[list_t_tm02.Count - 1];
@@ -452,7 +452,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_t_tm02.Add(tm02);
 
             double t3 = double.Parse(dRow["T3"].ToString());
-            if (double.IsNaN(t3) || t3 > 30)
+            if (double.IsNaN(t3) || t3 > 31)
             {
                 if (list_t_t3.Count > 0)
                     t3 = list_t_t3[list_t_t3.Count - 1];
