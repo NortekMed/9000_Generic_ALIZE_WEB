@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Wave_AHRS.aspx.cs" Inherits="WaveAHRS" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Wave_AHRS_BF_HF.aspx.cs" Inherits="WaveAHRS" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 
@@ -58,6 +58,21 @@
     <asp:HiddenField ID = "d_spread_label_alias"  value="<%$ Resources:WaveAHRS, d_spread_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "n_waves_alias"  value="<%$ Resources:WaveAHRS, n_waves_alias %>" Runat="Server" />
 
+    <asp:HiddenField ID = "h_sig_bf_label_alias"  value="<%$ Resources:WaveAHRS, h_sig_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "h_sig_hf_label_alias"  value="<%$ Resources:WaveAHRS, h_sig_hf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_peak_bf_label_alias"  value="<%$ Resources:WaveAHRS, t_peak_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_peak_hf_label_alias"  value="<%$ Resources:WaveAHRS, t_peak_hf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_z_bf_label_alias"  value="<%$ Resources:WaveAHRS, t_z_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_z_hf_label_alias"  value="<%$ Resources:WaveAHRS, t_z_hf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_m02_bf_label_alias"  value="<%$ Resources:WaveAHRS, t_m02_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_m02_hf_label_alias"  value="<%$ Resources:WaveAHRS, t_m02_hf_label_alias %>" Runat="Server" />
+
+    <asp:HiddenField ID = "d_avg_bf_label_alias"  value="<%$ Resources:WaveAHRS, d_avg_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_avg_hf_label_alias"  value="<%$ Resources:WaveAHRS, d_avg_hf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_peak_bf_label_alias"  value="<%$ Resources:WaveAHRS, d_peak_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_peak_hf_label_alias"  value="<%$ Resources:WaveAHRS, d_peak_hf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_m02_bf_label_alias"  value="<%$ Resources:WaveAHRS, d_m02_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "d_m02_hf_label_alias"  value="<%$ Resources:WaveAHRS, d_m02_hf_label_alias %>" Runat="Server" />
 
 
     <script type="text/javascript">
@@ -234,7 +249,7 @@
             var obj = { begin: start, end: stop};
             $.ajax({
                 type: "POST",
-                url: "Wave_AHRS.aspx/GetValues",
+                url: "Wave_AHRS_BF_HF.aspx/GetValues",
                 data: JSON.stringify(obj),
                 async: false,
                 contentType: "application/json; charset=utf-8",
@@ -243,7 +258,7 @@
                     updateCharts(data.d);
                 },
                 error : function() {
-                    alert('WAVE_AHRS : erreur de chargement ou pas de données');
+                    alert('WAVE_AHRS_BF_HF : erreur de chargement ou pas de données');
                 }
             });
         }
@@ -257,46 +272,60 @@
             var chartH = $('#Hcontainer').highcharts();
             var H_sig = [];
             var H_max = [];
-            var H_tier = [];
             var H_limit = [];
+
+            var H_m0_bf = [];
+            var H_m0_hf = [];
 
             for (var i = 0; i < data.H_time.length; i++) {
                 var time = Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                H_sig.push([time, Math.round(data.H_m0[i] * 100) / 100]);
-                H_max.push([time, Math.round(data.H_max[i] * 100) / 100]);
-                H_tier.push([time, Math.round(data.H_tier[i] * 100) / 100]);
-                
-                H_limit.push([time, height]);
+                //H_sig.push([time, Math.round(data.H_m0[i] * 100) / 100]);
+                //H_max.push([time, Math.round(data.H_max[i] * 100) / 100]);
+                //H_limit.push([time, height]);
+
+                H_m0_bf.push([time, Math.round(data.H_m0_bf[i] * 100) / 100]);
+                H_m0_hf.push([time, Math.round(data.H_m0_hf[i] * 100) / 100]);
                 //H_sig.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_m0[i] * 100) / 100]);
                 //H_max.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.H_max[i] * 100) / 100]);
                 //H_limit.push([Date.parse(data.H_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), height]);
                 
             }
 
-            chartH.series[0].setData(H_max);
-            chartH.series[1].setData(H_sig);
-            chartH.series[2].setData(H_tier);
-            chartH.series[3].setData(H_limit);
+            chartH.series[0].setData(H_m0_bf);
+            chartH.series[1].setData(H_m0_hf);
+            //chartH.series[0].setData(H_max);
+            //chartH.series[1].setData(H_sig);
+            //chartH.series[2].setData(H_limit);
 
 
             // Wave Period chart
             var chartT = $('#Tcontainer').highcharts();
             var T_mean = [];
             var T_peak = [];
-            var T_m01 = [];
-            var T_z = [];
 
-            for (var i = 0; i < data.T_time.length; i++) {
-                T_mean.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_m02[i]*10)/10]);
-                T_peak.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_p[i]*10)/10]);
-                T_m01.push([Date.parse(data.T_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.T_m01[i]*10)/10]);
-                T_z.push([Date.parse(data.T_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.T_z[i]*10)/10]);
+            var T_M02_BF = [];
+            var T_M02_HF = [];
+            var T_Peak_BF = [];
+            var T_Peak_HF = [];
+            var T_E = [];
+            var T_E_BF = [];
+            var T_E_HF = [];
+
+            for (var i = 0; i < data.T_time_bfhf.length; i++) {
+                //T_mean.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_m02[i]*10)/10]);
+                //T_peak.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_p[i]*10)/10]);
+                T_M02_BF.push([Date.parse(data.T_time_bfhf[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.T_m02_bf[i] * 10) / 10]);
+                T_M02_HF.push([Date.parse(data.T_time_bfhf[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.T_m02_hf[i] * 10) / 10]);
+
+                T_Peak_BF.push([Date.parse(data.T_time_bfhf[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.T_p_bf[i] * 10) / 10]);
+                T_Peak_HF.push([Date.parse(data.T_time_bfhf[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.T_p_hf[i] * 10) / 10]);
             }
 
-            chartT.series[0].setData(T_peak);
-            chartT.series[1].setData(T_mean);
-            chartT.series[2].setData(T_m01);
-            chartT.series[3].setData(T_z);
+            chartT.series[0].setData(T_M02_BF);
+            chartT.series[1].setData(T_M02_HF);
+
+            chartT.series[2].setData(T_Peak_BF);
+            chartT.series[3].setData(T_Peak_HF);
 
 
 
@@ -304,18 +333,33 @@
             var chartD = $('#Dcontainer').highcharts();
             var D_mean = [];
             var D_peak = [];
+
+            var D_T02_bf = [];
+            var D_T02_hf = [];
+            var D_peak_bf = [];
+            var D_peak_hf = [];
             
             chartD.yAxis[0].update({ min: 0 });
             chartD.yAxis[0].update({ max: 360 });
 
 
             for (var i = 0; i < data.D_time.length; i++) {
-                D_mean.push([Date.parse(data.D_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.D_mean[i]*10)/10]);
-                D_peak.push([Date.parse(data.D_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.D_peak[i]*10)/10]);
+                //D_mean.push([Date.parse(data.D_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.D_mean[i]*10)/10]);
+                //D_peak.push([Date.parse(data.D_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.D_peak[i]*10)/10]);
+                D_T02_bf.push([Date.parse(data.D_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.D_t02_bf[i] * 10) / 10]);
+                D_T02_hf.push([Date.parse(data.D_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.D_t02_hf[i] * 10) / 10]);
+
+                D_peak_bf.push([Date.parse(data.D_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.D_peak_bf[i] * 10) / 10]);
+                D_peak_hf.push([Date.parse(data.D_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), Math.round(data.D_peak_hf[i] * 10) / 10]);
             }
 
-            chartD.series[0].setData(D_peak);
-            chartD.series[1].setData(D_mean);
+            //chartD.series[0].setData(D_peak);
+            //chartD.series[1].setData(D_mean);
+
+            chartD.series[0].setData(D_T02_bf);
+            chartD.series[1].setData(D_T02_hf);
+            chartD.series[2].setData(D_peak_bf);
+            chartD.series[3].setData(D_peak_hf);
             
         };
 
@@ -370,7 +414,7 @@
                 floating: false,
             },
             series: [{
-                name: 'Height max',
+                name: 'Height BF',
                 data: [],
                 color: 'green',
                 animation: true,
@@ -378,30 +422,23 @@
                     valueSuffix: ' m'
                 }
             },{
-                name: 'Significative height',
+                name: 'Height HF',
                 data: [],
                 color: 'blue',
                 animation: true,
                 tooltip: {
                     valueSuffix: ' m'
                 }
-                }, {
-                    name: 'Tier height',
-                    data: [],
-                    color: 'yellow',
-                    animation: true,
-                    tooltip: {
-                        valueSuffix: ' m'
-                    }
-                },{
-                name: 'Limit height',
-                data: [],
-                color: 'red',
-                animation: true,
-                tooltip: {
-                    valueSuffix: ' m'
-                }
             }
+                //, {
+                //name: 'Limit height',
+                //data: [],
+                //color: 'red',
+                //animation: true,
+                //tooltip: {
+                //    valueSuffix: ' m'
+                //}
+            //}
             ]
         });
 
@@ -452,7 +489,7 @@
                 floating: false,
             },
             series: [{
-                name: 'Peak period',
+                name: 'TM02 BF',
                 data: [],
                 color: 'gray',
                 animation: false,
@@ -460,7 +497,7 @@
                     valueSuffix: ' s'
                 }
             },{
-                name: 'Mean period',
+                name: 'TM02 HF',
                 data: [],
                 color: 'red',
                 animation: false,
@@ -468,7 +505,7 @@
                     valueSuffix: ' s'
                 }
             }, {
-                name: 'TM01 period',
+                name: 'TPeak BF',
                 data: [],
                 color: 'blue',
                 animation: false,
@@ -476,7 +513,7 @@
                     valueSuffix: ' s'
                 }
             }, {
-                name: 'Tz period',
+                name: 'TPeak HF',
                 data: [],
                 color: 'yellow',
                 animation: false,
@@ -533,9 +570,9 @@
                 floating: false,
             },
             series: [{
-                name: 'Peak direction',
+                name: 'T02 BF direction',
                 data: [],
-                color: '#0282AD',
+                color: '#FCF000',
                 animation: false,
                 lineWidth: 0,
                 tooltip: {
@@ -546,9 +583,35 @@
                     symbol: 'diamond'
                 },
             },{
-                name: 'Mean direction',
+                name: 'T02 HF direction',
                 data: [],
                 color: '#FCA000',
+                lineWidth: 0,
+                animation: false,
+                tooltip: {
+                    valueSuffix: ' °'
+                },
+                marker: {
+                    enabled: true,
+                    symbol: 'diamond'
+                },
+            }, {
+                name: 'TPeak BF direction',
+                data: [],
+                color: '#00A000',
+                lineWidth: 0,
+                animation: false,
+                tooltip: {
+                    valueSuffix: ' °'
+                },
+                marker: {
+                    enabled: true,
+                    symbol: 'diamond'
+                },
+            }, {
+                name: 'TPeak HF direction',
+                data: [],
+                color: '#00F000',
                 lineWidth: 0,
                 animation: false,
                 tooltip: {

@@ -170,14 +170,7 @@
 
         <script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=meteo_panel.ClientID%>').value;
-            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
-            var l_param0 = document.getElementById('<%=w_s_avg.ClientID%>').value;
-            var l_param1 = document.getElementById('<%=w_s_max.ClientID%>').value;
-            var l_param2 = document.getElementById('<%=w_dir_avg.ClientID%>').value;
-            var l_param3 = document.getElementById('<%=w_temp.ClientID%>').value;
-            var l_param4 = document.getElementById('<%=w_press.ClientID%>').value;
-            var l_param5 = document.getElementById('<%=w_rain_d.ClientID%>').value;
-            var l_param6 = document.getElementById('<%=w_rain_acc.ClientID%>').value;
+            
 
             document.write('<div class="col-md-4">')
             document.write('<div class="panel panel-default">');
@@ -212,18 +205,61 @@
         </script>
 
         <script type="text/javascript">
-            var l_paneltitle = document.getElementById('<%=meteo_panel.ClientID%>').value;
-            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
-            var l_param0 = document.getElementById('<%=w_s_avg.ClientID%>').value;
-            var l_param1 = document.getElementById('<%=w_s_max.ClientID%>').value;
-            var l_param2 = document.getElementById('<%=w_dir_avg.ClientID%>').value;
-            var l_param3 = document.getElementById('<%=w_temp.ClientID%>').value;
-            var l_param4 = document.getElementById('<%=w_press.ClientID%>').value;
-            var l_param5 = document.getElementById('<%=w_rain_d.ClientID%>').value;
-            var l_param6 = document.getElementById('<%=w_rain_acc.ClientID%>').value;
 
+
+            //document.write('<div class="col-md-4">')
+            //document.write('<div class="panel panel-default">');
+            //document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+            //document.write('<div class="panel-body"');
+            //document.write('<table class="table"><tbody>');
+
+            //document.write('<tr><td>'); document.write("Voltage: "); document.write('</td><td><label id="lat">X</label></td><td>°</td>');
+            //document.write('<td>'); document.write("Pitch: "); document.write('</td><td><label id="pitch">X</label></td><td>°</td></tr>');
+            //document.write('<td>'); document.write("Roll: "); document.write('</td><td><label id="lon">X</label></td><td>°</td></tr>');
+
+            //document.write('</body></table></div>');
+            //document.write('</div>');
 
              //style="min-width:250px; width:100%; height:300px;
+            document.write('<div class="col-md-4">');
+
+
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+            document.write('<div class="panel-body"');
+            document.write('<table class="table"><tbody>');
+
+            document.write('<tr><td>'); document.write("Voltage: "); document.write('</td><td><label id="voltage">X</label></td><td>V</td><td>  </td>');
+            document.write('<td>'); document.write("Pitch: "); document.write('</td><td><label id="pitch">X</label></td><td>°</td><td>  </td>');
+            document.write('<td>'); document.write("Roll: "); document.write('</td><td><label id="roll">X</label></td><td>°</td><td>  </td></tr>');
+
+            document.write('</body></table></div>');
+            document.write('</div>');
+
+
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>'); document.write("Position"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+            document.write('<div class="panel-body"');
+            document.write('<table class="table"><tbody>');
+
+            document.write('<tr><td>'); document.write("Lat: "); document.write('</td><td><label id="lat">X</label></td><td>°</td><td>  </td>');
+            document.write('<td>'); document.write("Lon: "); document.write('</td><td><label id="lon">X</label></td><td>°</td><td>  </td></tr>');
+
+            document.write('</body></table></div>');
+            document.write('</div>');
+
+            //document.write('<div class="panel panel-default">');
+            document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');    
+            //document.write('</div>');
+            
+            document.write('</div>');
+        </script>
+
+    <div class="row">
+
+        <%--<script type="text/javascript">
+
+            //style="min-width:250px; width:100%; height:300px;
             document.write('<div class="col-md-4">')
             document.write('<div class="panel panel-default">');
             document.write('<div class="panel-heading"><b>'); document.write("Position"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
@@ -237,13 +273,12 @@
             document.write('</div>');
 
             //document.write('<div class="panel panel-default">');
-            document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');    
+            document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');
             //document.write('</div>');
-            
-            document.write('</div>');
-        </script>
 
-    <div class="row">
+            document.write('</div>');
+        </script>--%>
+
         <script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=sig_panel.ClientID%>').value;
             var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
@@ -758,6 +793,27 @@
                 });
             }
 
+            //Call webservice with ajax!
+            function initWAVEAHRS_BFHF() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "Wave_AHRS_BF_HF.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateWAVEAHRS_BFHF(data.d);
+                    },
+                    error: function () {
+                        alert('WAVEAHRS_BFHF : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
 
             function YYYYMMDDtoDDMMYYY(str) {
                 s = str.replace('T', ' ').split(/[\s,:-]+/)
@@ -917,6 +973,11 @@
 
                 var chart1 = $('#DirSIGcontainer').highcharts();
                 chart1.series[0].setData(Direction);
+
+
+                $('#voltage').text(data.C_volt[last].toFixed(2));
+                $('#pitch').text(data.C_pitch[last].toFixed(2));
+                $('#roll').text(data.C_roll[last].toFixed(2));
             }
         }
 
@@ -941,6 +1002,26 @@
             }
         }
 
+            // Update charts with pyrano data
+            function updateWAVEAHRS_BFHF(data) {
+
+                var last = data.H_time.length - 1;
+
+                if (last >= 0) {
+
+                    //YYYYMMDDtoDDMMYYY(data.H_time[last]);
+
+                    //$('#ahrshour').text("      " + YYYYMMDDtoDDMMYYY(data.H_time[last]))
+                    //$('#ahrs_par0').text(data.D_mean[last].toFixed(1))
+                    //$('#ahrs_par1').text(data.D_peak[last].toFixed(1))
+                    //$('#ahrs_par2').text(data.H_max[last].toFixed(2))
+                    //$('#ahrs_par3').text(data.H_m0[last].toFixed(2))
+                    //$('#ahrs_par4').text(data.T_m02[last].toFixed(1))
+                    //$('#ahrs_par5').text(data.T_p[last].toFixed(1))
+
+                }
+            }
+
         initMeteo();
         //initPyrano();
         //initC4E();
@@ -948,6 +1029,7 @@
         //initTurbi();
         initSIG();
         initWAVEAHRS();
+        initWAVEAHRS_BFHF();
         initPosition();
 
     });

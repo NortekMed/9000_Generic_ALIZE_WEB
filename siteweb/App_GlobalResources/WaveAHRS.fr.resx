@@ -234,4 +234,46 @@
   <data name="n_waves_alias" xml:space="preserve">
     <value>numwaves</value>
   </data>
+  <data name="d_avg_bf_label_alias" xml:space="preserve">
+    <value>Direction moyenne bf</value>
+  </data>
+  <data name="d_avg_hf_label_alias" xml:space="preserve">
+    <value>Direction moyenne hf</value>
+  </data>
+  <data name="d_peak_bf_label_alias" xml:space="preserve">
+    <value>Direction à T pic bf</value>
+  </data>
+  <data name="d_peak_hf_label_alias" xml:space="preserve">
+    <value>Direction à T pic hf</value>
+  </data>
+  <data name="h_sig_bf_label_alias" xml:space="preserve">
+    <value>Hm0_bf</value>
+  </data>
+  <data name="h_sig_hf_label_alias" xml:space="preserve">
+    <value>Hm0_hf</value>
+  </data>
+  <data name="t_peak_bf_label_alias" xml:space="preserve">
+    <value>Tp_bf</value>
+  </data>
+  <data name="t_peak_hf_label_alias" xml:space="preserve">
+    <value>Tp_hf</value>
+  </data>
+  <data name="t_z_bf_label_alias" xml:space="preserve">
+    <value>Tz_bf</value>
+  </data>
+  <data name="t_z_hf_label_alias" xml:space="preserve">
+    <value>Tz_hf</value>
+  </data>
+  <data name="d_m02_bf_label_alias" xml:space="preserve">
+    <value>DIRT02_bf</value>
+  </data>
+  <data name="d_m02_hf_label_alias" xml:space="preserve">
+    <value>DIRT02_hf</value>
+  </data>
+  <data name="t_m02_bf_label_alias" xml:space="preserve">
+    <value>TM02_bf</value>
+  </data>
+  <data name="t_m02_hf_label_alias" xml:space="preserve">
+    <value>TM02_hf</value>
+  </data>
 </root>

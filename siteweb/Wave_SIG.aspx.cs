@@ -151,7 +151,7 @@ public partial class Wave : System.Web.UI.Page
 
         // Get Pressure and temperature from database
         DataSet ds2 = new DataSet();
-        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TM02  FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database2"].ConnectionString);
+        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.T02  FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database2"].ConnectionString);
         dataadapter2.Fill(ds2);
         DataTable myDataTable2 = ds2.Tables[0];
 

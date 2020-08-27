@@ -454,6 +454,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
             // UTC to Local Time
+            //date = date.AddHours(utcdataoffset); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             date = date.AddHours(utcdataoffset).AddHours(-1 * systemUTCTimeOffset); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             list_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));

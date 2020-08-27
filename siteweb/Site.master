@@ -107,6 +107,7 @@
                             var l_rt_measure = document.getElementById('<%=rt_measure.ClientID%>').value;
                             var l_sig = document.getElementById('<%=signature.ClientID%>').value;
                             var l_waveahrs = document.getElementById('<%=waveahrs.ClientID%>').value;
+                            var l_waveahrs_bfhf = document.getElementById('<%=waveahrs.ClientID%>').value;
                             var l_weather = document.getElementById('<%=weather.ClientID%>').value;
                             <%--var l_spm = document.getElementById('<%=spm.ClientID%>').value;
                             var l_c4e = document.getElementById('<%=c4e.ClientID%>').value;
@@ -123,6 +124,7 @@
                             document.write('<li><a runat="server" href="~/Realtime">'); document.write(l_rt_measure); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/Current_Sig">'); document.write(l_sig); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/Wave_AHRS">'); document.write(l_waveahrs); document.write("</a></li>");
+                            document.write('<li><a runat="server" href="~/Wave_AHRS_BF_HF">'); document.write(l_waveahrs_bfhf); document.write("</a></li>");
                             document.write('<li><a runat="server" href="~/Meteo">'); document.write(l_weather); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_C4E">'); document.write(l_c4e); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_Optod">'); document.write(l_optod); document.write("</a></li>");

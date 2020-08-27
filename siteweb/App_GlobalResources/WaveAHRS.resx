@@ -234,4 +234,46 @@
   <data name="n_waves_alias" xml:space="preserve">
     <value />
   </data>
+  <data name="d_avg_bf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="d_avg_hf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="d_peak_bf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="d_peak_hf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="h_sig_bf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="h_sig_hf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="t_peak_bf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="t_peak_hf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="t_z_bf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="t_z_hf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="d_m02_bf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="d_m02_hf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="t_m02_bf_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="t_m02_hf_label_alias" xml:space="preserve">
+    <value />
+  </data>
 </root>

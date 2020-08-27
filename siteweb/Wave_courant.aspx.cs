@@ -151,7 +151,7 @@ public partial class Wave : System.Web.UI.Page
 
         // Get Pressure and temperature from database
         DataSet ds2 = new DataSet();
-        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TM02 FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.T02 FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter2.Fill(ds2);
         DataTable myDataTable2 = ds2.Tables[0];
 
@@ -167,7 +167,7 @@ public partial class Wave : System.Web.UI.Page
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
             //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"]));
             list_t_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
-            double tm02 = double.Parse(dRow["TM02"].ToString());
+            double tm02 = double.Parse(dRow["T02"].ToString());
             if (double.IsNaN(tm02) || tm02 > 30)
             {
                 if (list_t_mean.Count > 0)
