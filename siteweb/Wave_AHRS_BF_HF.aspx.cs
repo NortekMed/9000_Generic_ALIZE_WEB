@@ -661,7 +661,7 @@ public partial class WaveAHRS : System.Web.UI.Page
         data.setHeight(list_h_sig, list_h_max, list_h_3, list_hm0_bf, list_hm0_hf, list_h_time);
         data.SetPeriod(list_t_tp, list_t_tz, list_t_tm02, list_t_tm01, list_t_thmax, list_t_t3, list_t_time);
         data.SetPeriod_bfhf(list_tp_bf, list_tp_hf, list_tz_bf, list_tz_hf, list_t02_bf, list_t02_hf, list_te, list_te_bf, list_te_hf, list_t_time);
-        data.setDirection(list_d_mean, list_d_max, list_d_sd, list_n_waves, list_d_t02_bf, list_d_t02_hf, list_d_tp_bf, list_tp_hf, list_d_time);
+        data.setDirection(list_d_mean, list_d_max, list_d_sd, list_n_waves, list_d_t02_bf, list_d_t02_hf, list_d_tp_bf, list_d_tp_hf, list_d_time);
 
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!

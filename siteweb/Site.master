@@ -29,6 +29,7 @@
         <asp:HiddenField ID = "turbi"  value="<%$ Resources:Site.master, turbi %>" Runat="Server" />--%>
         <asp:HiddenField ID = "signature" Value="<%$ Resources:Site.master, signature %>" Runat="Server" />
         <asp:HiddenField ID = "waveahrs" Value="<%$ Resources:Site.master, waveahrs %>" Runat="Server" />
+        <asp:HiddenField ID = "waveahrs_bfhf" Value="<%$ Resources:Site.master, waveahrs_bfhf %>" Runat="Server" />
         <asp:HiddenField ID = "position" Value="<%$ Resources:Site.master, position %>" Runat="Server" />
         <asp:HiddenField ID = "contact" Value="<%$ Resources:Site.master, contact %>" Runat="Server" />
         
@@ -107,7 +108,7 @@
                             var l_rt_measure = document.getElementById('<%=rt_measure.ClientID%>').value;
                             var l_sig = document.getElementById('<%=signature.ClientID%>').value;
                             var l_waveahrs = document.getElementById('<%=waveahrs.ClientID%>').value;
-                            var l_waveahrs_bfhf = document.getElementById('<%=waveahrs.ClientID%>').value;
+                            var l_waveahrs_bfhf = document.getElementById('<%=waveahrs_bfhf.ClientID%>').value;
                             var l_weather = document.getElementById('<%=weather.ClientID%>').value;
                             <%--var l_spm = document.getElementById('<%=spm.ClientID%>').value;
                             var l_c4e = document.getElementById('<%=c4e.ClientID%>').value;

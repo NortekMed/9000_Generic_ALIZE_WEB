@@ -198,6 +198,9 @@
   <data name="waveahrs" xml:space="preserve">
     <value />
   </data>
+  <data name="waveahrs_bfhf" xml:space="preserve">
+    <value />
+  </data>
   <data name="weather" xml:space="preserve">
     <value />
   </data>
