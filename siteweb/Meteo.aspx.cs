@@ -627,7 +627,7 @@ public partial class Meteo : System.Web.UI.Page
             list_par2.Add(double.Parse(dRow[s_humidity].ToString()));
         }
 
-        data.set_param_equip_0(list_par0, list_par1, list_par2, list_str_time0);
+        data.set_param_wxt(list_par0, list_par1, list_par2, list_str_time0);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -838,7 +838,7 @@ public partial class Meteo : System.Web.UI.Page
 
 
     // temperature pressure humidity
-    public void set_param_equip_0(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<string> w_time)
+    public void set_param_wxt(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<string> w_time)
     {
         //param0 = w_par0.ToArray();
         //param1 = w_par1.ToArray();

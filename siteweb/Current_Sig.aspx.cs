@@ -124,9 +124,9 @@ public partial class SIG_Current : System.Web.UI.Page
         for (int i = 0; i < downloaddata.C_time.Length; i++)
         {
             s_layers = "";
-            for ( int j = 0; j < downloaddata.C_amp[i].Length; j++)
+            for ( int j = 0; j < downloaddata.C_spd[i].Length; j++)
             {
-                s_layers += downloaddata.C_amp[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
+                s_layers += downloaddata.C_spd[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_dir[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_snr[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
             }
@@ -231,6 +231,7 @@ public partial class SIG_Current : System.Web.UI.Page
         //speed_label = new HiddenField();
         profdir_label = new HiddenField();
         profspeed_label = new HiddenField();
+        profamp_label = new HiddenField();
 
         download = new HiddenField();
         download_data = new HiddenField();
@@ -305,6 +306,7 @@ public partial class SIG_Current : System.Web.UI.Page
         //speed_label.Value = Resources.CurrentSIG.speed_label.ToString();
         profdir_label.Value = Resources.CurrentSIG.profdir_label.ToString();
         profspeed_label.Value = Resources.CurrentSIG.profspeed_label.ToString();
+        profamp_label.Value = Resources.CurrentSIG.profamp_label.ToString();
 
 
         //Assigning string value
@@ -398,6 +400,7 @@ public partial class SIG_Current : System.Web.UI.Page
                 string sufix = string.Format("{0}", (c + 1));
 
                 DbRequest += (", a." + speed_name + sufix + '_' + nbeam);
+                
                 if ( nbeam == "1" )
                     DbRequest += (", a." + "Amp" + sufix + '_' + nbeam);
             }
@@ -415,7 +418,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
 
 
-        List<double[]> list_amplitude = new List<double[]>();
+        List<double[]> list_spd = new List<double[]>();
         List<double[]> list_direction = new List<double[]>();
         List<double[]> list_snr = new List<double[]>();
         List<string> list_time = new List<string>();
@@ -440,7 +443,7 @@ public partial class SIG_Current : System.Web.UI.Page
         double systemUTCTimeOffset = double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"]);
         foreach (DataRow dRow in myDataTable.Rows)
         {
-            double[] amp = new double[nb_c];
+            double[] spd = new double[nb_c];
             double[] dir = new double[nb_c];
             double[] snr = new double[nb_c];
             //double dir_cor = 0;
@@ -460,24 +463,25 @@ public partial class SIG_Current : System.Web.UI.Page
             list_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
             // Direction and amplitude for all cells
-            for (int cell = 0; cell < nb_c && cell < 26; cell++)
+            //for (int cell = 0; cell < nb_c && cell < 26; cell++)
+            for (int cell = 0; cell < nb_c; cell++)
             {
                 // SIGNATURE 
                  
                 double V_X_East = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_1"].ToString());
                 double V_Y_North = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_2"].ToString());
-                amp[cell] = Math.Round(Math.Sqrt(V_X_East * V_X_East + V_Y_North * V_Y_North),3);
+                spd[cell] = Math.Round(Math.Sqrt(V_X_East * V_X_East + V_Y_North * V_Y_North),3);
 
                 dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360),1);
                 if (dir[cell] < 0) dir[cell] += 360;
 
                 snr[cell] = double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
 
-                if (amp[cell] > 20)
-                    amp[cell] = 0.0;
+                if (spd[cell] > 20)
+                    spd[cell] = 0.0;
             }
 
-            list_amplitude.Add(amp);
+            list_spd.Add(spd);
             list_direction.Add(dir);
             list_snr.Add(snr);
         }
@@ -512,7 +516,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
         // Build current data object
         data_SIG_Current data = new data_SIG_Current();
-        data.set(list_amplitude,
+        data.set(list_spd,
             list_direction,
             list_snr,
             list_time,
@@ -537,7 +541,7 @@ public partial class SIG_Current : System.Web.UI.Page
 
 public class data_SIG_Current
 {
-    public double[][] C_amp;
+    public double[][] C_spd;
     public double[][] C_dir;
     public double[][] C_snr;
     public string[] C_time;
@@ -556,7 +560,7 @@ public class data_SIG_Current
 
     public double meanTimeInterval = 0.0;
 
-    public void set(List<double[]> l_amp,
+    public void set(List<double[]> l_spd,
         List<double[]> l_dir,
         List<double[]> l_snr,
         List<string> l_time,
@@ -572,7 +576,7 @@ public class data_SIG_Current
         List<string> l_sbe_time)
     {
 
-        C_amp = l_amp.ToArray();
+        C_spd = l_spd.ToArray();
         C_dir = l_dir.ToArray();
         C_snr = l_snr.ToArray();
         C_time = l_time.ToArray();

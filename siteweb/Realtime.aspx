@@ -170,7 +170,14 @@
 
         <script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=meteo_panel.ClientID%>').value;
-            
+            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+            var l_param0 = document.getElementById('<%=w_s_avg.ClientID%>').value;
+            var l_param1 = document.getElementById('<%=w_s_max.ClientID%>').value;
+            var l_param2 = document.getElementById('<%=w_dir_avg.ClientID%>').value;
+            var l_param3 = document.getElementById('<%=w_temp.ClientID%>').value;
+            var l_param4 = document.getElementById('<%=w_press.ClientID%>').value;
+            var l_param5 = document.getElementById('<%=w_rain_d.ClientID%>').value;
+            var l_param6 = document.getElementById('<%=w_rain_acc.ClientID%>').value;
 
             document.write('<div class="col-md-4">')
             document.write('<div class="panel panel-default">');
@@ -225,7 +232,7 @@
 
 
             document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+            document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Statushour">X</label> </div>');
             document.write('<div class="panel-body"');
             document.write('<table class="table"><tbody>');
 
@@ -951,6 +958,7 @@
             var Direction = [];
 
             $('#Current_Date').text(YYYYMMDDtoDDMMYYY(data.C_time[last]));
+            $('#Statushour').text(YYYYMMDDtoDDMMYYY(data.C_time[last]));
 
             if (last >= 0) {
 
@@ -964,7 +972,7 @@
                 var NB_couche_utile = <%=ConfigurationManager.AppSettings["nb_couche_SIG"] %>;
                 //for (var j = 0; j < data.C_amp[0].length; j++) {
                 for (var j = 0; j < NB_couche_utile; j++) {
-                    Amplitude.push([data.C_amp[last][j] / convert_nd, (j + 1) * data.C_cellsize + data.C_blancking]);
+                    Amplitude.push([data.C_spd[last][j] / convert_nd, (j + 1) * data.C_cellsize + data.C_blancking]);
                     Direction.push([data.C_dir[last][j], (j + 1) * data.C_cellsize + data.C_blancking]);
                 }
 

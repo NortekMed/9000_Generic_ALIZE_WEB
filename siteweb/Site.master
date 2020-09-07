@@ -90,21 +90,19 @@
 
         <script type="text/javascript">
            document.write('<div class="navbar navbar-inverse navbar-static-top" role="navigation" id="topnavbar" style="background-color:<%=ConfigurationManager.AppSettings["MenuColor"] %>">');
-        </script>
-        <%--<div class="navbar navbar-inverse navbar-static-top" role="navigation" id="topnavbar" style="background-color:#347111">--%>
-            <div class="container" >
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+        
+            document.write('<div class="container" >');
+            document.write('<div class="navbar-header">');
+            document.write('<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">');
+            document.write('<span class="icon-bar"></span>');
+            document.write('<span class="icon-bar"></span>');
+            document.write('<span class="icon-bar"></span>');
+            document.write('</button>');
 
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+            document.write('</div>');
+            document.write('<div class="navbar-collapse collapse">');
+            document.write('<ul class="nav navbar-nav">');
 
-                        <script type="text/javascript">
                             var l_rt_measure = document.getElementById('<%=rt_measure.ClientID%>').value;
                             var l_sig = document.getElementById('<%=signature.ClientID%>').value;
                             var l_waveahrs = document.getElementById('<%=waveahrs.ClientID%>').value;
@@ -137,22 +135,16 @@
                             document.write('<li><a runat="server" href="'); document.write(link);document.write('" target="_blank">'); document.write('<%=ConfigurationManager.AppSettings["LinkLabel"] %>'); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="http://192.168.1.204/SNA-SOUTHWEST" target="_blank">'); document.write(' "LINK" '); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="http://nortekmed.dyndns.org/SNA-SOUTHWEST">'); document.write(' "LINK" '); document.write("</a></li>");
-                        </script>
-                    </ul>
-
+      
+                    document.write('</ul>');
+        </script>
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
-                                <%--<script type="text/javascript">
-                                    var l_signin = document.getElementById('<%=signin.ClientID%>').value;
-                                    document.write('<li><a runat="server" href="~/Login">'); document.write(l_rt_measure); document.write("</a ></li>");
-                                </script>--%>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav navbar-right">
-                                <%--<li><a runat="server" href="#"><%: Context.User.Identity.GetUserName()  %></a></li>--%>
-
                                 <li>
                                     <script type="text/javascript">
                                         var l_signout = document.getElementById('<%=signout.ClientID%>').value;
@@ -188,7 +180,7 @@
                 }
                 document.write('<p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>');
                 document.write('</footer>');
-            </script>
+        </script>
             
             <%--<footer>
                 <p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>

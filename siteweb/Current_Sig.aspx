@@ -67,6 +67,8 @@
     <asp:HiddenField ID = "profdir_label" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "profspeed_label" ClientIdMode="Static" Runat="Server" />
 
+     <asp:HiddenField ID = "profamp_label" ClientIdMode="Static" Runat="Server" />
+
 
     <script type="text/javascript">
         
@@ -97,22 +99,13 @@
         document.write('<div class="hidden" id="history"> <br>');
         document.write('<div class="input-group date">');
 
-        //var myDate = new Date();
-        //var month = myDate.getMonth() + 1;
-        //var date = ('0' + myDate.getDate()).slice(-2) + '/' + month + '/' + myDate.getFullYear();
-        //alert(date);
-
         document.write('<div class="col-md-4">');
         document.write('<div class="form - group">');
-        //document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + date + '"/>');
-        //document.write('<div class="col-md-4">');
-        //document.write('<div class="form - group">');
         document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
         document.write('</div></div>');
 
         document.write("<div class='col-md-4'>");
         document.write('<div class="form - group">');
-        //document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + date + '"/>');
         document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
         document.write('</div></div>');
 
@@ -146,7 +139,7 @@
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
          document.write('<div class="panel-body">');
-        document.write('<div id="Ampcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
+        document.write('<div id="Spdcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
         document.write('</div>');
     </script>
@@ -168,7 +161,7 @@
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
         document.write('<div class="panel-body">');
-        document.write('<div id="ProfileAmpcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
+        document.write('<div id="ProfileSpdcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
         document.write('</div>');
     </script>
@@ -184,6 +177,18 @@
         document.write('</div>');
     </script>
 
+          
+    <script type="text/javascript">
+        var label = document.getElementById('<%=profamp_label.ClientID%>').value;
+
+        document.write('<div class="panel panel-default">');
+        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        document.write('<div class="panel-body">');
+        document.write('<div id="ProfileSnrcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
+        document.write('</div>');
+        document.write('</div>');
+    </script>
+
     <script type="text/javascript">
         var label = "water " + document.getElementById('<%=templabel.ClientID%>').value.toLowerCase() + ' (' + "<%=ConfigurationManager.AppSettings["Looking"] %>" + ')';
         
@@ -195,6 +200,8 @@
         document.write('</div>');
     </script>
     
+
+      
 
     <script type="text/javascript">
 
@@ -309,7 +316,7 @@
             var speed = +document.getElementById('speed').value;
             //alert(speed);
 
-            var chartAmp = $('#Ampcontainer').highcharts();
+            var chartSpd = $('#Spdcontainer').highcharts();
             //chartAmp.series[0].remove();
             
 
@@ -319,9 +326,9 @@
                 var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
                 v_limit.push([time, speed]);
             }
-            chartAmp.series[chartAmp.series.length - 1].remove();
+            chartSpd.series[chartSpd.series.length - 1].remove();
             
-            chartAmp.addSeries({
+            chartSpd.addSeries({
                     name: "Limit=" + speed + "m/s",
                     data: v_limit,
                     visible: true,
@@ -346,110 +353,89 @@
                 tempeau.push([time, data.SBE_temp[i]]);
                 sal.push([time, data.SBE_sal[i]]);
             }
-            //for (var i = 0; i < data.C_time.length; i++) {
-            //    var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-            //    maree.push([time, data.C_press[i]]);
-            //    tempeau.push([time, data.C_temp[i]]);
-            //}
-
             mtchart.series[0].setData(tempeau);
             mtchart.series[1].setData(sal);
-            //mtchart.series[1].setData(maree);
 
             
-            var chart = $('#ProfileAmpcontainer').highcharts();
+            var chart = $('#ProfileSpdcontainer').highcharts();
             var charProftDir = $('#ProfileDircontainer').highcharts();
-            var Amplitude = [];
+            var charProfSnr = $('#ProfileSnrcontainer').highcharts();
+            var Speed = [];
             var AmplitudeGrouped = [];
             var Direction = [];
+            var Snr = [];
 			
-            var maxAmp = 0.0;
+            var maxSpd = 0.0;
             for (var i = 0; i < data.C_time.length; i++) {
-                for (var j = 0; j < data.C_amp[0].length; j++) {
+                for (var j = 0; j < data.C_spd[0].length; j++) {
                     var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                    Amplitude.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_amp[i][j]]);
+                    Speed.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_spd[i][j]]);
                     Direction.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_dir[i][j]]);
-                    maxAmp = Math.max(maxAmp, data.C_amp[i][j]);
+                    Snr.push([time, (j+1) * data.C_cellsize + data.C_blancking, data.C_snr[i][j]]);
+                    maxSpd = Math.max(maxSpd, data.C_spd[i][j]);
                 }
             }
-
-
-
-            //if(data.C_time.length>1000)
-            //{
-            //    var factor = data.C_time.length / 500;
-            //    data.C_time.length
-            //}
-
             
-            chart.colorAxis[0].update({ min: 0, max: maxAmp });
-            
-            charProftDir.colorAxis[0].update({ min: 0, max: 360 });
-            charProftDir.yAxis[0].update({ max: data.C_amp[0].length * data.C_cellsize + data.C_blancking });
-
+            chart.colorAxis[0].update({ min: 0, max: maxSpd });
             chart.series[0].update({
-                data: Amplitude,
+                data: Speed,
                 colsize: data.meanTimeInterval,
                 rowsize: data.C_cellsize
             }, false); //true / false to redraw
-
-
+            
+            charProftDir.colorAxis[0].update({ min: 0, max: 360 });
+            charProftDir.yAxis[0].update({ max: data.C_spd[0].length * data.C_cellsize + data.C_blancking });
             charProftDir.series[0].update({
                 data: Direction,
                 colsize: data.meanTimeInterval,
                 rowsize: data.C_cellsize
             }, false); //true / false to redraw
+
+            //charProftSnr.colorAxis[0].update({ min: 0, max: 360 });
+            charProfSnr.yAxis[0].update({ max: data.C_snr[0].length * data.C_cellsize + data.C_blancking });
+            charProfSnr.series[0].update({
+                data: Snr,
+                colsize: data.meanTimeInterval,
+                rowsize: data.C_cellsize
+            }, false); //true / false to redraw
             
 
-            var speed = +document.getElementById('speed').value;
+            var v_speed = +document.getElementById('speed').value;
             //alert(speed)
 
-            var Amp_unit = ' ' + document.getElementById('<%=speedunit.ClientID%>').value;
+            var Spd_unit = ' ' + document.getElementById('<%=speedunit.ClientID%>').value;
             var direction_unit = ' °';
             // Chart immersion  fixe"
-            var chartAmp = $('#Ampcontainer').highcharts();
+            var chartSpd = $('#Spdcontainer').highcharts();
             //for (var i = chartAmp.series.length - 1; i > 0; i--) {  //0 to keep first serie that is limit value
-            for (var i = chartAmp.series.length - 1; i > -1; i--) {
-                chartAmp.series[i].remove();
+            for (var i = chartSpd.series.length - 1; i > -1; i--) {
+                chartSpd.series[i].remove();
             }
             
-            //while (chartAmp.series.length>0){
-            //    chartAmp.series[0].remove();
-            //}
 
             var chartDir = $('#Dircontainer').highcharts();
             for (var i = chartDir.series.length - 1; i > -1; i--) {
                 chartDir.series[i].remove();
             }
-            //while (chartDir.series.length > 0) {
-            //    chartDir.series[0].remove();
-            //}
 
-            
+            for (var j = 0; j < data.C_spd[0].length; j++) {
 
-            for (var j = 0; j < data.C_amp[0].length; j++) {
-
-                var amp = [];
+                var spd = [];
                 var dir = [];
 
                 for (var i = 0; i < data.C_time.length; i++) {
                     var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                    amp.push([time, data.C_amp[i][j]]);
+                    spd.push([time, data.C_spd[i][j]]);
                     //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
                     dir.push([time, data.C_dir[i][j]]);
-                    //amp.push([Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.C_amp[i][j]]);
-                    //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
-                    //dir.push([Date.parse(data.C_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), data.C_dir[i][j]]);
-
-                    
                 }
 
-                chartAmp.addSeries({
+                chartSpd.addSeries({
                     name: "H=" + ((j + 1) * data.C_cellsize + data.C_blancking) + "m",
-                    data: amp,
+                    data: spd,
                     visible: false,
                     tooltip: {
-                        valueSuffix: Amp_unit.toString()
+                        valueSuffix: Spd_unit.toString()
                     }
                 });
 
@@ -468,51 +454,34 @@
                     tooltip: {
                         valueSuffix: ' ' + direction_unit.toString()
                         }    
-                });
-                
-                ////chartDir.series[j].update({ lineWidth: 0 });
-                
-                
+                });                
             }
 
             //making serie for limit line
             var v_limit = [];
             for (var i = 0; i < data.C_time.length; i++) {
                 var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                v_limit.push([time, speed]);
+                v_limit.push([time, v_speed]);
             }
-            chartAmp.addSeries({
-                    name: "Limit=" + speed + "m/s",
+
+
+            chartSpd.addSeries({
+                    name: "Limit=" + v_speed + "m/s",
                     data: v_limit,
                     visible: true,
                     tooltip: {
                         valueSuffix: "m/s"
                     }
                 });
-
-            //for (var i = 0; i < data.C_time.length; i++) {
-            //    var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-            //    v_limit.push([time, speed]);
-            //}
-            //chartAmp.addSeries({
-            //        name: "Limit=" + speed + "m/s",
-            //        data: v_limit,
-            //        visible: false,
-            //        tooltip: {
-            //            valueSuffix: Amp_unit.toString()
-            //        }
-            //});
-
-
-            //chartAmp.series[1].setData(v_limit);
             
             chartDir.yAxis[0].update({ min: 0, max: 360 });
-            chartAmp.series[0].update({ visible: true });
-            //chartAmp.series[1].update({ visible: true });
+            chartSpd.series[0].update({ visible: true });
             chartDir.series[0].update({ visible: true });
+            charProfSnr.series[0].update({ visible: true });
 
             chart.redraw();
             charProftDir.redraw();
+            charProfSnr.redraw();
 
         };
 
@@ -525,6 +494,7 @@
 
         var profdir_label = document.getElementById('<%=profdir_label.ClientID%>').value;
         var profspeed_label = document.getElementById('<%=profspeed_label.ClientID%>').value;
+        //var profsnr_label = "Amplitude";
 
         var dir_unit = document.getElementById('<%=direction_unit.ClientID%>').value;
         var dir_label = document.getElementById('<%=direction_label.ClientID%>').value;
@@ -534,13 +504,13 @@
         var par2_name = document.getElementById('<%=tempname.ClientID%>').value;
         var par2_unit = " " + document.getElementById('<%=tempunit.ClientID%>').value;
 
-        var par4_label = document.getElementById('<%=speedlabel.ClientID%>').value;
-        var par4_name = document.getElementById('<%=speedname.ClientID%>').value;
-        var par4_unit = " " + document.getElementById('<%=speedunit.ClientID%>').value;
+        var speed_label = document.getElementById('<%=speedlabel.ClientID%>').value;
+        var speed_name = document.getElementById('<%=speedname.ClientID%>').value;
+        var speed_unit = " " + document.getElementById('<%=speedunit.ClientID%>').value;
 
         var s_high_label = document.getElementById('<%=high_label.ClientID%>').value;
 
-        $('#ProfileAmpcontainer').highcharts({
+        $('#ProfileSpdcontainer').highcharts({
             chart: {
                 type: 'heatmap',
             },
@@ -551,7 +521,7 @@
             },
 
             title: {
-                text: profspeed_label.toString(),
+                //text: profspeed_label.toString(),
                 align: 'left',
                 x: 40
             },
@@ -599,7 +569,7 @@
             },
 
             series: [{
-                name: par4_label.toString(),
+                name: speed_label.toString(),
                 //borderWidth: 0,
                 data: [],
                 colsize: 1000, // one second
@@ -609,175 +579,175 @@
             }]
         });
 
-    $('#ProfileDircontainer').highcharts({
-        chart: {
-            type: 'heatmap',
-        },
-        exporting: {
-            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
-            sourceWidth: 1200,
-            sourceHeight: 500,
-        },
+        $('#ProfileDircontainer').highcharts({
+            chart: {
+                type: 'heatmap',
+            },
+            exporting: {
+                enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+                sourceWidth: 1200,
+                sourceHeight: 500,
+            },
 
-        title: {
-            text: profdir_label.toString(),
-            align: 'left',
-            x: 40
-        },
-        xAxis: {
-            type: 'datetime',
-            minTickInterval: 30,
-            uniqueNames: false
-        },
-
-        yAxis: {
             title: {
-                text: s_high_label.toString()
+                //text: profdir_label.toString(),
+                align: 'left',
+                x: 40
             },
-            min: 0,
-            tickInterval: 2,
-            reversed: false,
-            labels: {
-                format: '{value} m'
+            xAxis: {
+                type: 'datetime',
+                minTickInterval: 30,
+                uniqueNames: false
             },
-            startOnTick: false,
-            endOnTick: false,
-            reversed: true
-        },
-        legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'bottom',
-            floating: false,
-        },
-        colorAxis: {
-            stops: [
-                [0, '#FFFB00'],
-                [0.3, '#3060cf'],
-                [0.80, '#FF9D00'],
-                [1, '#FFFB00']
-            ],
-            min: 0,
-            max: 360,
-            startOnTick: false,
-            endOnTick: false,
-            labels: {
-                format: '{value} ' + dir_unit.toString()
-            }
-        },
-        series: [{
-            name: dir_label.toString(),
-            //borderWidth: 0,
-            data: [],
-            colsize: 1000, // one second
-            tooltip: {
-                pointFormat: '{point.x:%d/%m/%Y, %Hh%M} hauteur={point.y}m <b>{point.value}°</b>'
-            },
-        }]
-    });
 
-
-    $('#Ampcontainer').highcharts({
-        exporting: {
-            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
-        },
-        title: {
-            visible: false,
-            text: '',
-            x: -20 //center
-        },
-        subtitle: {
-            text: '',
-            x: -20
-        },
-        plotOptions: {
-            series: {
-                marker: {
-                    enabled: false
+            yAxis: {
+                title: {
+                    text: s_high_label.toString()
+                },
+                min: 0,
+                tickInterval: 2,
+                reversed: false,
+                labels: {
+                    format: '{value} m'
+                },
+                startOnTick: false,
+                endOnTick: false,
+                reversed: true
+            },
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                floating: false,
+            },
+            colorAxis: {
+                stops: [
+                    [0, '#FFFB00'],
+                    [0.3, '#3060cf'],
+                    [0.80, '#FF9D00'],
+                    [1, '#FFFB00']
+                ],
+                min: 0,
+                max: 360,
+                startOnTick: false,
+                endOnTick: false,
+                labels: {
+                    format: '{value} ' + dir_unit.toString()
                 }
             },
-        },
-        xAxis: {
-            type: 'datetime',
-            title: {
-                text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
-            },
-            tickPixelInterval: 80,
-            gridLineWidth: 1,
-            uniqueNames: false
-        },
-        yAxis: [{
-            min: 0,
-           
-            startOnTick: true,
-            title: {
-                min: 0,
-                text: par4_label.toString()
-            },
-            labels: {
-                format: '{value} m/s'
-            },
-            gridLineWidth: 1
-        }],
-        legend: {
-            layout: 'horizontal',
-            align: 'left',
-            verticalAlign: 'top',
-            floating: false
-        }
+            series: [{
+                name: dir_label.toString(),
+                //borderWidth: 0,
+                data: [],
+                colsize: 1000, // one second
+                tooltip: {
+                    pointFormat: '{point.x:%d/%m/%Y, %Hh%M} hauteur={point.y}m <b>{point.value}°</b>'
+                },
+            }]
         });
 
 
-    $('#Dircontainer').highcharts({
-        exporting: {
-            enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
-        },
-        title: {
-            visible: false,
-            text: '',
-            x: -20 //center
-        },
-        subtitle: {
-            text: '',
-            x: -20
-        },
-        plotOptions: {
-            series: {
-                marker: {
-                    enabled: true
-                }
+        $('#Spdcontainer').highcharts({
+            exporting: {
+                enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
             },
-        },
-        xAxis: {
-            type: 'datetime',
             title: {
-                text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
+                visible: false,
+                text: '',
+                x: -20 //center
             },
-            tickPixelInterval: 80,
-            gridLineWidth: 1,
-            uniqueNames: false
-        },
-        yAxis: [{
-            min: 0,
-            max: 360,
-           
-            tickInterval: 45,
-            title: {
+            subtitle: {
+                text: '',
+                x: -20
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: false
+                    }
+                },
+            },
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
+                },
+                tickPixelInterval: 80,
+                gridLineWidth: 1,
+                uniqueNames: false
+            },
+            yAxis: [{
                 min: 0,
-                text: dir_label.toString(),
+           
+                startOnTick: true,
+                title: {
+                    min: 0,
+                    text: speed_label.toString()
+                },
+                labels: {
+                    format: '{value} m/s'
+                },
+                gridLineWidth: 1
+            }],
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                verticalAlign: 'top',
+                floating: false
+            }
+        });
+
+
+        $('#Dircontainer').highcharts({
+            exporting: {
+                enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
             },
-            labels: {
-                format: '{value} ' + '°'
+            title: {
+                visible: false,
+                text: '',
+                x: -20 //center
             },
-            gridLineWidth: 1
-        }],
-        legend: {
-            layout: 'horizontal',
-            align: 'left',
-            verticalAlign: 'top',
-            floating: false,
-        }
-    });
+            subtitle: {
+                text: '',
+                x: -20
+            },
+            plotOptions: {
+                series: {
+                    marker: {
+                        enabled: true
+                    }
+                },
+            },
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)',
+                },
+                tickPixelInterval: 80,
+                gridLineWidth: 1,
+                uniqueNames: false
+            },
+            yAxis: [{
+                min: 0,
+                max: 360,
+           
+                tickInterval: 45,
+                title: {
+                    min: 0,
+                    text: dir_label.toString(),
+                },
+                labels: {
+                    format: '{value} ' + '°'
+                },
+                gridLineWidth: 1
+            }],
+            legend: {
+                layout: 'horizontal',
+                align: 'left',
+                verticalAlign: 'top',
+                floating: false,
+            }
+        });
 
         $('#MTcontainer').highcharts({
 
@@ -843,7 +813,78 @@
             ]
         });
 
-    initData();
+
+
+        $('#ProfileSnrcontainer').highcharts({
+            chart: {
+                type: 'heatmap',
+            },
+            exporting: {
+                enabled: <%=ConfigurationManager.AppSettings["DownloadEnabled"] %>,
+                sourceWidth: 1200,
+                sourceHeight: 500,
+            },
+
+            title: {
+                //text: '',
+                align: 'left',
+                x: 40
+            },
+            xAxis: {
+                type: 'datetime',
+                minTickInterval: 30,
+                uniqueNames: false
+            },
+
+            yAxis: {
+                title: {
+                    text: s_high_label.toString() + ' '
+                },
+                tickInterval: 2,
+                labels: {
+                    format: '{value} m'
+                },
+                startOnTick: false,
+                endOnTick: false,
+                reversed: true
+            },
+
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+                floating: false,
+            },
+
+            colorAxis: {
+                stops: [
+                    [0, '#3060cf'],
+                    [0.3, '#00FFA2'],
+                    [0.8, '#FFC400'],
+                    [1, '#FF0000']
+                ],
+                min: 0,
+                max: 255,
+                startOnTick: false,
+                endOnTick: false,
+                //tickPixelInterval: 150,
+                labels: {
+                    format: '{value} count'
+                }
+            },
+
+            series: [{
+                name: "Magnitude",
+                //borderWidth: 0,
+                data: [],
+                colsize: 1000, // one second
+                tooltip: {
+                    pointFormat: '{point.x:%d/%m/%Y, %Hh%M} {point.y}m <b>{point.value} count</b>'
+                },
+            }]
+        });
+
+        initData();
 
     });
 </script>

@@ -187,6 +187,18 @@
         document.write('</div>');
     </script>
 
+    <script type="text/javascript">
+        var label = document.getElementById('<%=humidity_label.ClientID%>').value;
+
+
+        document.write('<div class="panel panel-default">');
+        document.write('<div class="panel-heading"><b>' + label.toUpperCase() + '</b></div>');
+        document.write('<div class="panel-body">');
+        document.write('<div id="humcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
+        document.write('</div>');
+        document.write('</div>');
+    </script>
+
     <%--<script type="text/javascript">
         var label = document.getElementById('<%=_1_equipname.ClientID%>').value;
 
@@ -319,6 +331,8 @@
             //var chartpar3 = $('#param3container').highcharts();
             //var chartpar4 = $('#param4container').highcharts();
             var chartpar5 = $('#param5container').highcharts();
+
+            var charthum = $('#humcontainer').highcharts();
             
             var par0 = [];
             var par1 = [];
@@ -395,6 +409,8 @@
             chartpar0.series[1].setData(par1);
             //chartpar0.series[2].setData(par2);    // not display humidity
 
+            charthum.series[0].setData(par2);
+
             //chart pluie ( vaissala ) rd / rc / ri
             //chartpar1.series[0].setData(par3);
             //chartpar1.series[1].setData(par4);
@@ -428,188 +444,245 @@
 
     
     <script type="text/javascript">
-    $(function () {
+        $(function () {
 
-        var hour = document.getElementById('<%=hour.ClientID%>').value;
+            var hour = document.getElementById('<%=hour.ClientID%>').value;
 
-        var par0_label = document.getElementById('<%=temperature_label.ClientID%>').value;
-        var par0_name = document.getElementById('<%=temperature.ClientID%>').value;
-        var par0_unit = " " + document.getElementById('<%=temperature_unit.ClientID%>').value;
+            var par0_label = document.getElementById('<%=temperature_label.ClientID%>').value;
+            var par0_name = document.getElementById('<%=temperature.ClientID%>').value;
+            var par0_unit = " " + document.getElementById('<%=temperature_unit.ClientID%>').value;
 
-        var par1_label = document.getElementById('<%=pressure_label.ClientID%>').value;
-        var par1_name = document.getElementById('<%=pressure.ClientID%>').value;
-        var par1_unit = " " + document.getElementById('<%=pressure_unit.ClientID%>').value;
+            var par1_label = document.getElementById('<%=pressure_label.ClientID%>').value;
+            var par1_name = document.getElementById('<%=pressure.ClientID%>').value;
+            var par1_unit = " " + document.getElementById('<%=pressure_unit.ClientID%>').value;
 
-        var par2_label = document.getElementById('<%=humidity_label.ClientID%>').value;
-        var par2_name = document.getElementById('<%=humidity.ClientID%>').value;
-        var par2_unit = " " + document.getElementById('<%=humidity_unit.ClientID%>').value;
+            <%--var par2_label = document.getElementById('<%=humidity_label.ClientID%>').value;
+            var par2_name = document.getElementById('<%=humidity.ClientID%>').value;
+            var par2_unit = " " + document.getElementById('<%=humidity_unit.ClientID%>').value;--%>
 
-        $('#param0container').highcharts({
+            $('#param0container').highcharts({
             
-            xAxis: {
-                type: 'datetime',
-                minTickInterval: 30,
-                title: {
-                    text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
-                },
-                tickPixelInterval: 80,
-                gridLineWidth: 1
-            },
-            yAxis: [
-                {
-                    min: 0,
-                    //max: 60,
-                    //tickInterval: 1,
+                xAxis: {
+                    type: 'datetime',
+                    minTickInterval: 30,
                     title: {
-                        text: par0_label.toString(),
-                        style: {
-                            color: '#FF3333'
+                        text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
+                    },
+                    tickPixelInterval: 80,
+                    gridLineWidth: 1
+                },
+                yAxis: [
+                    {
+                        min: 0,
+                        //max: 60,
+                        //tickInterval: 1,
+                        title: {
+                            text: par0_label.toString(),
+                            style: {
+                                color: '#FF3333'
+                            }
+                        },
+                        labels: {
+                            enabled: true,
+                            format: '{value}' + par0_unit.toString(),
+                            style: {
+                                color: '#FF3333'
+                            }
                         }
                     },
-                    labels: {
-                        enabled: true,
-                        format: '{value}' + par0_unit.toString(),
-                        style: {
-                            color: '#FF3333'
+                    {
+                        min: 1000,
+                        opposite: true,
+                        max: 1060,
+                        //tickInterval: 45,
+                        title: {
+                            text: par1_label.toString(),
+                            style: {
+                                color: '#FCA000'
+                            }
+                        },
+                        labels: {
+                            enabled: true,
+                            format: '{value}' + par1_unit.toString(),
+                            style: {
+                                color: '#FCA000'
+                            }
                         }
                     }
-                },
-                {
-                    min: 1000,
-                    opposite: true,
-                    max: 1060,
-                    //tickInterval: 45,
-                    title: {
-                        text: par1_label.toString(),
-                        style: {
-                            color: '#FCA000'
+                ],
+                series: [
+                    {
+                        name: par0_label.toString(),
+                        data: [],
+                        color: '#FF3333',
+                        animation: true,
+                        tooltip: {
+                            valueSuffix: ' ' + par0_unit.toString()
                         }
-                    },
-                    labels: {
-                        enabled: true,
-                        format: '{value}' + par1_unit.toString(),
-                        style: {
-                            color: '#FCA000'
+                    }, {
+                        name: par1_label.toString(),
+                        data: [],
+                        yAxis: 1,
+                        color: '#FCA000',
+                        animation: true,
+                        tooltip: {
+                            valueSuffix: ' ' + par1_unit.toString()
                         }
                     }
-                }
-            ],
-            series: [
-                {
-                    name: par0_label.toString(),
-                    data: [],
-                    color: '#FF3333',
-                    animation: true,
-                    tooltip: {
-                        valueSuffix: ' ' + par0_unit.toString()
-                    }
-                }, {
-                    name: par1_label.toString(),
-                    data: [],
-                    yAxis: 1,
-                    color: '#FCA000',
-                    animation: true,
-                    tooltip: {
-                        valueSuffix: ' ' + par1_unit.toString()
-                    }
-                }
-
-            ]
+                ]
+            });
         });
-    });
+    </script>
+
+
+    <script type="text/javascript">
+        $(function () {
+
+            var hour = document.getElementById('<%=hour.ClientID%>').value;
+
+            var par2_label = document.getElementById('<%=humidity_label.ClientID%>').value;
+            var par2_name = document.getElementById('<%=humidity.ClientID%>').value;
+            var par2_unit = " " + document.getElementById('<%=humidity_unit.ClientID%>').value;
+
+            $('#humcontainer').highcharts({
+            
+                xAxis: {
+                    type: 'datetime',
+                    minTickInterval: 30,
+                    title: {
+                        text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
+                    },
+                    tickPixelInterval: 80,
+                    gridLineWidth: 1
+                },
+                yAxis: [
+                    {
+                        min: 0,
+                        opposite: true,
+                        max: 100,
+                        //tickInterval: 45,
+                        title: {
+                            text: par2_label.toString(),
+                            style: {
+                                color: '#FCAAF0'
+                            }
+                        },
+                        labels: {
+                            enabled: true,
+                            format: '{value}' + par2_unit.toString(),
+                            style: {
+                                color: '#FCAAF0'
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: par2_label.toString(),
+                        data: [],
+                        color: '#FCAAF0',
+                        animation: true,
+                        tooltip: {
+                            valueSuffix: ' ' + par2_unit.toString()
+                        }
+                    }
+
+                ]
+            });
+        });
     </script>
 
     <script type="text/javascript">
-    $(function () {
+        $(function () {
 
-        var hour = document.getElementById('<%=hour.ClientID%>').value;
+            var hour = document.getElementById('<%=hour.ClientID%>').value;
 
-        var par3_label = document.getElementById('<%=rain_acc_label.ClientID%>').value;
-        var par3_name = document.getElementById('<%=rain_acc.ClientID%>').value;
-        var par3_unit = " " + document.getElementById('<%=rain_acc_unit.ClientID%>').value;
+            var par3_label = document.getElementById('<%=rain_acc_label.ClientID%>').value;
+            var par3_name = document.getElementById('<%=rain_acc.ClientID%>').value;
+            var par3_unit = " " + document.getElementById('<%=rain_acc_unit.ClientID%>').value;
 
-        var par4_label = document.getElementById('<%=rain_duration_label.ClientID%>').value;
-        var par4_name = document.getElementById('<%=rain_duration.ClientID%>').value;
-        var par4_unit = " " + document.getElementById('<%=rain_duration_unit.ClientID%>').value;
+            var par4_label = document.getElementById('<%=rain_duration_label.ClientID%>').value;
+            var par4_name = document.getElementById('<%=rain_duration.ClientID%>').value;
+            var par4_unit = " " + document.getElementById('<%=rain_duration_unit.ClientID%>').value;
 
-        <%--var par5_label = document.getElementById('<%=rain_intensity_label.ClientID%>').value;
-        var par5_name = document.getElementById('<%=rain_intensity.ClientID%>').value;
-        var par5_unit = " " + document.getElementById('<%=rain_intensity_unit.ClientID%>').value;--%>
+            <%--var par5_label = document.getElementById('<%=rain_intensity_label.ClientID%>').value;
+            var par5_name = document.getElementById('<%=rain_intensity.ClientID%>').value;
+            var par5_unit = " " + document.getElementById('<%=rain_intensity_unit.ClientID%>').value;--%>
 
 
-        $('#param1container').highcharts({
-            xAxis: {
-                type: 'datetime',
-                minTickInterval: 30,
-                title: {
-                    text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
-                },
-                tickPixelInterval: 80,
-                gridLineWidth: 1
-            },
-            yAxis: [
-                {
-                    min: 0,
-                    max: 50,
-                    //tickInterval: 1,
+            $('#param1container').highcharts({
+                xAxis: {
+                    type: 'datetime',
+                    minTickInterval: 30,
                     title: {
-                        text: par3_label.toString(),
-                        style: {
-                            color: '#FF3333'
-                        }
-                    }
-                    ,
-                    labels: {
-                        enabled: true,
-                        format: '{value}' + par3_unit.toString(),
-                        style: {
-                            color: '#FF3333'
-                        }
-                    }
+                        text: hour.toString() + ' (UTC<%=ConfigurationManager.AppSettings["UTCdataOffset"] %>)'
+                    },
+                    tickPixelInterval: 80,
+                    gridLineWidth: 1
                 },
-                {
-                    min: 0,
-                    opposite: true,
-                    //max: 360,
-                    //tickInterval: 45,
-                    title: {
-                        text: par4_label.toString(),
-                        style: {
-                            color: '#FCA000'
+                yAxis: [
+                    {
+                        min: 0,
+                        max: 50,
+                        //tickInterval: 1,
+                        title: {
+                            text: par3_label.toString(),
+                            style: {
+                                color: '#FF3333'
+                            }
+                        }
+                        ,
+                        labels: {
+                            enabled: true,
+                            format: '{value}' + par3_unit.toString(),
+                            style: {
+                                color: '#FF3333'
+                            }
                         }
                     },
-                    labels: {
-                        enabled: true,
-                        format: '{value}' + par4_unit.toString(),
-                        style: {
-                            color: '#FCA000'
+                    {
+                        min: 0,
+                        opposite: true,
+                        //max: 360,
+                        //tickInterval: 45,
+                        title: {
+                            text: par4_label.toString(),
+                            style: {
+                                color: '#FCA000'
+                            }
+                        },
+                        labels: {
+                            enabled: true,
+                            format: '{value}' + par4_unit.toString(),
+                            style: {
+                                color: '#FCA000'
+                            }
                         }
                     }
-                }
-            ],
-            series: [
-                {
-                    name: par3_label.toString(),
-                    data: [],
-                    color: '#FF3333',
-                    animation: true,
-                    tooltip: {
-                        valueSuffix: ' ' + par3_unit.toString()
+                ],
+                series: [
+                    {
+                        name: par3_label.toString(),
+                        data: [],
+                        color: '#FF3333',
+                        animation: true,
+                        tooltip: {
+                            valueSuffix: ' ' + par3_unit.toString()
+                        }
+                    }, {
+                        name: par4_label.toString(),
+                        data: [],
+                        yAxis: 1,
+                        color: '#FCA000',
+                        animation: true,
+                        tooltip: {
+                            valueSuffix: ' ' + par4_unit.toString()
+                        }
                     }
-                }, {
-                    name: par4_label.toString(),
-                    data: [],
-                    yAxis: 1,
-                    color: '#FCA000',
-                    animation: true,
-                    tooltip: {
-                        valueSuffix: ' ' + par4_unit.toString()
-                    }
-                }
 
-            ]
+                ]
+            });
         });
-    });
     </script>
 
     <script type="text/javascript">

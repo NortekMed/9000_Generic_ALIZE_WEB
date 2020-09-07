@@ -247,22 +247,22 @@
     <value>HF Peak direction</value>
   </data>
   <data name="h_sig_bf_label_alias" xml:space="preserve">
-    <value>Significant wave height bf</value>
+    <value>Hm0_bf</value>
   </data>
   <data name="h_sig_hf_label_alias" xml:space="preserve">
-    <value>Significant wave height hf</value>
+    <value>Hm0_hf</value>
   </data>
   <data name="t_peak_bf_label_alias" xml:space="preserve">
-    <value>BF Peak direction</value>
+    <value>Tp_bf</value>
   </data>
   <data name="t_peak_hf_label_alias" xml:space="preserve">
-    <value>HF Peak direction</value>
+    <value>Tp_hf</value>
   </data>
   <data name="t_z_bf_label_alias" xml:space="preserve">
-    <value>BF Tz</value>
+    <value>Tz_bf</value>
   </data>
   <data name="t_z_hf_label_alias" xml:space="preserve">
-    <value>HF Tz</value>
+    <value>Tz_hf</value>
   </data>
   <data name="d_m02_bf_label_alias" xml:space="preserve">
     <value>DIRT02_bf</value>
@@ -275,5 +275,26 @@
   </data>
   <data name="t_m02_hf_label_alias" xml:space="preserve">
     <value>TM02_hf</value>
+  </data>
+  <data name="h_sig_bf_label" xml:space="preserve">
+    <value>Significant wave height bf</value>
+  </data>
+  <data name="h_sig_hf_label" xml:space="preserve">
+    <value>Significant wave height hf</value>
+  </data>
+  <data name="t_e_bf_label_alias" xml:space="preserve">
+    <value>Te_bf</value>
+  </data>
+  <data name="t_e_hf_label_alias" xml:space="preserve">
+    <value>Te_hf</value>
+  </data>
+  <data name="t_e_label_alias" xml:space="preserve">
+    <value>Te</value>
+  </data>
+  <data name="t_m02_bf_label" xml:space="preserve">
+    <value>Mean period bf</value>
+  </data>
+  <data name="t_m02_hf_label" xml:space="preserve">
+    <value>Mean period hf</value>
   </data>
 </root>

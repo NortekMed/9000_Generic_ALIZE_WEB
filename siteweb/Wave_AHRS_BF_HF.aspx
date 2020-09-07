@@ -74,6 +74,10 @@
     <asp:HiddenField ID = "d_m02_bf_label_alias"  value="<%$ Resources:WaveAHRS, d_m02_bf_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "d_m02_hf_label_alias"  value="<%$ Resources:WaveAHRS, d_m02_hf_label_alias %>" Runat="Server" />
 
+    <asp:HiddenField ID = "t_e_label_alias"  value="<%$ Resources:WaveAHRS, t_e_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_e_bf_label_alias"  value="<%$ Resources:WaveAHRS, t_e_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_e_hf_label_alias"  value="<%$ Resources:WaveAHRS, t_e_hf_label_alias %>" Runat="Server" />
+
 
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
@@ -134,19 +138,17 @@
         document.write('</div><br><br>')
     </script>
 
-    <form>
-    <div class="metersInputGroup">
-        <label for="meters">Enter height limit — in meters :</label>
-        <input id="meters" type="number" name="meters" step="0.1" min="0" max="20" value="0" required>
-        <%--<input id="meters" type="number" name="meters" step="0.1" min="0" max="20" placeholder="value" required>--%>
-        <span class="validity"></span>
-        <a class="btn btn-default" onclick="updateData()">Trace</a>
-        <%--<input type="submit" value="Trace">--%>
-    </div>
-    <div>
+    <%--<form>
+        <div class="metersInputGroup">
+            <label for="meters">Enter height limit — in meters :</label>
+            <input id="meters" type="number" name="meters" step="0.1" min="0" max="20" value="0" required>
+            <span class="validity"></span>
+            <a class="btn btn-default" onclick="updateData()">Trace</a>
+        </div>
+        <div>
         
-    </div>
-    </form>
+        </div>
+    </form>--%>
 
 
     <script type="text/javascript">
@@ -266,7 +268,7 @@
         // Update charts with wave data
         function updateCharts(data) {
 
-            var height = +document.getElementById('meters').value;
+            //var height = document.getElementById('meters').value;
             
             // Wave Height chart
             var chartH = $('#Hcontainer').highcharts();

@@ -78,44 +78,51 @@ public partial class WaveAHRS : System.Web.UI.Page
         device_name = Resources.WaveAHRS.DEVICE_0;
         List<string> output = MakeHeader(device_name);
 
-        output.Add("UTC datetime;"  + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_max_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + t_peak_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_z_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_m01_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_m02_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_3_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + d_avg_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_peak_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_spread_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + n_waves_alias.Value + ';'
+        output.Add("UTC datetime;"  + h_sig_bf_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                                    + h_sig_hf_label_alias.Value + '(' + h_unit.Value + ')' + ';'
 
-                                    
+                                    + t_peak_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_peak_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+                                    + t_m02_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_m02_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+                                    + d_peak_bf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                    + d_peak_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+
+                                    + d_avg_bf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                    + d_avg_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+
+                                    + t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_e_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_e_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     );
 
         // mise en forme
         for (int i = 0; i < downloaddata.H_time.Length; i++)
         {
-            DateTime date = Convert.ToDateTime(downloaddata.H_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+            DateTime date = Convert.ToDateTime(downloaddata.T_time_bfhf[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
             output.Add(s_date.Replace("T", ", ") + ';'
-                        + downloaddata.H_m0[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.H_tier[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.H_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_p[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_z[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_m01[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_m02[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_3[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.D_mean[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.D_peak[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.D_sd[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.N_waves[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.H_m0_bf[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.H_m0_hf[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.T_p_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_p_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.T_m02_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_m02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.D_peak_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.D_peak_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.D_t02_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.D_t02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_e_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_e_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)
@@ -217,6 +224,10 @@ public partial class WaveAHRS : System.Web.UI.Page
         d_m02_bf_label_alias = new HiddenField();
         d_m02_hf_label_alias = new HiddenField();
 
+        t_e_label_alias     = new HiddenField();
+        t_e_bf_label_alias  = new HiddenField();
+        t_e_hf_label_alias  = new HiddenField();
+
 
         download = new HiddenField();
         download_data = new HiddenField();
@@ -299,6 +310,10 @@ public partial class WaveAHRS : System.Web.UI.Page
         d_avg_hf_label_alias.Value = Resources.WaveAHRS.d_avg_hf_label_alias.ToString();
         d_peak_bf_label_alias.Value = Resources.WaveAHRS.d_peak_bf_label_alias.ToString();
         d_peak_hf_label_alias.Value = Resources.WaveAHRS.d_peak_hf_label_alias.ToString();
+
+        t_e_label_alias.Value       = Resources.WaveAHRS.t_e_label_alias.ToString();
+        t_e_bf_label_alias.Value    = Resources.WaveAHRS.t_e_bf_label_alias.ToString();
+        t_e_hf_label_alias.Value    = Resources.WaveAHRS.t_e_hf_label_alias.ToString();
 
 
 
@@ -541,6 +556,7 @@ public partial class WaveAHRS : System.Web.UI.Page
         List<double> list_te = new List<double>();
         List<double> list_te_bf = new List<double>();
         List<double> list_te_hf = new List<double>();
+        List<string> list_t_time2 = new List<string>();
 
 
         foreach (DataRow dRow in myDataTable4.Rows)
@@ -550,7 +566,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
             //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"]));
-            list_t_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
+            list_t_time2.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
 
             /////////////////////////////////////////////////////////////////
@@ -660,7 +676,7 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         data.setHeight(list_h_sig, list_h_max, list_h_3, list_hm0_bf, list_hm0_hf, list_h_time);
         data.SetPeriod(list_t_tp, list_t_tz, list_t_tm02, list_t_tm01, list_t_thmax, list_t_t3, list_t_time);
-        data.SetPeriod_bfhf(list_tp_bf, list_tp_hf, list_tz_bf, list_tz_hf, list_t02_bf, list_t02_hf, list_te, list_te_bf, list_te_hf, list_t_time);
+        data.SetPeriod_bfhf(list_tp_bf, list_tp_hf, list_tz_bf, list_tz_hf, list_t02_bf, list_t02_hf, list_te, list_te_bf, list_te_hf, list_t_time2);
         data.setDirection(list_d_mean, list_d_max, list_d_sd, list_n_waves, list_d_t02_bf, list_d_t02_hf, list_d_tp_bf, list_d_tp_hf, list_d_time);
 
 
