@@ -123,6 +123,9 @@
   <data name="contact" xml:space="preserve">
     <value>Contact</value>
   </data>
+  <data name="declination" xml:space="preserve">
+    <value>Declination</value>
+  </data>
   <data name="download" xml:space="preserve">
     <value>Download displayed measure</value>
   </data>

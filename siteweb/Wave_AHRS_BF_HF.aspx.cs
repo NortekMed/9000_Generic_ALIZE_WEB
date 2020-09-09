@@ -16,7 +16,7 @@ using System.Web.Security;
 
 using GlobalVariables;
 
-public partial class WaveAHRS : System.Web.UI.Page
+public partial class WaveAHRS_BFHF : System.Web.UI.Page
 {
     static public dataWaveAHRS_BFHF downloaddata;
 
@@ -63,7 +63,8 @@ public partial class WaveAHRS : System.Web.UI.Page
         output.Add(Global.l_timeref + timeref);
         output.Add(Global.l_timestamp + timestamp);
         output.Add(Global.l_direction + direction);
-        output.Add(Global.l_orientation + orientation);
+        output.Add(Global.l_orientation + orientation + ' ' + downloaddata.declination.ToString("0.00", NumberFormatInfo.InvariantInfo));
+        //output.Add(Global.l_orientation + orientation);
 
 
         return output;
@@ -247,7 +248,8 @@ public partial class WaveAHRS : System.Web.UI.Page
         timeref = Resources.WaveAHRS.TIMEREF;
         timestamp = Resources.WaveAHRS.TIMESTAMP;
         direction = Resources.WaveAHRS.DIRECTION;
-        orientation = Resources.WaveAHRS.ORIENTATION;
+        orientation = Resources.meteo.ORIENTATION + ", " + Resources.Site.Master.declination;
+        //orientation = Resources.WaveAHRS.ORIENTATION;
 
 
         //Retrieving data from master resx files
@@ -324,7 +326,7 @@ public partial class WaveAHRS : System.Web.UI.Page
     [System.Web.Services.WebMethod]
     public static dataWaveAHRS_BFHF GetValuesFrom(string begin, string end)
     {
-        WaveAHRS test = new WaveAHRS();
+        WaveAHRS_BFHF test = new WaveAHRS_BFHF();
         test.CreateField();
         test.InitField();
 
@@ -334,9 +336,52 @@ public partial class WaveAHRS : System.Web.UI.Page
     [System.Web.Services.WebMethod]
     public static dataWaveAHRS_BFHF GetValues(string begin, string end)
     {
-        
+
         DateTime stdate;
         DateTime endate;
+
+        string timestampsrequest;
+        //string DbRequest;
+
+        DataSet ds;
+        FbDataAdapter dataadapter;
+        DataTable myDataTable;
+
+        double decl = 0;
+
+        ///////////////////////////////////////////////////////////////////////////
+        /// Reading declination
+        /// 
+        endate = DateTime.Now;  // using local time ( declination time registering should be in local time )
+
+        timestampsrequest = " WHERE a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+
+
+        ds = new DataSet();
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM DECLINATION a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        dataadapter.Fill(ds);
+        myDataTable = ds.Tables[0];
+
+        List<double> list_decl = new List<double>();
+        List<DateTime> list_time_decl = new List<DateTime>();
+
+        // to be sure to have at least one element
+        list_decl.Add(0);
+        list_time_decl.Add(DateTime.MinValue);
+
+        foreach (DataRow dRow in myDataTable.Rows)
+        {
+            DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+
+            list_time_decl.Add(date);
+
+            double tmp = double.Parse(dRow["DECLINATION"].ToString());
+            list_decl.Add(tmp);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        double wave_compute_duration = double.Parse(WebConfigurationManager.AppSettings["Wave_Tps_acq"]);
 
         // last 24 hours !
         if (begin == "" && end == "")
@@ -355,13 +400,25 @@ public partial class WaveAHRS : System.Web.UI.Page
             endate = endate.AddDays(1);
         }
 
-        string timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+        for (int i = 0; i < list_time_decl.Count; i++)
+        {
+
+            if (list_time_decl[i] < endate)
+            {
+                decl = list_decl[i];
+            }
+            else
+                break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
+        }
+
+
+        timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
         // Get wind from database
-        DataSet ds = new DataSet();
-        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX,a.H3,a.HM0_BF, a.HM0_HF FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        ds = new DataSet();
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX,a.H3,a.HM0_BF, a.HM0_HF FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
-        DataTable myDataTable = ds.Tables[0];
+        myDataTable = ds.Tables[0];
 
 
 
@@ -376,6 +433,9 @@ public partial class WaveAHRS : System.Web.UI.Page
         foreach (DataRow dRow in myDataTable.Rows)
         {
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
+
+            // converting start date in DB in end date !
+            date = date.AddSeconds(wave_compute_duration);
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
@@ -407,6 +467,9 @@ public partial class WaveAHRS : System.Web.UI.Page
         foreach (DataRow dRow in myDataTable2.Rows)
         {
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
+
+            // converting start date in DB in end date !
+            date = date.AddSeconds(wave_compute_duration);
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
@@ -500,33 +563,47 @@ public partial class WaveAHRS : System.Web.UI.Page
         foreach (DataRow dRow in myDataTable3.Rows)
         {
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
+
+            // converting start date in DB in end date !
+            date = date.AddSeconds(wave_compute_duration);
+
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"]));
             list_d_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
             list_d_mean.Add(double.Parse(dRow["DIRT02"].ToString()));
+            list_d_mean[list_d_mean.Count - 1] += decl;
+
+
             list_d_max.Add(double.Parse(dRow["DIRTP"].ToString()));
+            list_d_max[list_d_max.Count - 1] += decl;
 
             double tmp = -1;
             double.TryParse(dRow["DIRT02_BF"].ToString(), out tmp);
             list_d_t02_bf.Add(tmp);
+            list_d_t02_bf[list_d_t02_bf.Count - 1] += decl;
 
             double.TryParse(dRow["DIRT02_HF"].ToString(), out tmp);
             list_d_t02_hf.Add(tmp);
+            list_d_t02_hf[list_d_t02_hf.Count - 1] += decl;
 
             double.TryParse(dRow["DIRTP_BF"].ToString(), out tmp);
             list_d_tp_bf.Add(tmp);
+            list_d_tp_bf[list_d_tp_bf.Count - 1] += decl;
 
             double.TryParse(dRow["DIRTP_HF"].ToString(), out tmp);
             list_d_tp_hf.Add(tmp);
+            list_d_tp_hf[list_d_tp_hf.Count - 1] += decl;
 
             //list_d_t02_bf.Add(double.Parse(dRow["DIRT02_BF"].ToString()));
             //list_d_t02_hf.Add(double.Parse(dRow["DIRT02_HF"].ToString()));
             //list_d_tp_bf.Add(double.Parse(dRow["DIRTP_BF"].ToString()));
             //list_d_tp_hf.Add(double.Parse(dRow["DIRTP_HF"].ToString()));
-            
+
             list_d_sd.Add(double.Parse(dRow["SPRD"].ToString()));
+            list_d_sd[list_d_sd.Count - 1] += decl;
+
             list_n_waves.Add(double.Parse(dRow["NUMW"].ToString()));
 
             //dir_cor = double.Parse(dRow["MAINDIR"].ToString()) - 14.8;
@@ -562,6 +639,9 @@ public partial class WaveAHRS : System.Web.UI.Page
         foreach (DataRow dRow in myDataTable4.Rows)
         {
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
+
+            // converting start date in DB in end date !
+            date = date.AddSeconds(wave_compute_duration);
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
@@ -679,6 +759,8 @@ public partial class WaveAHRS : System.Web.UI.Page
         data.SetPeriod_bfhf(list_tp_bf, list_tp_hf, list_tz_bf, list_tz_hf, list_t02_bf, list_t02_hf, list_te, list_te_bf, list_te_hf, list_t_time2);
         data.setDirection(list_d_mean, list_d_max, list_d_sd, list_n_waves, list_d_t02_bf, list_d_t02_hf, list_d_tp_bf, list_d_tp_hf, list_d_time);
 
+        data.setDeclination(decl);
+
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
         downloaddata = data;
@@ -731,6 +813,8 @@ public class dataWaveAHRS_BFHF
     public double[] N_waves;
     public string[] D_time;
 
+    public double declination;
+
     public void setHeight(List<double> sig, List<double> max, List<double> tier, List<double> list_Hm0_bf, List<double> list_Hm0_hf, List<string> time)
     {
         H_m0 = sig.ToArray();
@@ -755,7 +839,8 @@ public class dataWaveAHRS_BFHF
         T_3 = list_t_t3.ToArray();
 
         T_time = time.ToArray();
-    }
+
+}
 
     public void SetPeriod_bfhf( List<double> list_t_tp_bf, List<double> list_t_tp_hf, List<double> list_t_z_bf, List<double> list_t_z_hf, List<double> list_t_t02_bf, List<double> list_t_t02_hf, 
                                 List<double> list_te, List<double> list_te_bf, List<double> list_te_hf, List<string> time)
@@ -785,5 +870,10 @@ public class dataWaveAHRS_BFHF
         D_peak_hf = p_hf.ToArray();
 
         D_time = time.ToArray();
+    }
+
+    public void setDeclination(double decl)
+    {
+        declination = decl;
     }
 }

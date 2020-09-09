@@ -21,19 +21,35 @@ namespace GlobalVariables
         public static string l_direction = "DIRECTION : ";
         public static string l_orientation = "NORTH : ";
 
-        /// <summary>
-        /// Get or set the static important data.
-        /// </summary>
-        //public static string ImportantData
+        public static double declination = 0;
+
+
+        //public static double GetDeclination()
         //{
-        //    get
-        //    {
-        //        return _importantData;
-        //    }
-        //    set
-        //    {
-        //        _importantData = value;
-        //    }
+
+        //    string timestampsrequest = " WHERE a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+
+
+        //    DataSet ds = new DataSet();
+        //    FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM SYSTEM a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        //    dataadapter.Fill(ds);
+        //    DataTable myDataTable = ds.Tables[0];
+
         //}
-    }
+
+            /// <summary>
+            /// Get or set the static important data.
+            /// </summary>
+            //public static string ImportantData
+            //{
+            //    get
+            //    {
+            //        return _importantData;
+            //    }
+            //    set
+            //    {
+            //        _importantData = value;
+            //    }
+            //}
+        }
 }

@@ -131,9 +131,10 @@ public partial class Meteo : System.Web.UI.Page
         output.Add(Global.l_timeref + timeref);
         output.Add(Global.l_timestamp + timestamp);
         output.Add(Global.l_direction + direction);
-        output.Add(Global.l_orientation + orientation);
-        
-        
+        output.Add(Global.l_orientation + orientation + ' ' + downloaddata.declination.ToString("0.00", NumberFormatInfo.InvariantInfo));
+        //output.Add(Global.l_orientation + orientation);
+
+
         return output;
     }
 
@@ -148,7 +149,7 @@ public partial class Meteo : System.Web.UI.Page
         output.Add(Global.l_timeref + timeref);
         output.Add(Global.l_timestamp + timestamp);
         output.Add(Global.l_direction + "none");
-        output.Add(Global.l_orientation + orientation);
+        output.Add(Global.l_orientation + orientation + ' ' + downloaddata.declination.ToString("0.00", NumberFormatInfo.InvariantInfo));
 
 
         return output;
@@ -370,7 +371,7 @@ public partial class Meteo : System.Web.UI.Page
         timestamp = Resources.meteo.TIMESTAMP;
         direction = Resources.meteo.DIRECTION;
         direction_M = Resources.meteo.DIRECTION_M;
-        orientation = Resources.meteo.ORIENTATION;
+        orientation = Resources.meteo.ORIENTATION + ", " + Resources.Site.Master.declination;
 
         //Retrieving data from master resx files
         start.Value = Resources.Site.Master.start.ToString();
@@ -552,6 +553,49 @@ public partial class Meteo : System.Web.UI.Page
         DateTime stdate;
         DateTime endate;
 
+        string timestampsrequest;
+        //string DbRequest;
+
+        DataSet ds;
+        FbDataAdapter dataadapter;
+        DataTable myDataTable;
+
+        double decl = 0;
+
+        ///////////////////////////////////////////////////////////////////////////
+        /// Reading declination
+        /// 
+        endate = DateTime.Now;  // using local time ( declination time registering should be in local time )
+
+        timestampsrequest = " WHERE a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+
+
+        ds = new DataSet();
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM DECLINATION a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        dataadapter.Fill(ds);
+        myDataTable = ds.Tables[0];
+
+        List<double> list_decl = new List<double>();
+        List<DateTime> list_time_decl = new List<DateTime>();
+
+        // to be sure to have at least one element
+        list_decl.Add(0);
+        list_time_decl.Add(DateTime.MinValue);
+
+        foreach (DataRow dRow in myDataTable.Rows)
+        {
+            DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+
+            list_time_decl.Add(date);
+
+            double tmp = double.Parse(dRow["DECLINATION"].ToString());
+            list_decl.Add(tmp);
+        }
+
+        
+
+        ///////////////////////////////////////////////////////////////////////////
+
         // last 24 hours !
         if (begin == "" && end == "")
         {
@@ -569,7 +613,20 @@ public partial class Meteo : System.Web.UI.Page
             endate = endate.AddDays(1);
         }
 
-        string timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+
+        for (int i = 0; i < list_time_decl.Count; i++)
+        {
+
+            if (list_time_decl[i] < endate)
+            {
+                decl = list_decl[i];
+            }
+            else
+                break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
+        }
+
+
+        timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
 
         List<double> list_par0 = new List<double>();
@@ -604,14 +661,16 @@ public partial class Meteo : System.Web.UI.Page
 
         data_type_Meteo_0 data = new data_type_Meteo_0();
 
+        data.set_declination(decl);
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// Read data for equipment 0 -- look in resx table to know how many parameter to read
-        DataSet ds = new DataSet();
+        ds = new DataSet();
         string str_connect = "SELECT a.TIME_REC, a." + s_temperature + ",a." + s_pressure + ", a." + s_humidity + " FROM " + _0_equip_name + " a" + timestampsrequest + " order by a.TIME_REC";
         
-        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(str_connect, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(str_connect, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
-        DataTable myDataTable = ds.Tables[0];
+        myDataTable = ds.Tables[0];
 
         foreach (DataRow dRow in myDataTable.Rows)
         {
@@ -680,11 +739,20 @@ public partial class Meteo : System.Web.UI.Page
             list_str_time2.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
             list_par6.Add(double.Parse(dRow[s_wind_speed_avg].ToString()));
+
             list_par7.Add(double.Parse(dRow[s_wind_dir_avg].ToString()));
+            list_par7[list_par7.Count - 1] += decl;
+
             list_par8.Add(double.Parse(dRow[s_wind_speed_max].ToString()));
+
             list_par9.Add(double.Parse(dRow[s_wind_dir_max].ToString()));
+            list_par9[list_par9.Count - 1] += decl;
+
             list_par20.Add(double.Parse(dRow[s_wind_speed_min].ToString()));
+
             list_par21.Add(double.Parse(dRow[s_wind_dir_min].ToString()));
+            list_par21[list_par21.Count - 1] += decl;
+
         }
 
         data.set_param_equip_2(list_par6, list_par7, list_par8, list_par9, list_par20, list_par21, list_str_time2);
@@ -836,6 +904,7 @@ public partial class Meteo : System.Web.UI.Page
         public string[] wx_str_time;  //temp_airmar / press_airmar / wind_speed_avg_airmar / wind_speed_max_airmar / wind_dir_airmar / voltage_airmar
         public string[] wx_gps_str_time;  //lat_airmar / lng_airmar / gps_quality_airmar / nb_satelite_airmar
 
+        public double declination;
 
     // temperature pressure humidity
     public void set_param_wxt(List<double> w_par0, List<double> w_par1, List<double> w_par2, List<string> w_time)
@@ -894,4 +963,9 @@ public partial class Meteo : System.Web.UI.Page
             wx_gps_nb = w_par3.ToArray();
         wx_gps_str_time = w_time.ToArray();
         }
+
+    public void set_declination( double decl)
+    {
+        declination = decl;
+    }
     }

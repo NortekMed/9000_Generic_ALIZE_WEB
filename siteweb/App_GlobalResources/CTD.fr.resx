@@ -117,121 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="avg_10min" xml:space="preserve">
-    <value>Measures averaged over 10 minutes</value>
-  </data>
-  <data name="avg_17min" xml:space="preserve">
-    <value>Measures averaged over 17 minutes</value>
-  </data>
-  <data name="avg_3min" xml:space="preserve">
-    <value>Measures averaged over 3 minutes</value>
-  </data>
-  <data name="c4e" xml:space="preserve">
-    <value>C4E</value>
-  </data>
-  <data name="contact" xml:space="preserve">
-    <value>Info &amp; Contact</value>
-  </data>
-  <data name="ctd" xml:space="preserve">
+  <data name="DEVICE_0" xml:space="preserve">
     <value>CTD</value>
   </data>
-  <data name="declination" xml:space="preserve">
-    <value>Declination</value>
+  <data name="DIRECTION" xml:space="preserve">
+    <value>none</value>
   </data>
-  <data name="download" xml:space="preserve">
-    <value>Download displayed measure</value>
+  <data name="equip_name" xml:space="preserve">
+    <value>SBE37</value>
   </data>
-  <data name="download_data" xml:space="preserve">
-    <value>Data download (csv)</value>
+  <data name="sallabel" xml:space="preserve">
+    <value>Pressure</value>
   </data>
-  <data name="end" xml:space="preserve">
-    <value />
+  <data name="salname" xml:space="preserve">
+    <value>PRESSURE</value>
   </data>
-  <data name="historical" xml:space="preserve">
-    <value>Historical</value>
+  <data name="salunit" xml:space="preserve">
+    <value>hPa</value>
   </data>
-  <data name="hour" xml:space="preserve">
-    <value>hour</value>
-  </data>
-  <data name="last" xml:space="preserve">
-    <value>Last</value>
-  </data>
-  <data name="optod" xml:space="preserve">
-    <value>Optod</value>
-  </data>
-  <data name="position" xml:space="preserve">
-    <value>Position</value>
-  </data>
-  <data name="prof_current_label" xml:space="preserve">
-    <value>Current profile</value>
-  </data>
-  <data name="pyrano" xml:space="preserve">
-    <value>Pyranometer</value>
-  </data>
-  <data name="pyrano_rad" xml:space="preserve">
-    <value>Radiation</value>
-  </data>
-  <data name="pyrano_rad_raw" xml:space="preserve">
-    <value>Gross radiation</value>
-  </data>
-  <data name="pyrano_temp" xml:space="preserve">
+  <data name="templabel" xml:space="preserve">
     <value>Temperature</value>
   </data>
-  <data name="pyrano_volt" xml:space="preserve">
-    <value>Voltage</value>
+  <data name="tempname" xml:space="preserve">
+    <value>TEMPERATURE</value>
   </data>
-  <data name="refresh" xml:space="preserve">
-    <value>Refresh</value>
+  <data name="tempunit" xml:space="preserve">
+    <value>°C</value>
   </data>
-  <data name="rt_measure" xml:space="preserve">
-    <value>Real time</value>
+  <data name="TIMEREF" xml:space="preserve">
+    <value>10 minutes</value>
   </data>
-  <data name="signature" xml:space="preserve">
-    <value>Current</value>
-  </data>
-  <data name="signin" xml:space="preserve">
-    <value>Sign in</value>
-  </data>
-  <data name="signout" xml:space="preserve">
-    <value>Sign out</value>
-  </data>
-  <data name="start" xml:space="preserve">
-    <value />
-  </data>
-  <data name="turbi" xml:space="preserve">
-    <value>Turbidimeter</value>
-  </data>
-  <data name="waveahrs" xml:space="preserve">
-    <value>Waves</value>
-  </data>
-  <data name="waveahrs_bfhf" xml:space="preserve">
-    <value>Waves BFHF</value>
-  </data>
-  <data name="weather" xml:space="preserve">
-    <value>Weather</value>
-  </data>
-  <data name="weather_dir_avg" xml:space="preserve">
-    <value>Average wind direction</value>
-  </data>
-  <data name="weather_dir_max" xml:space="preserve">
-    <value>-----</value>
-  </data>
-  <data name="weather_press" xml:space="preserve">
-    <value>Atmospheric pressure</value>
-  </data>
-  <data name="weather_rain_acc" xml:space="preserve">
-    <value>Rain accumulation</value>
-  </data>
-  <data name="weather_rain_d" xml:space="preserve">
-    <value>Rain duration</value>
-  </data>
-  <data name="weather_temp" xml:space="preserve">
-    <value>Temperature</value>
-  </data>
-  <data name="weather_wind_avg" xml:space="preserve">
-    <value>Average wind speed</value>
-  </data>
-  <data name="weather_wind_max" xml:space="preserve">
-    <value>Max wind speed</value>
+  <data name="TIMESTAMP" xml:space="preserve">
+    <value>UTC time, acquisition start</value>
   </data>
 </root>

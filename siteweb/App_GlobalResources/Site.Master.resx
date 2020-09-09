@@ -132,6 +132,12 @@
   <data name="contact" xml:space="preserve">
     <value />
   </data>
+  <data name="ctd" xml:space="preserve">
+    <value />
+  </data>
+  <data name="declination" xml:space="preserve">
+    <value />
+  </data>
   <data name="download" xml:space="preserve">
     <value />
   </data>
@@ -190,6 +196,9 @@
     <value />
   </data>
   <data name="start" xml:space="preserve">
+    <value />
+  </data>
+  <data name="String1" xml:space="preserve">
     <value />
   </data>
   <data name="turbi" xml:space="preserve">

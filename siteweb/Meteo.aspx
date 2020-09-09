@@ -98,6 +98,8 @@
     <asp:HiddenField ID = "lng_airmar_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "gps_quality_airmar_label"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "nb_satelite_airmar_label"  ClientIdMode="Static" Runat="Server" />
+
+    <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 		
     
     <script type="text/javascript">
@@ -167,9 +169,12 @@
 
     <script type="text/javascript">
         var label = document.getElementById('<%=_2_equipname_alias.ClientID%>').value;
+        var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');document.write('  wind at 3.5m above sea level');
+        document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
+        document.write('  wind at 3.5m above sea level');
+        //document.write('<div class="panel-heading"><b>' + label + '</b></div>');document.write('  wind at 3.5m above sea level');
         document.write('<div class="panel-body">');
         document.write('<div id="param2container" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -323,6 +328,8 @@
 
         // Update charts with meteo data
         function updateCharts(data) {
+
+            $('#l_decl').text(data.declination.toFixed(2));
 
             // Param0 chart -- Temp
             var chartpar0 = $('#param0container').highcharts();

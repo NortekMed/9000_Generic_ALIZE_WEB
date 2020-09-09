@@ -28,10 +28,12 @@
         <asp:HiddenField ID = "optod" Value="<%$ Resources:Site.master, optod %>" Runat="Server" />
         <asp:HiddenField ID = "turbi"  value="<%$ Resources:Site.master, turbi %>" Runat="Server" />--%>
         <asp:HiddenField ID = "signature" Value="<%$ Resources:Site.master, signature %>" Runat="Server" />
+        <asp:HiddenField ID = "ctd" Value="<%$ Resources:Site.master, ctd %>" Runat="Server" />
         <asp:HiddenField ID = "waveahrs" Value="<%$ Resources:Site.master, waveahrs %>" Runat="Server" />
         <asp:HiddenField ID = "waveahrs_bfhf" Value="<%$ Resources:Site.master, waveahrs_bfhf %>" Runat="Server" />
         <asp:HiddenField ID = "position" Value="<%$ Resources:Site.master, position %>" Runat="Server" />
         <asp:HiddenField ID = "contact" Value="<%$ Resources:Site.master, contact %>" Runat="Server" />
+
         
         <%--<asp:HiddenField ID = "signin" Value="<%$ Resources:Site.master, signin %>" Runat="Server" />--%>
         <asp:HiddenField ID = "signout" Value="<%$ Resources:Site.master, signout %>" Runat="Server" />
@@ -103,36 +105,67 @@
             document.write('<div class="navbar-collapse collapse">');
             document.write('<ul class="nav navbar-nav">');
 
-                            var l_rt_measure = document.getElementById('<%=rt_measure.ClientID%>').value;
-                            var l_sig = document.getElementById('<%=signature.ClientID%>').value;
-                            var l_waveahrs = document.getElementById('<%=waveahrs.ClientID%>').value;
-                            var l_waveahrs_bfhf = document.getElementById('<%=waveahrs_bfhf.ClientID%>').value;
-                            var l_weather = document.getElementById('<%=weather.ClientID%>').value;
-                            <%--var l_spm = document.getElementById('<%=spm.ClientID%>').value;
-                            var l_c4e = document.getElementById('<%=c4e.ClientID%>').value;
-                            var l_optod = document.getElementById('<%=optod.ClientID%>').value;
-                            var l_turbi = document.getElementById('<%=turbi.ClientID%>').value;--%>
-                            var l_pos = document.getElementById('<%=position.ClientID%>').value;
-                            var l_contact = document.getElementById('<%=contact.ClientID%>').value;
+            var l_rt_measure = document.getElementById('<%=rt_measure.ClientID%>').value;
+            var l_sig = document.getElementById('<%=signature.ClientID%>').value;
+            var l_ctd = document.getElementById('<%=ctd.ClientID%>').value;
+            var l_waveahrs = document.getElementById('<%=waveahrs.ClientID%>').value;
+            var l_waveahrs_bfhf = document.getElementById('<%=waveahrs_bfhf.ClientID%>').value;
+            var l_weather = document.getElementById('<%=weather.ClientID%>').value;
+            <%--var l_spm = document.getElementById('<%=spm.ClientID%>').value;
+            var l_c4e = document.getElementById('<%=c4e.ClientID%>').value;
+            var l_optod = document.getElementById('<%=optod.ClientID%>').value;
+            var l_turbi = document.getElementById('<%=turbi.ClientID%>').value;--%>
+            var l_pos = document.getElementById('<%=position.ClientID%>').value;
+            var l_contact = document.getElementById('<%=contact.ClientID%>').value;
 
-                            var link = '<%=ConfigurationManager.AppSettings["Link"] %>';
+            var link = '<%=ConfigurationManager.AppSettings["Link"] %>';
                             
 
-                            <%--document.write('<li><a runat="server" href="">'); document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write("</a></li>");--%>
+            <%--document.write('<li><a runat="server" href="">'); document.write('<%=ConfigurationManager.AppSettings["SiteName"] %>'); document.write("</a></li>");--%>
                             
-                            document.write('<li><a runat="server" href="~/Realtime">'); document.write(l_rt_measure); document.write("</a></li>");
-                            document.write('<li><a runat="server" href="~/Current_Sig">'); document.write(l_sig); document.write("</a></li>");
-                            document.write('<li><a runat="server" href="~/Wave_AHRS">'); document.write(l_waveahrs); document.write("</a></li>");
-                            document.write('<li><a runat="server" href="~/Wave_AHRS_BF_HF">'); document.write(l_waveahrs_bfhf); document.write("</a></li>");
-                            document.write('<li><a runat="server" href="~/Meteo">'); document.write(l_weather); document.write("</a></li>");
+            document.write('<li><a runat="server" href="~/Realtime">'); document.write(l_rt_measure); document.write("</a></li>");
+
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_SIGCURRENT"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Current_Sig">'); document.write(l_sig); document.write("</a></li>");
+            }
+
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_CTD"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/CTD">'); document.write(l_ctd); document.write("</a></li>");
+            }
+
+            ena = "<%=ConfigurationManager.AppSettings["PAGE_WAVESAHRS"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Wave_AHRS">'); document.write(l_waveahrs); document.write("</a></li>");
+            }
+
+            ena = "<%=ConfigurationManager.AppSettings["PAGE_WAVESAHRS_BFHF"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Wave_AHRS_BF_HF">'); document.write(l_waveahrs_bfhf); document.write("</a></li>");
+            }
+
+            ena = "<%=ConfigurationManager.AppSettings["PAGE_WEATHER"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Meteo">'); document.write(l_weather); document.write("</a></li>");
+            }
                             //document.write('<li><a runat="server" href="~/Aquapro_C4E">'); document.write(l_c4e); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_Optod">'); document.write(l_optod); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_Turbi">'); document.write(l_turbi); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/pyrano">'); document.write(l_spm); document.write("</a></li>");
-                            document.write('<li><a runat="server" href="~/position">'); document.write(l_pos); document.write("</a></li>");
-                            document.write('<li><a runat="server" href="~/Contact">'); document.write(l_contact); document.write("</a></li>");
+
+            ena = "<%=ConfigurationManager.AppSettings["PAGE_AIRMAR_POSITION"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/position">'); document.write(l_pos); document.write("</a></li>");
+            }
+
+            ena = "<%=ConfigurationManager.AppSettings["PAGE_CONTACT"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Contact">'); document.write(l_contact); document.write("</a></li>");
+            }
+
                             //http://192.168.1.204
-                            document.write('<li><a runat="server" href="'); document.write(link);document.write('" target="_blank">'); document.write('<%=ConfigurationManager.AppSettings["LinkLabel"] %>'); document.write("</a></li>");
+                            //document.write('<li><a runat="server" href="'); document.write(link);document.write('" target="_blank">'); document.write('<%=ConfigurationManager.AppSettings["LinkLabel"] %>'); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="http://192.168.1.204/SNA-SOUTHWEST" target="_blank">'); document.write(' "LINK" '); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="http://nortekmed.dyndns.org/SNA-SOUTHWEST">'); document.write(' "LINK" '); document.write("</a></li>");
       

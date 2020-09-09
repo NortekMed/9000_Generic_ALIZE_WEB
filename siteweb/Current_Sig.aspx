@@ -69,6 +69,8 @@
 
      <asp:HiddenField ID = "profamp_label" ClientIdMode="Static" Runat="Server" />
 
+    <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
+
 
     <script type="text/javascript">
         
@@ -146,9 +148,12 @@
 
     <script type="text/javascript">
         var label = document.getElementById('<%=direction_label.ClientID%>').value;
+        var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        //document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
+        document.write('<div class="panel-body">');
         document.write('<div class="panel-body">');
         document.write('<div id="Dircontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -168,9 +173,11 @@
 
     <script type="text/javascript">
         var label = document.getElementById('<%=profdir_label.ClientID%>').value;
+        var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        //document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl2">X</label>' + '</b></div>');
         document.write('<div class="panel-body">');
         document.write('<div id="ProfileDircontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -189,7 +196,7 @@
         document.write('</div>');
     </script>
 
-    <script type="text/javascript">
+    <%--<script type="text/javascript">
         var label = "water " + document.getElementById('<%=templabel.ClientID%>').value.toLowerCase() + ' (' + "<%=ConfigurationManager.AppSettings["Looking"] %>" + ')';
         
         document.write('<div class="panel panel-default">');
@@ -198,7 +205,7 @@
         document.write('<div id="MTcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
         document.write('</div>');
-    </script>
+    </script>--%>
     
 
       
@@ -341,21 +348,23 @@
         // Update charts with wave data
         function updateCharts(data) {
             
-            var mtchart = $('#MTcontainer').highcharts();
-            var maree = [];
-            var tempeau = [];
-            var sal = [];
+            //var mtchart = $('#MTcontainer').highcharts();
+            //var maree = [];
+            //var tempeau = [];
+            //var sal = [];
 
 
-            for (var i = 0; i < data.SBE_time.length; i++) {
-                var time = Date.parse(data.SBE_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                //maree.push([time, data.C_press[i]]);
-                tempeau.push([time, data.SBE_temp[i]]);
-                sal.push([time, data.SBE_sal[i]]);
-            }
-            mtchart.series[0].setData(tempeau);
-            mtchart.series[1].setData(sal);
+            //for (var i = 0; i < data.SBE_time.length; i++) {
+            //    var time = Date.parse(data.SBE_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+            //    //maree.push([time, data.C_press[i]]);
+            //    tempeau.push([time, data.SBE_temp[i]]);
+            //    sal.push([time, data.SBE_sal[i]]);
+            //}
+            //mtchart.series[0].setData(tempeau);
+            //mtchart.series[1].setData(sal);
 
+            $('#l_decl').text(data.declination.toFixed(2));
+            $('#l_decl2').text(data.declination.toFixed(2));
             
             var chart = $('#ProfileSpdcontainer').highcharts();
             var charProftDir = $('#ProfileDircontainer').highcharts();
@@ -859,8 +868,8 @@
             colorAxis: {
                 stops: [
                     [0, '#3060cf'],
-                    [0.3, '#00FFA2'],
-                    [0.8, '#FFC400'],
+                    [0.3, '#00FF00'],
+                    [0.8, '#FF0000'],
                     [1, '#FF0000']
                 ],
                 min: 0,

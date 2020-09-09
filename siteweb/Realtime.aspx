@@ -92,6 +92,8 @@
 	<asp:HiddenField ID = "wave_param5"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
 	<asp:HiddenField ID = "wave_t_unit"  value="<%$ Resources:WaveAHRS, t_unit %>" Runat="Server" />
 
+    <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
+
 
     <asp:HiddenField ID = "b_knots_hd" ClientIdMode="Static" Runat="Server"/>
 
@@ -132,9 +134,12 @@
         
     </script>
 
+
     <div class="row">
         <script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=wave_panel.ClientID%>').value;
+            
+
             var l_desc = document.getElementById('<%=avg_17.ClientID%>').value;
             var l_param0 = document.getElementById('<%=wave_param0.ClientID%>').value;
             var l_param1 = document.getElementById('<%=wave_param1.ClientID%>').value;
@@ -151,18 +156,16 @@
 
             document.write('<div class="col-md-4">')
             document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="ahrshour">X</label> </div>');
+            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle);document.write(' </b> <label class="indent" id="ahrshour">X</label> </div>');
             document.write('<div class="panel-body">');
-            document.write('<table class="table"><tbody>');
 
-            //document.write('<tr><td>' + l_desc + '</td></tr>');
+            document.write('<table class="table"><tbody>');
             document.write('<tr><td>' + l_param3 + '</td><td><label id="ahrs_par3">X</label></td><td>' + l_param3unit + '</td>');
             document.write('<tr><td>' + l_param5 + '</td><td><label id="ahrs_par5">X</label></td><td>' + l_param5unit + '</td>');
             document.write('<tr><td>' + l_param0 + '</td><td><label id="ahrs_par0">X</label></td><td>' + l_param0unit + '</td>');
             document.write('<tr><td>' + l_param1 + '</td><td><label id="ahrs_par1">X</label></td><td>' + l_param1unit + '</td>');
             document.write('<tr><td>' + l_param2 + '</td><td><label id="ahrs_par2">X</label></td><td>' + l_param2unit + '</td>');
             document.write('<tr><td>' + l_param4 + '</td><td><label id="ahrs_par4">X</label></td><td>' + l_param4unit + '</td>');
-
             document.write('</body></table></div>');
             document.write('</div></div>');
 
@@ -179,7 +182,14 @@
             var l_param5 = document.getElementById('<%=w_rain_d.ClientID%>').value;
             var l_param6 = document.getElementById('<%=w_rain_acc.ClientID%>').value;
 
+            var l_paneltitle2 = document.getElementById('<%=declination_label.ClientID%>').value;
+
             document.write('<div class="col-md-4">')
+
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle2); document.write(' </b> <label class="indent" id="l_decl">X</label> </div>');
+            document.write('</div>');
+
             document.write('<div class="panel panel-default">');
             document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Meteohour">X</label> </div>');
             document.write('<div class="panel-body">');
@@ -201,6 +211,7 @@
             else {
                     document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>kts</td>');
             }
+
             document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
             document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
             document.write('<tr><td>'); document.write(l_param4); document.write('</td><td><label id="press">X</label></td><td>hPa</td>');
@@ -212,24 +223,7 @@
         </script>
 
         <script type="text/javascript">
-
-
-            //document.write('<div class="col-md-4">')
-            //document.write('<div class="panel panel-default">');
-            //document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
-            //document.write('<div class="panel-body"');
-            //document.write('<table class="table"><tbody>');
-
-            //document.write('<tr><td>'); document.write("Voltage: "); document.write('</td><td><label id="lat">X</label></td><td>°</td>');
-            //document.write('<td>'); document.write("Pitch: "); document.write('</td><td><label id="pitch">X</label></td><td>°</td></tr>');
-            //document.write('<td>'); document.write("Roll: "); document.write('</td><td><label id="lon">X</label></td><td>°</td></tr>');
-
-            //document.write('</body></table></div>');
-            //document.write('</div>');
-
-             //style="min-width:250px; width:100%; height:300px;
             document.write('<div class="col-md-4">');
-
 
             document.write('<div class="panel panel-default">');
             document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Statushour">X</label> </div>');
@@ -255,36 +249,26 @@
             document.write('</body></table></div>');
             document.write('</div>');
 
-            //document.write('<div class="panel panel-default">');
-            document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');    
-            //document.write('</div>');
-            
-            document.write('</div>');
-        </script>
-
-    <div class="row">
-
-        <%--<script type="text/javascript">
-
-            //style="min-width:250px; width:100%; height:300px;
-            document.write('<div class="col-md-4">')
             document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write("Position"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+            document.write('<div class="panel-heading"><b>'); document.write("CTD"); document.write(' </b> <label class="indent" id="ctdhour">X</label> </div>');
             document.write('<div class="panel-body"');
             document.write('<table class="table"><tbody>');
 
-            document.write('<tr><td>'); document.write("Lat: "); document.write('</td><td><label id="lat">X</label></td><td>°</td>');
-            document.write('<td>'); document.write("Lon: "); document.write('</td><td><label id="lon">X</label></td><td>°</td></tr>');
+            document.write('<tr><td>'); document.write("Temperature: "); document.write('</td><td><label id="ctd_temp">X</label></td><td>°C</td><td>  </td>');
+            document.write('<td>'); document.write("Salinity: "); document.write('</td><td><label id="ctd_sal">X</label></td><td>mg/kg</td><td>  </td></tr>');
 
             document.write('</body></table></div>');
             document.write('</div>');
 
-            //document.write('<div class="panel panel-default">');
-            document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');
-            //document.write('</div>');
-
+            //document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');    
+            
             document.write('</div>');
-        </script>--%>
+        </script>
+
+        
+
+    <div class="row">
+
 
         <script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=sig_panel.ClientID%>').value;
@@ -651,6 +635,27 @@
                 });
             }
 
+            //Call webservice with ajax!
+            function initCTD() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "CTD.aspx/GetValues",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateCTD(data.d);
+                    },
+                    error: function () {
+                        alert('CTD : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
 
 
             //Call webservice with ajax!
@@ -948,7 +953,21 @@
                 $('#turbi_par3').text(data.param3[last])
 
             }
-        }
+            }
+
+            // Update charts with pyrano data
+            function updateCTD(data) {
+
+                var last = data.SBE_time.length - 1;
+
+                if (last >= 0) {
+
+                    $('#ctdhour').text("      " + YYYYMMDDtoDDMMYYY(data.SBE_time[last]))
+                    $('#ctd_temp').text(data.SBE_temp[last])
+                    $('#ctd_sal').text(data.SBE_sal[last])
+
+                }
+            }
 
         // Update charts with data
         function updateSIG(data) {
@@ -1007,6 +1026,10 @@
                 $('#ahrs_par4').text(data.T_m02[last].toFixed(1))
                 $('#ahrs_par5').text(data.T_p[last].toFixed(1))
 
+
+                $('#l_decl').text(data.declination.toFixed(2))
+
+
             }
         }
 
@@ -1039,6 +1062,8 @@
         initWAVEAHRS();
         initWAVEAHRS_BFHF();
         initPosition();
+
+        initCTD();
 
     });
 

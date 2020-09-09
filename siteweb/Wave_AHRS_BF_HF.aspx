@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Wave_AHRS_BF_HF.aspx.cs" Inherits="WaveAHRS" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Wave_AHRS_BF_HF.aspx.cs" Inherits="WaveAHRS_BFHF" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 
@@ -10,7 +10,7 @@
     <script src="Scripts/nortekmed/Highcharts_cfg.js"></script>
 
     
-    <asp:HiddenField ID = "page_name" Value="<%$ Resources:Site.master, waveahrs %>" Runat="Server" />
+    <asp:HiddenField ID = "page_name" Value="<%$ Resources:Site.master, waveahrs_bfhf %>" Runat="Server" />
 
     <asp:HiddenField ID = "start" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "end" ClientIdMode="Static" Runat="Server" />
@@ -78,6 +78,7 @@
     <asp:HiddenField ID = "t_e_bf_label_alias"  value="<%$ Resources:WaveAHRS, t_e_bf_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "t_e_hf_label_alias"  value="<%$ Resources:WaveAHRS, t_e_hf_label_alias %>" Runat="Server" />
 
+    <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
@@ -166,6 +167,7 @@
 
     <script type="text/javascript">
         var label = document.getElementById('<%=t_label.ClientID%>').value;
+        
 
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + '</b></div>');
@@ -177,9 +179,10 @@
 
     <script type="text/javascript">
         var label = document.getElementById('<%=d_label.ClientID%>').value;
+        var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
         document.write('<div class="panel-body">');
         document.write('<div id="Dcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -269,6 +272,7 @@
         function updateCharts(data) {
 
             //var height = document.getElementById('meters').value;
+            $('#l_decl').text(data.declination.toFixed(2));
             
             // Wave Height chart
             var chartH = $('#Hcontainer').highcharts();
@@ -302,16 +306,16 @@
 
             // Wave Period chart
             var chartT = $('#Tcontainer').highcharts();
-            var T_mean = [];
-            var T_peak = [];
+            //var T_mean = [];
+            //var T_peak = [];
 
             var T_M02_BF = [];
             var T_M02_HF = [];
             var T_Peak_BF = [];
             var T_Peak_HF = [];
-            var T_E = [];
-            var T_E_BF = [];
-            var T_E_HF = [];
+            //var T_E = [];
+            //var T_E_BF = [];
+            //var T_E_HF = [];
 
             for (var i = 0; i < data.T_time_bfhf.length; i++) {
                 //T_mean.push([Date.parse(data.T_time[i].replace(/\-/g,'\/').replace(/T/,' ').replace(/Z/,' -0')), Math.round(data.T_m02[i]*10)/10]);
@@ -332,9 +336,13 @@
 
 
             // Wave Direction chart
+
+            
+
+
             var chartD = $('#Dcontainer').highcharts();
-            var D_mean = [];
-            var D_peak = [];
+            //var D_mean = [];
+            //var D_peak = [];
 
             var D_T02_bf = [];
             var D_T02_hf = [];

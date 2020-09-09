@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -6,6 +7,9 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Configuration;
+using FirebirdSql.Data.FirebirdClient;
+using System.Data;
 
 public partial class SiteMaster : MasterPage
 {
@@ -42,6 +46,7 @@ public partial class SiteMaster : MasterPage
             Response.Cookies.Set(responseCookie);
         }
 
+
         Page.PreLoad += master_Page_PreLoad;
     }
 
@@ -68,9 +73,11 @@ public partial class SiteMaster : MasterPage
     protected void Page_Load(object sender, EventArgs e)
     {
         //logoutstatus.
+
+        
     }
 
-    protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
+        protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
     {
         Context.GetOwinContext().Authentication.SignOut();
     }

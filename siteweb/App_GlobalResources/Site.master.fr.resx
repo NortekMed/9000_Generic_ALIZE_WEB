@@ -132,6 +132,12 @@
   <data name="contact" xml:space="preserve">
     <value>Info &amp; Contact</value>
   </data>
+  <data name="ctd" xml:space="preserve">
+    <value>CTD</value>
+  </data>
+  <data name="declination" xml:space="preserve">
+    <value>Declinaison</value>
+  </data>
   <data name="download" xml:space="preserve">
     <value>Téléchargement des mesures affichées</value>
   </data>

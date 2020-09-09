@@ -10,10 +10,9 @@
     </script> 
     <%--<h2>Info</h2>--%>
 
-    <p>
-        Southwest buoy is buoy 1a.
-        East buoy is buoy 2c.
-    </p>
+    <%--<p>
+        TBD name buoy is TBD code.
+    </p>--%>
 
     <p>
         Current page:<br />
@@ -24,8 +23,9 @@
     <p>
         Waves page:<br />
         Waves directions are defined as 'Going from'.<br />
-        Acquisition period is 30 minutes, calculation is performed during 17 minutes.<br />
+        Acquisition period is 20 minutes, calculation is performed during 17 minutes.<br />
         Mean period is T02 parameter.<br />
+        BF / HF limit is 10s.<br />
     </p>
     
     <p>
@@ -36,6 +36,16 @@
         Acquisition period is 10 minutes.<br />
         Maximum wind direction is associated to maximum wind speed.<br />
         Minimum wind direction is associated to minimum wind speed.<br />
+    </p>
+
+    <p>
+        CTD: <br />
+        Acquisition period is 10 minutes.<br />
+    </p>
+
+    <p>
+        DECLINATION: <br />
+        Declination is positive for East and and negative for West orientation.<br />
     </p>
     
     
@@ -65,8 +75,8 @@
         <strong>Info:</strong> <a href="mailto:info@NortekMed.com">info@NortekMed.com</a>
         <br />
 
-    <strong>Project Manager PBG : Maud Lamaze +33 6 16 80 38 97 </strong><br />
-    <strong>Marine safety PBG : Hervé Monin +33 6 14 11 83 15</strong><br />
+    <strong>Project Manager EMD : ---- ------- +33 - -- -- -- -- </strong><br />
+    <strong>Marine operation manager EMD : Maud Lamaze +33 6 16 80 38 97</strong><br />
     <strong>Project Manager NortekMed : André DOLLE + 33 6 37 48 21 77 </strong><br />
     </address>
 </asp:Content>

@@ -58,7 +58,7 @@
     <asp:HiddenField ID = "d_spread_label_alias"  value="<%$ Resources:WaveAHRS, d_spread_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "n_waves_alias"  value="<%$ Resources:WaveAHRS, n_waves_alias %>" Runat="Server" />
 
-
+    <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
@@ -105,9 +105,12 @@
         document.write('</div></div>');
 
         document.write('<div class="col-md-4">');
+
         document.write('<div class="form - group">');
         document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
         document.write('</div></div>');
+
+        
 
         document.write('</div></div>');
 
@@ -160,9 +163,10 @@
 
     <script type="text/javascript">
         var label = document.getElementById('<%=d_label.ClientID%>').value;
+        var l_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+        document.write('<div class="panel-heading"><b>' + label + ' - ' + l_decl + ' : ' + '</b> <label class="indent" id="ldecl">X</label>' + '</b></div>');
         document.write('<div class="panel-body">');
         document.write('<div id="Dcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -252,6 +256,9 @@
         function updateCharts(data) {
 
             var height = +document.getElementById('meters').value;
+
+            
+            $('#ldecl').text(data.declination.toFixed(2))
             
             // Wave Height chart
             var chartH = $('#Hcontainer').highcharts();
@@ -486,6 +493,8 @@
             }
             ]
         });
+
+        
 
         $('#Dcontainer').highcharts({
             exporting: {

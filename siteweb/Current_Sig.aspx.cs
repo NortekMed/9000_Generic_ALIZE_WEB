@@ -13,6 +13,21 @@ using System.IO;
 using System.Globalization;
 
 using GlobalVariables;
+using Microsoft.Ajax.Utilities;
+using System.Activities.Validation;
+
+//public static class MessageBox
+//{
+//    public static void Show( String Message)
+//    {
+//        Page.ClientScript.RegisterStartupScript(
+//           Page.GetType(),
+//           "MessageBox",
+//           "<script language='javascript'>alert('" + Message + "');</script>"
+//        );
+//    }
+
+//}
 
 public partial class SIG_Current : System.Web.UI.Page
 {
@@ -88,7 +103,8 @@ public partial class SIG_Current : System.Web.UI.Page
         output.Add(Global.l_timeref + timeref);
         output.Add(Global.l_timestamp + timestamp);
         output.Add(Global.l_direction + direction);
-        output.Add(Global.l_orientation + orientation);
+        output.Add(Global.l_orientation + orientation + ' ' + downloaddata.declination.ToString("0.00", NumberFormatInfo.InvariantInfo));
+        //output.Add(Global.l_orientation + orientation);
 
 
         return output;
@@ -251,7 +267,8 @@ public partial class SIG_Current : System.Web.UI.Page
         timeref = Resources.CurrentSIG.TIMEREF;
         timestamp = Resources.CurrentSIG.TIMESTAMP;
         direction = Resources.CurrentSIG.DIRECTION;
-        orientation = Resources.CurrentSIG.ORIENTATION;
+        orientation = Resources.meteo.ORIENTATION + ", " + Resources.Site.Master.declination;
+        //orientation = Resources.CurrentSIG.ORIENTATION;
 
 
         //Retrieving data from master resx files
@@ -364,9 +381,45 @@ public partial class SIG_Current : System.Web.UI.Page
     [System.Web.Services.WebMethod]
     public static data_SIG_Current GetValues(string begin, string end)
     {
-
         DateTime stdate;
         DateTime endate;
+
+        string timestampsrequest;
+        string DbRequest;
+
+        double decl = 0;
+
+        ///////////////////////////////////////////////////////////////////////////
+        /// Reading declination
+        /// 
+        endate = DateTime.Now;  // using local time ( declination time registering should be in local time )
+
+        timestampsrequest = " WHERE a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+
+
+        DataSet ds = new DataSet();
+        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM DECLINATION a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        dataadapter.Fill(ds);
+        DataTable myDataTable = ds.Tables[0];
+
+        List<double> list_decl = new List<double>();
+        List<DateTime> list_time_decl = new List<DateTime>();
+
+        // to be sure to have at least one element
+        list_decl.Add(0);
+        list_time_decl.Add(DateTime.MinValue);
+
+        foreach (DataRow dRow in myDataTable.Rows)
+        {
+            DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+
+            list_time_decl.Add(date);
+
+            double tmp = double.Parse(dRow["DECLINATION"].ToString());
+            list_decl.Add(tmp);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////
 
         // last 24 hours !
         if (begin == "" && end == "")
@@ -384,18 +437,31 @@ public partial class SIG_Current : System.Web.UI.Page
             endate = endate.AddDays(1);
         }
 
-        string timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
+
+        for (int i = 0; i < list_time_decl.Count; i++)
+        {
+
+            if (list_time_decl[i] < endate)
+            {
+                decl = list_decl[i];
+            }
+            else
+                break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
+        }
+
+
+        timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
         // AWAC / AQUADOPP
 
         // Generate DB request
-        string DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + roll_name + ", a." + temp_name + ", a." + press_name + ", a." + volt_name;
+        DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + roll_name + ", a." + temp_name + ", a." + press_name + ", a." + volt_name;
 
         for (int d = 0; d < int.Parse(WebConfigurationManager.AppSettings["nb_beam_SIG"]); d++ )
         {
             string nbeam = string.Format("{0}", (d + 1));
 
-            for (int c = 0; c < int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]) && c < 26; c++)
+            for (int c = 0; c < int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]); c++)
             {
                 string sufix = string.Format("{0}", (c + 1));
 
@@ -411,10 +477,10 @@ public partial class SIG_Current : System.Web.UI.Page
         DbRequest += (" FROM SIGNATURE a" + timestampsrequest + " order by a.TIME_REC");
 
 
-        DataSet ds = new DataSet();
-        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(DbRequest, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        ds = new DataSet();
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(DbRequest, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
-        DataTable myDataTable = ds.Tables[0];
+        myDataTable = ds.Tables[0];
 
 
 
@@ -475,6 +541,8 @@ public partial class SIG_Current : System.Web.UI.Page
                 dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360),1);
                 if (dir[cell] < 0) dir[cell] += 360;
 
+                dir[cell] += decl;
+
                 snr[cell] = double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
 
                 if (spd[cell] > 20)
@@ -523,6 +591,10 @@ public partial class SIG_Current : System.Web.UI.Page
             cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
             blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
             list_pitch, list_roll, list_temp, list_press, list_volt, list_sbe_temp, list_sbe_sal, list_str_sbe);
+
+        data.setDeclination(decl);
+
+
         //data.set(list_amplitude,
         //    list_direction,
         //    list_snr,
@@ -559,6 +631,8 @@ public class data_SIG_Current
 
 
     public double meanTimeInterval = 0.0;
+
+    public double declination;
 
     public void set(List<double[]> l_spd,
         List<double[]> l_dir,
@@ -599,5 +673,10 @@ public class data_SIG_Current
         C_cellsize = cellsize;
         C_blancking = blancking;
 
+    }
+
+    public void setDeclination(double decl)
+    {
+        declination = decl;
     }
 }
