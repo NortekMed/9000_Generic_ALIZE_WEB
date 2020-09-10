@@ -101,6 +101,8 @@
         document.write('<div class="hidden" id="history"> <br>');
         document.write('<div class="input-group date">');
 
+
+
         document.write('<div class="col-md-4">');
         document.write('<div class="form - group">');
         document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
@@ -126,14 +128,19 @@
         document.write('</div><br><br>')
     </script>
 
-    <form>
+    
     <div class="speedInputGroup">
         <label for="speed">Enter speed limit — in m/s :</label>
         <input id="speed" type="number" name="speed" step="0.1" min="0" max="20" value="0" required>
         <span class="validity"></span>
         <a class="btn btn-default" onclick="updateDataLimit()">Trace</a>
     </div>
+
     <div>
+    </div>
+
+    
+
 
 
     <script type="text/javascript">
@@ -242,12 +249,6 @@
             $("#history").addClass('hidden');
             $('#datetimepicker1').val("").datepicker("update");
             $('#datetimepicker2').val("").datepicker("update");
-            //var dp1 = $("#datetimepicker1");
-            //dp1.value = "";
-            //var dp2 = $("#datetimepicker2");
-            //dp1.value = "";
-            //$("#datetimepicker1").value = "";
-            //$("#datetimepicker2").value = "";
             initData();
         });
         $('#d_history').on("click", function () {
@@ -299,6 +300,8 @@
         // Call webservice with ajax!
         function getDataLimit(start, stop) {
 
+            alert('getDataLimit');
+
         var obj = { begin: start, end: stop};
 
                 $.ajax({
@@ -347,7 +350,7 @@
 
         // Update charts with wave data
         function updateCharts(data) {
-            
+
             //var mtchart = $('#MTcontainer').highcharts();
             //var maree = [];
             //var tempeau = [];
@@ -391,7 +394,8 @@
                 colsize: data.meanTimeInterval,
                 rowsize: data.C_cellsize
             }, false); //true / false to redraw
-            
+
+
             charProftDir.colorAxis[0].update({ min: 0, max: 360 });
             charProftDir.yAxis[0].update({ max: data.C_spd[0].length * data.C_cellsize + data.C_blancking });
             charProftDir.series[0].update({
@@ -399,6 +403,7 @@
                 colsize: data.meanTimeInterval,
                 rowsize: data.C_cellsize
             }, false); //true / false to redraw
+
 
             //charProftSnr.colorAxis[0].update({ min: 0, max: 360 });
             charProfSnr.yAxis[0].update({ max: data.C_snr[0].length * data.C_cellsize + data.C_blancking });
@@ -416,27 +421,34 @@
             var direction_unit = ' °';
             // Chart immersion  fixe"
             var chartSpd = $('#Spdcontainer').highcharts();
-            //for (var i = chartAmp.series.length - 1; i > 0; i--) {  //0 to keep first serie that is limit value
-            for (var i = chartSpd.series.length - 1; i > -1; i--) {
-                chartSpd.series[i].remove();
-            }
-            
+            while (chartSpd.series.length > 0)
+                chartSpd.series[0].remove();
+            //for (var i = chartSpd.series.length - 1; i > -1; i--) {
+            //    chartSpd.series[i].remove();
+            //}
+
 
             var chartDir = $('#Dircontainer').highcharts();
-            for (var i = chartDir.series.length - 1; i > -1; i--) {
-                chartDir.series[i].remove();
-            }
+            while (chartDir.series.length > 0)
+                chartDir.series[0].remove();
+
+            //for (var i = chartDir.series.length - 1; i > -1; i--) {
+            //    chartDir.series[i].remove();
+            //}
 
             for (var j = 0; j < data.C_spd[0].length; j++) {
 
                 var spd = [];
                 var dir = [];
 
+
                 for (var i = 0; i < data.C_time.length; i++) {
                     var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
                     spd.push([time, data.C_spd[i][j]]);
                     //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
                     dir.push([time, data.C_dir[i][j]]);
+                    //dir.series[i].setData([time, data.C_dir[i][j]]);
+                    //chartH.series[0].setData(H_max);
                 }
 
                 chartSpd.addSeries({
@@ -447,7 +459,6 @@
                         valueSuffix: Spd_unit.toString()
                     }
                 });
-
 
                 chartDir.addSeries({
                         name: "H=" + ((j + 1) * data.C_cellsize + data.C_blancking) + "m",
@@ -463,8 +474,10 @@
                     tooltip: {
                         valueSuffix: ' ' + direction_unit.toString()
                         }    
-                });                
+                });   
+
             }
+
 
             //making serie for limit line
             var v_limit = [];
@@ -758,7 +771,7 @@
             }
         });
 
-        $('#MTcontainer').highcharts({
+        <%--$('#MTcontainer').highcharts({
 
             xAxis: {
                 type: 'datetime',
@@ -820,7 +833,7 @@
                     }
                 }
             ]
-        });
+        });--%>
 
 
 
@@ -878,7 +891,7 @@
                 endOnTick: false,
                 //tickPixelInterval: 150,
                 labels: {
-                    format: '{value} count'
+                    format: '{value} db'
                 }
             },
 
@@ -888,7 +901,7 @@
                 data: [],
                 colsize: 1000, // one second
                 tooltip: {
-                    pointFormat: '{point.x:%d/%m/%Y, %Hh%M} {point.y}m <b>{point.value} count</b>'
+                    pointFormat: '{point.x:%d/%m/%Y, %Hh%M} {point.y}m <b>{point.value} db</b>'
                 },
             }]
         });

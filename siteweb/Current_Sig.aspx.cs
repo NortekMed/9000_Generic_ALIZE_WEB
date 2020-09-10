@@ -449,6 +449,14 @@ public partial class SIG_Current : System.Web.UI.Page
                 break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
         }
 
+        //Because timerec in DB is middle of acquisition time, we want the end
+        int halh_integration_time = int.Parse(WebConfigurationManager.AppSettings["integration_time_SIG"]); // in sec
+        halh_integration_time /= 2;
+        // modifie stdate and endate to take account half integration time
+        stdate = stdate.AddSeconds(halh_integration_time);
+        endate = endate.AddSeconds(halh_integration_time);
+
+
 
         timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
@@ -523,9 +531,10 @@ public partial class SIG_Current : System.Web.UI.Page
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
             // UTC to Local Time
-            //date = date.AddHours(utcdataoffset); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             date = date.AddHours(utcdataoffset).AddHours(-1 * systemUTCTimeOffset); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
-            //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
+            // take acoount halh_integration_time
+            date = date.AddSeconds(halh_integration_time);
+
             list_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
             // Direction and amplitude for all cells
@@ -554,33 +563,30 @@ public partial class SIG_Current : System.Web.UI.Page
             list_snr.Add(snr);
         }
 
-        List<double> list_sbe_temp = new List<double>();
-        List<double> list_sbe_sal = new List<double>();
-        List<string> list_str_sbe = new List<string>();
+        //List<double> list_sbe_temp = new List<double>();
+        //List<double> list_sbe_sal = new List<double>();
+        //List<string> list_str_sbe = new List<string>();
 
-        ds = new DataSet();
-        DbRequest = "SELECT a.TIME_REC, a.TEMP" + ", a.SAL"  + " FROM " + "SBE" + " a" +
-                        timestampsrequest + " order by a.TIME_REC";
+        //ds = new DataSet();
+        //DbRequest = "SELECT a.TIME_REC, a.TEMP" + ", a.SAL"  + " FROM " + "SBE" + " a" +
+        //                timestampsrequest + " order by a.TIME_REC";
 
-        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(DbRequest, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-        dataadapter.Fill(ds);
-        myDataTable = ds.Tables[0];
+        //dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(DbRequest, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        //dataadapter.Fill(ds);
+        //myDataTable = ds.Tables[0];
 
-        foreach (DataRow dRow in myDataTable.Rows)
-        {
-            DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
+        //foreach (DataRow dRow in myDataTable.Rows)
+        //{
+        //    DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
 
-            // UTC to Local Time
-            date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
+        //    // UTC to Local Time
+        //    date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
 
-            list_str_sbe.Add(date.ToString("yyyy-MM-ddTHH:mm"));
+        //    list_str_sbe.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
-            list_sbe_temp.Add(double.Parse(dRow["TEMP"].ToString()));
-            list_sbe_sal.Add(double.Parse(dRow["SAL"].ToString()));
-        }
-
-        //data.set_param_equip_3(list_par10, list_par11, list_par12, list_par13, list_par14, list_par15, list_str_time3);
-
+        //    list_sbe_temp.Add(double.Parse(dRow["TEMP"].ToString()));
+        //    list_sbe_sal.Add(double.Parse(dRow["SAL"].ToString()));
+        //}
 
         // Build current data object
         data_SIG_Current data = new data_SIG_Current();
@@ -590,18 +596,10 @@ public partial class SIG_Current : System.Web.UI.Page
             list_time,
             cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
             blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
-            list_pitch, list_roll, list_temp, list_press, list_volt, list_sbe_temp, list_sbe_sal, list_str_sbe);
+            list_pitch, list_roll, list_temp, list_press, list_volt);//, list_sbe_temp, list_sbe_sal, list_str_sbe);
 
         data.setDeclination(decl);
 
-
-        //data.set(list_amplitude,
-        //    list_direction,
-        //    list_snr,
-        //    list_time,
-        //    cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
-        //    blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
-        //    list_pitch, list_roll, list_temp, list_press, list_volt);
 
         // On garde en memoire les données affichées pour un éventuel téléchargement !!!
         downloaddata = data;
@@ -644,10 +642,7 @@ public class data_SIG_Current
         List<double> l_roll,
         List<double> l_temp,
         List<double> l_press,
-        List<double> l_volt,
-        List<double> l_sbe_temp,
-        List<double> l_sbe_sal,
-        List<string> l_sbe_time)
+        List<double> l_volt)
     {
 
         C_spd = l_spd.ToArray();
@@ -661,9 +656,6 @@ public class data_SIG_Current
         C_press = l_press.ToArray();
         C_volt = l_volt.ToArray();
 
-        SBE_temp = l_sbe_temp.ToArray();
-        SBE_sal = l_sbe_sal.ToArray();
-        SBE_time = l_sbe_time.ToArray();
 
         for (int i = 1; i < C_time.Length; i++)
             meanTimeInterval += (Convert.ToDateTime(C_time[i]) - Convert.ToDateTime(C_time[i - 1])).TotalMilliseconds;
@@ -672,6 +664,17 @@ public class data_SIG_Current
 
         C_cellsize = cellsize;
         C_blancking = blancking;
+
+    }
+    public void setSBE(
+        List<double> l_sbe_temp,
+        List<double> l_sbe_sal,
+        List<string> l_sbe_time)
+    {
+
+        SBE_temp = l_sbe_temp.ToArray();
+        SBE_sal = l_sbe_sal.ToArray();
+        SBE_time = l_sbe_time.ToArray();
 
     }
 
