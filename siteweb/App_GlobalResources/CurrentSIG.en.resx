@@ -225,4 +225,13 @@
   <data name="profamp_label" xml:space="preserve">
     <value>Amplitude profile 3D</value>
   </data>
+  <data name="param8label" xml:space="preserve">
+    <value>Heading</value>
+  </data>
+  <data name="param8name" xml:space="preserve">
+    <value>Heading</value>
+  </data>
+  <data name="param8unit" xml:space="preserve">
+    <value>°</value>
+  </data>
 </root>

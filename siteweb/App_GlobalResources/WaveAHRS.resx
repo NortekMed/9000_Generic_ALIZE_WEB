@@ -285,4 +285,16 @@
   <data name="t_e_label_alias" xml:space="preserve">
     <value />
   </data>
+  <data name="etamax_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="etamin_label_alias" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DEVICE_1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DEVICE_2" xml:space="preserve">
+    <value />
+  </data>
 </root>

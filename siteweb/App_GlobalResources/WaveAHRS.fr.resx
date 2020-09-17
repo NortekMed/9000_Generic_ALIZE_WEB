@@ -306,4 +306,16 @@
   <data name="t_m02_hf_label" xml:space="preserve">
     <value>Mean period hf</value>
   </data>
+  <data name="etamax_label_alias" xml:space="preserve">
+    <value>ETAmax</value>
+  </data>
+  <data name="etamin_label_alias" xml:space="preserve">
+    <value>ETAmin</value>
+  </data>
+  <data name="DEVICE_1" xml:space="preserve">
+    <value>WaveBF</value>
+  </data>
+  <data name="DEVICE_2" xml:space="preserve">
+    <value>WaveHF</value>
+  </data>
 </root>

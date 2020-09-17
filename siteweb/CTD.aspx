@@ -245,8 +245,8 @@
 
             for (var i = 0; i < data.SBE_time.length; i++) {
                 var time = Date.parse(data.SBE_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                tempeau.push([time, data.SBE_temp[i]]);
-                sal.push([time, data.SBE_sal[i]]);
+                tempeau.push([time, Math.round(data.SBE_temp[i] * 1000)/1000]);
+                sal.push([time, Math.round(data.SBE_sal[i] * 1000) / 1000]);
             }
 
             mtchart.series[0].setData(tempeau);

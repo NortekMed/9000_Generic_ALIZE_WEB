@@ -70,7 +70,8 @@ public partial class Position : System.Web.UI.Page
         output.Add(Global.l_timeref + timeref);
         output.Add(Global.l_timestamp + timestamp);
         output.Add(Global.l_direction + "none");
-        output.Add(Global.l_orientation + orientation);
+        output.Add(Global.l_orientation + "none");
+        //output.Add(Global.l_orientation + orientation);
 
 
         return output;

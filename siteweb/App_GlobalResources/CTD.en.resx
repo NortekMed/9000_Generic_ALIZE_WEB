@@ -139,7 +139,7 @@
     <value>SALINITY</value>
   </data>
   <data name="salunit" xml:space="preserve">
-    <value>mg/kg</value>
+    <value>g/kg</value>
   </data>
   <data name="TIMEREF" xml:space="preserve">
     <value>10 minutes</value>

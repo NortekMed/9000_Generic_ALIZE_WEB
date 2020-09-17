@@ -16,7 +16,8 @@
     <asp:HiddenField ID = "end" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "refresh" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "download" ClientIdMode="Static" Runat="Server" />
-    <asp:HiddenField ID = "download_data" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "download_dataBF" ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "download_dataHF" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "last" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "historical" ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "hour" ClientIdMode="Static" Runat="Server" />
@@ -78,6 +79,9 @@
     <asp:HiddenField ID = "t_e_bf_label_alias"  value="<%$ Resources:WaveAHRS, t_e_bf_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "t_e_hf_label_alias"  value="<%$ Resources:WaveAHRS, t_e_hf_label_alias %>" Runat="Server" />
 
+    <asp:HiddenField ID = "etamax_label_alias"  value="<%$ Resources:WaveAHRS, t_e_bf_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "etamin_label_alias"  value="<%$ Resources:WaveAHRS, t_e_hf_label_alias %>" Runat="Server" />
+
     <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
     <script type="text/javascript">
@@ -95,7 +99,8 @@
         var l_end = document.getElementById('<%=end.ClientID%>').value;
         var l_refresh = document.getElementById('<%=refresh.ClientID%>').value;
         var l_download = document.getElementById('<%=download.ClientID%>').value;
-        var l_download_data = document.getElementById('<%=download_data.ClientID%>').value;
+        var l_download_databf = document.getElementById('<%=download_dataBF.ClientID%>').value;
+        var l_download_datahf = document.getElementById('<%=download_dataHF.ClientID%>').value;
         var l_last = document.getElementById('<%=last.ClientID%>').value;
         var l_historical = document.getElementById('<%=historical.ClientID%>').value;
 
@@ -134,7 +139,8 @@
         document.write('<br><p>' + l_download + '</p>');
         document.write('<div>');
 
-        document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="DownloadWave" />');
+        document.write('<asp:Button runat="server" ID="downloadBoutonBF" Text="" class="btn btn-default" OnClick="DownloadWaveBF" />');
+        document.write('<asp:Button runat="server" ID="downloadBoutonHF" Text="" class="btn btn-default" OnClick="DownloadWaveHF" />');
 
         document.write('</div><br><br>')
     </script>
@@ -580,7 +586,7 @@
                 floating: false,
             },
             series: [{
-                name: 'T02 BF direction',
+                name: 'MeanWaveDir BF',
                 data: [],
                 color: '#FCF000',
                 animation: false,
@@ -593,7 +599,7 @@
                     symbol: 'diamond'
                 },
             },{
-                name: 'T02 HF direction',
+                    name: 'MeanWaveDir HF',
                 data: [],
                 color: '#FCA000',
                 lineWidth: 0,
@@ -606,7 +612,7 @@
                     symbol: 'diamond'
                 },
             }, {
-                name: 'TPeak BF direction',
+                    name: 'PeakWaveDir BF',
                 data: [],
                 color: '#00A000',
                 lineWidth: 0,
@@ -619,7 +625,7 @@
                     symbol: 'diamond'
                 },
             }, {
-                name: 'TPeak HF direction',
+                    name: 'PeakWaveDir HF',
                 data: [],
                 color: '#00F000',
                 lineWidth: 0,

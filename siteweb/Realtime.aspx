@@ -254,8 +254,8 @@
             document.write('<div class="panel-body"');
             document.write('<table class="table"><tbody>');
 
-            document.write('<tr><td>'); document.write("Temperature: "); document.write('</td><td><label id="ctd_temp">X</label></td><td>°C</td><td>  </td>');
-            document.write('<td>'); document.write("Salinity: "); document.write('</td><td><label id="ctd_sal">X</label></td><td>mg/kg</td><td>  </td></tr>');
+            document.write('<tr><td>'); document.write("Temperature: "); document.write('</td><td><label id="ctd_temp">X</label></td><td> °C</td><td>  </td>');
+            document.write('<td>'); document.write("Salinity: "); document.write('</td><td><label id="ctd_sal">X</label></td><td> g/kg</td><td>  </td></tr>');
 
             document.write('</body></table></div>');
             document.write('</div>');
@@ -963,8 +963,8 @@
                 if (last >= 0) {
 
                     $('#ctdhour').text("      " + YYYYMMDDtoDDMMYYY(data.SBE_time[last]))
-                    $('#ctd_temp').text(data.SBE_temp[last])
-                    $('#ctd_sal').text(data.SBE_sal[last])
+                    $('#ctd_temp').text(data.SBE_temp[last].toFixed(3))
+                    $('#ctd_sal').text(data.SBE_sal[last].toFixed(3))
 
                 }
             }

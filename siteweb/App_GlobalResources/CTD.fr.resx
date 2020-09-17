@@ -127,13 +127,13 @@
     <value>SBE37</value>
   </data>
   <data name="sallabel" xml:space="preserve">
-    <value>Pressure</value>
+    <value>Salinité</value>
   </data>
   <data name="salname" xml:space="preserve">
-    <value>PRESSURE</value>
+    <value>SALINITE</value>
   </data>
   <data name="salunit" xml:space="preserve">
-    <value>hPa</value>
+    <value>g/kg</value>
   </data>
   <data name="templabel" xml:space="preserve">
     <value>Temperature</value>

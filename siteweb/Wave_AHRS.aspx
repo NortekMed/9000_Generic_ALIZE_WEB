@@ -58,6 +58,11 @@
     <asp:HiddenField ID = "d_spread_label_alias"  value="<%$ Resources:WaveAHRS, d_spread_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "n_waves_alias"  value="<%$ Resources:WaveAHRS, n_waves_alias %>" Runat="Server" />
 
+    <asp:HiddenField ID = "t_e_label_alias"  value="<%$ Resources:WaveAHRS, t_e_label_alias %>" Runat="Server" />
+
+    <asp:HiddenField ID = "etamax_label_alias"  value="<%$ Resources:WaveAHRS, etamax_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "etamin_label_alias"  value="<%$ Resources:WaveAHRS, etamin_label_alias %>" Runat="Server" />
+
     <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
     <script type="text/javascript">

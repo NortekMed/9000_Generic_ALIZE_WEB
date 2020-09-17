@@ -42,10 +42,12 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
 
         if (WebConfigurationManager.AppSettings["DownloadEnabled"] != "true")
         {
-            downloadBouton.Enabled = false;
+            downloadBoutonBF.Enabled = false;
+            downloadBoutonHF.Enabled = false;
         }
 
-        downloadBouton.Text = download_data.Value;
+        downloadBoutonBF.Text = download_dataBF.Value;
+        downloadBoutonHF.Text = download_dataHF.Value;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,33 +72,99 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         return output;
     }
 
+    //protected void DownloadWave(object Source, EventArgs e)
+    //{
+    //    string start_date = "";
+    //    string end_date = "";
 
-    protected void DownloadWave(object Source, EventArgs e)
+    //    device_name = Resources.WaveAHRS.DEVICE_0;
+    //    List<string> output = MakeHeader(device_name);
+
+    //    output.Add("UTC datetime;" + h_sig_bf_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+    //                                + h_sig_hf_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+
+    //                                + t_peak_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+    //                                + t_peak_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+    //                                + t_m02_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+    //                                + t_m02_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+    //                                + d_peak_bf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+    //                                + d_peak_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+
+    //                                + d_avg_bf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+    //                                + d_avg_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+
+    //                                //+ t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+    //                                + t_e_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+    //                                + t_e_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+    //                                //+ etamax_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+    //                                //+ etamin_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+    //                                );
+
+    //    // mise en forme
+    //    for (int i = 0; i < downloaddata.H_time.Length; i++)
+    //    {
+    //        DateTime date = Convert.ToDateTime(downloaddata.T_time_bfhf[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+    //        string s_date = date.ToString("yyyy-MM-ddTHH:mm");
+
+    //        output.Add(s_date.Replace("T", ", ") + ';'
+    //                    + downloaddata.H_m0_bf[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+    //                    + downloaddata.H_m0_hf[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+
+    //                    + downloaddata.T_p_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    + downloaddata.T_p_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+    //                    + downloaddata.T_m02_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    + downloaddata.T_m02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+    //                    + downloaddata.D_peak_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    + downloaddata.D_peak_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+    //                    + downloaddata.D_t02_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    + downloaddata.D_t02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+    //                    //+ downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    + downloaddata.T_e_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    + downloaddata.T_e_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+    //                    //+ downloaddata.ETAmax[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    //+ downloaddata.ETAmin[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+    //                    );
+
+    //        if (i == 0)
+    //            start_date = s_date;
+    //        if (i == downloaddata.H_time.Length - 1)
+    //            end_date = s_date;
+
+    //    }
+
+
+
+    //    string interval = start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
+
+    //    DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
+    //}
+    protected void DownloadWaveBF(object Source, EventArgs e)
     {
         string start_date = "";
         string end_date = "";
 
-        device_name = Resources.WaveAHRS.DEVICE_0;
+        device_name = Resources.WaveAHRS.DEVICE_1;
         List<string> output = MakeHeader(device_name);
 
         output.Add("UTC datetime;"  + h_sig_bf_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_sig_hf_label_alias.Value + '(' + h_unit.Value + ')' + ';'
 
                                     + t_peak_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_peak_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
 
                                     + t_m02_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_m02_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
 
                                     + d_peak_bf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_peak_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
 
                                     + d_avg_bf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_avg_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
 
-                                    + t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     + t_e_bf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_e_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     );
 
         // mise en forme
@@ -107,23 +175,17 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
 
             output.Add(s_date.Replace("T", ", ") + ';'
                         + downloaddata.H_m0_bf[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.H_m0_hf[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
 
                         + downloaddata.T_p_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_p_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
 
                         + downloaddata.T_m02_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_m02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
 
                         + downloaddata.D_peak_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.D_peak_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
 
                         + downloaddata.D_t02_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.D_t02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
 
-                        + downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_e_bf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_e_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
                         );
 
             if (i == 0)
@@ -136,6 +198,64 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         
 
         string interval =start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
+
+        DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
+    }
+
+
+    protected void DownloadWaveHF(object Source, EventArgs e)
+    {
+        string start_date = "";
+        string end_date = "";
+
+        device_name = Resources.WaveAHRS.DEVICE_2;
+        List<string> output = MakeHeader(device_name);
+
+        output.Add("UTC datetime;" + h_sig_hf_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+
+                                    + t_peak_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+                                    + t_m02_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+                                    + d_peak_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+
+                                    + d_avg_hf_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+
+                                    + t_e_hf_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+
+                                    );
+
+        // mise en forme
+        for (int i = 0; i < downloaddata.H_time.Length; i++)
+        {
+            DateTime date = Convert.ToDateTime(downloaddata.T_time_bfhf[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
+            string s_date = date.ToString("yyyy-MM-ddTHH:mm");
+
+            output.Add(s_date.Replace("T", ", ") + ';'
+                        + downloaddata.H_m0_hf[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.T_p_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.T_m02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.D_peak_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.D_t02_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        + downloaddata.T_e_hf[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+
+                        );
+
+            if (i == 0)
+                start_date = s_date;
+            if (i == downloaddata.H_time.Length - 1)
+                end_date = s_date;
+
+        }
+
+
+
+        string interval = start_date.Split('T')[0] + "_to_" + end_date.Split('T')[0];
 
         DownloadCsv(prj_name + '-' + device_name + '-' + WebConfigurationManager.AppSettings["Location"] + '-' + interval + ".csv", output.ToArray());
     }
@@ -229,9 +349,13 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         t_e_bf_label_alias  = new HiddenField();
         t_e_hf_label_alias  = new HiddenField();
 
+        etamax_label_alias = new HiddenField();
+        etamin_label_alias = new HiddenField();
+
 
         download = new HiddenField();
-        download_data = new HiddenField();
+        download_dataBF = new HiddenField();
+        download_dataHF = new HiddenField();
         start = new HiddenField();
         end = new HiddenField();
         refresh = new HiddenField();
@@ -248,7 +372,11 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         timeref = Resources.WaveAHRS.TIMEREF;
         timestamp = Resources.WaveAHRS.TIMESTAMP;
         direction = Resources.WaveAHRS.DIRECTION;
-        orientation = Resources.meteo.ORIENTATION + ", " + Resources.Site.Master.declination;
+
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
+            orientation = Resources.Site.Master.orientationG + ", " + Resources.Site.Master.declination;
+        else
+            orientation = Resources.Site.Master.orientationM;
         //orientation = Resources.WaveAHRS.ORIENTATION;
 
 
@@ -256,7 +384,8 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         start.Value = Resources.Site.Master.start.ToString();
         end.Value = Resources.Site.Master.end.ToString();
         download.Value = Resources.Site.Master.download.ToString();
-        download_data.Value = Resources.Site.Master.download_data.ToString();
+        download_dataBF.Value = Resources.Site.Master.download_dataBF.ToString();
+        download_dataHF.Value = Resources.Site.Master.download_dataHF.ToString();
         refresh.Value = Resources.Site.Master.refresh.ToString();
         last.Value = Resources.Site.Master.last.ToString();
         historical.Value = Resources.Site.Master.historical.ToString();
@@ -316,6 +445,9 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         t_e_label_alias.Value       = Resources.WaveAHRS.t_e_label_alias.ToString();
         t_e_bf_label_alias.Value    = Resources.WaveAHRS.t_e_bf_label_alias.ToString();
         t_e_hf_label_alias.Value    = Resources.WaveAHRS.t_e_hf_label_alias.ToString();
+
+        etamax_label_alias.Value = Resources.WaveAHRS.t_e_bf_label_alias.ToString();
+        etamin_label_alias.Value = Resources.WaveAHRS.t_e_hf_label_alias.ToString();
 
 
 
@@ -416,7 +548,8 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
 
         // Get wind from database
         ds = new DataSet();
-        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX,a.H3,a.HM0_BF, a.HM0_HF FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX,a.H3,a.HM0_BF, a.HM0_HF, a.ETAMAX, a.ETAMIN FROM WAVES a " 
+                                                                        + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
         myDataTable = ds.Tables[0];
 
@@ -427,6 +560,8 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         List<double> list_h_3 = new List<double>();
         List<double> list_hm0_bf = new List<double>();
         List<double> list_hm0_hf = new List<double>();
+        List<double> list_etamax = new List<double>();
+        List<double> list_etamin = new List<double>();
 
         List<string> list_h_time = new List<string>();
 
@@ -435,7 +570,7 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
 
             // converting start date in DB in end date !
-            date = date.AddSeconds(wave_compute_duration);
+            //date = date.AddSeconds(wave_compute_duration);
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
@@ -447,12 +582,15 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
             list_h_3.Add(double.Parse(dRow["H3"].ToString()));
             list_hm0_bf.Add(double.Parse(dRow["HM0_BF"].ToString()));
             list_hm0_hf.Add(double.Parse(dRow["HM0_HF"].ToString()));
+
+            list_etamax.Add(double.Parse(dRow["ETAMAX"].ToString()));
+            list_etamin.Add(double.Parse(dRow["ETAMIN"].ToString()));
         }
 
 
         // 
         DataSet ds2 = new DataSet();
-        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.T02, a.T3 FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter2 = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.THMAX, a.T02, a.T3 FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter2.Fill(ds2);
         DataTable myDataTable2 = ds2.Tables[0];
 
@@ -462,6 +600,8 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         List<double> list_t_thmax = new List<double>();
         List<double> list_t_tm02 = new List<double>();
         List<double> list_t_t3 = new List<double>();
+        //List<double> list_t_te = new List<double>();
+        //List<double> list_t_tmax = new List<double>();
         List<string> list_t_time = new List<string>();
 
         foreach (DataRow dRow in myDataTable2.Rows)
@@ -469,7 +609,7 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
 
             // converting start date in DB in end date !
-            date = date.AddSeconds(wave_compute_duration);
+            //date = date.AddSeconds(wave_compute_duration);
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
@@ -508,7 +648,7 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
             }
             list_t_tm01.Add(tm01);
 
-            double thmax = double.Parse(dRow["TMAX"].ToString());
+            double thmax = double.Parse(dRow["THMAX"].ToString());
             if (double.IsNaN(thmax) || thmax > 31)
             {
                 if (list_t_thmax.Count > 0)
@@ -538,7 +678,25 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
             }
             list_t_t3.Add(t3);
 
+            //double te = double.Parse(dRow["TE"].ToString());
+            //if (double.IsNaN(te) || te > 31)
+            //{
+            //    if (list_t_te.Count > 0)
+            //        te = list_t_te[list_t_te.Count - 1];
+            //    else
+            //        te = 0;
+            //}
+            //list_t_te.Add(te);
 
+            //double tmax = double.Parse(dRow["TMAX"].ToString());
+            //if (double.IsNaN(tmax) || tmax > 31)
+            //{
+            //    if (list_t_thmax.Count > 0)
+            //        tmax = list_t_tmax[list_t_tmax.Count - 1];
+            //    else
+            //        tmax = 0;
+            //}
+            //list_t_tmax.Add(tmax);
         }
 
 
@@ -565,7 +723,7 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
 
             // converting start date in DB in end date !
-            date = date.AddSeconds(wave_compute_duration);
+            //date = date.AddSeconds(wave_compute_duration);
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
@@ -641,7 +799,7 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
 
             // converting start date in DB in end date !
-            date = date.AddSeconds(wave_compute_duration);
+            //date = date.AddSeconds(wave_compute_duration);
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE;
@@ -754,7 +912,7 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
 
         dataWaveAHRS_BFHF data = new dataWaveAHRS_BFHF();
 
-        data.setHeight(list_h_sig, list_h_max, list_h_3, list_hm0_bf, list_hm0_hf, list_h_time);
+        data.setHeight(list_h_sig, list_h_max, list_h_3, list_hm0_bf, list_hm0_hf, list_etamax, list_etamin, list_h_time);
         data.SetPeriod(list_t_tp, list_t_tz, list_t_tm02, list_t_tm01, list_t_thmax, list_t_t3, list_t_time);
         data.SetPeriod_bfhf(list_tp_bf, list_tp_hf, list_tz_bf, list_tz_hf, list_t02_bf, list_t02_hf, list_te, list_te_bf, list_te_hf, list_t_time2);
         data.setDirection(list_d_mean, list_d_max, list_d_sd, list_n_waves, list_d_t02_bf, list_d_t02_hf, list_d_tp_bf, list_d_tp_hf, list_d_time);
@@ -776,6 +934,8 @@ public class dataWaveAHRS_BFHF
     public double[] H_m0;
     public double[] H_max;
     public double[] H_tier;
+    public double[] ETAmax;
+    public double[] ETAmin;
     public string[] H_time;
 
 
@@ -815,13 +975,16 @@ public class dataWaveAHRS_BFHF
 
     public double declination;
 
-    public void setHeight(List<double> sig, List<double> max, List<double> tier, List<double> list_Hm0_bf, List<double> list_Hm0_hf, List<string> time)
+    public void setHeight(List<double> sig, List<double> max, List<double> tier, List<double> list_Hm0_bf, List<double> list_Hm0_hf, List<double> list_ETAmax, List<double> list_ETAmin, List<string> time)
     {
         H_m0 = sig.ToArray();
         H_max = max.ToArray();
         H_tier = tier.ToArray();
         H_m0_bf = list_Hm0_bf.ToArray();
         H_m0_hf = list_Hm0_hf.ToArray();
+
+        ETAmax = list_ETAmax.ToArray();
+        ETAmin = list_ETAmin.ToArray();
 
         H_time = time.ToArray();
     }

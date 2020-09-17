@@ -56,6 +56,10 @@
     <asp:HiddenField ID = "corunit"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "corlabel" ClientIdMode="Static" Runat="Server" />
 
+    <asp:HiddenField ID = "headingname"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "headingunit"  ClientIdMode="Static" Runat="Server" />
+    <asp:HiddenField ID = "headinglabel" ClientIdMode="Static" Runat="Server" />
+
     <asp:HiddenField ID = "voltname"  ClientIdMode="Static" Runat="Server" />
     <asp:HiddenField ID = "voltunit"  ClientIdMode="Static" Runat="Server" />
 

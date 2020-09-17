@@ -144,6 +144,12 @@
   <data name="download_data" xml:space="preserve">
     <value>Data download (csv)</value>
   </data>
+  <data name="download_dataBF" xml:space="preserve">
+    <value>Data BF download (csv)</value>
+  </data>
+  <data name="download_dataHF" xml:space="preserve">
+    <value>Data HF download (csv)</value>
+  </data>
   <data name="end" xml:space="preserve">
     <value />
   </data>
@@ -158,6 +164,12 @@
   </data>
   <data name="optod" xml:space="preserve">
     <value>Optod</value>
+  </data>
+  <data name="orientationG" xml:space="preserve">
+    <value>Geographic</value>
+  </data>
+  <data name="orientationM" xml:space="preserve">
+    <value>Magnetic</value>
   </data>
   <data name="position" xml:space="preserve">
     <value>Position</value>

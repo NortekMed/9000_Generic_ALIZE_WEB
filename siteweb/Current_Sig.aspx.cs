@@ -69,6 +69,10 @@ public partial class SIG_Current : System.Web.UI.Page
     static string cor_unit = "";
     static string cor_label = "";
 
+    static string heading_name = "";
+    static string heading_unit = "";
+    static string heading_label = "";
+
     protected void Page_Init(object sender, EventArgs e)
     {
         InitField();
@@ -131,6 +135,7 @@ public partial class SIG_Current : System.Web.UI.Page
                                     + voltname.Value + '(' + voltunit.Value + ");"
                                     + pitch_name + '(' + pitch_unit + ");"
                                     + roll_name + '(' + roll_unit + ");"
+                                    + heading_name + '(' + heading_unit + ");"
                                     );
 
 
@@ -156,6 +161,7 @@ public partial class SIG_Current : System.Web.UI.Page
                         + downloaddata.C_volt[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.C_pitch[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.C_roll[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.C_heading[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)
@@ -237,6 +243,10 @@ public partial class SIG_Current : System.Web.UI.Page
         corlabel = new HiddenField();
         corunit = new HiddenField();
 
+        headingname = new HiddenField();
+        headinglabel = new HiddenField();
+        headingunit = new HiddenField();
+
         voltname = new HiddenField();
         voltunit = new HiddenField();
 
@@ -267,7 +277,11 @@ public partial class SIG_Current : System.Web.UI.Page
         timeref = Resources.CurrentSIG.TIMEREF;
         timestamp = Resources.CurrentSIG.TIMESTAMP;
         direction = Resources.CurrentSIG.DIRECTION;
-        orientation = Resources.meteo.ORIENTATION + ", " + Resources.Site.Master.declination;
+
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
+            orientation = Resources.Site.Master.orientationG + ", " + Resources.Site.Master.declination;
+        else
+            orientation = Resources.Site.Master.orientationM;
         //orientation = Resources.CurrentSIG.ORIENTATION;
 
 
@@ -312,6 +326,10 @@ public partial class SIG_Current : System.Web.UI.Page
         corname.Value = Resources.CurrentSIG.param6name.ToString();
         corlabel.Value = Resources.CurrentSIG.param6label.ToString();
         corunit.Value = Resources.CurrentSIG.param6unit.ToString();
+
+        headingname.Value = Resources.CurrentSIG.param8name.ToString();
+        headinglabel.Value = Resources.CurrentSIG.param8label.ToString();
+        headingunit.Value = Resources.CurrentSIG.param8unit.ToString();
 
         voltname.Value = Resources.CurrentSIG.param7name.ToString();
         voltunit.Value = Resources.CurrentSIG.param7unit.ToString();
@@ -361,6 +379,10 @@ public partial class SIG_Current : System.Web.UI.Page
         cor_name = corname.Value;
         cor_unit = corunit.Value;
         cor_label = corlabel.Value;
+
+        heading_name = headingname.Value;
+        heading_unit = headingunit.Value;
+        heading_label = headinglabel.Value;
 
     }
 
@@ -463,7 +485,7 @@ public partial class SIG_Current : System.Web.UI.Page
         // AWAC / AQUADOPP
 
         // Generate DB request
-        DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + roll_name + ", a." + temp_name + ", a." + press_name + ", a." + volt_name;
+        DbRequest = "SELECT a.TIME_REC, a." + pitch_name + ", a." + roll_name + ", a." + temp_name + ", a." + press_name + ", a." + volt_name + ", a." + heading_name;
 
         for (int d = 0; d < int.Parse(WebConfigurationManager.AppSettings["nb_beam_SIG"]); d++ )
         {
@@ -502,6 +524,7 @@ public partial class SIG_Current : System.Web.UI.Page
         List<double> list_temp = new List<double>();
         List<double> list_press = new List<double>();
         List<double> list_volt = new List<double>();
+        List<double> list_heading = new List<double>();
 
 
         double cell_size = double.Parse(WebConfigurationManager.AppSettings["cell_size_SIG"]) / 100;
@@ -527,13 +550,14 @@ public partial class SIG_Current : System.Web.UI.Page
             list_temp.Add(double.Parse(dRow[temp_name].ToString()));
             list_press.Add(double.Parse(dRow[press_name].ToString()));
             list_volt.Add(double.Parse(dRow[volt_name].ToString()));
+            list_heading.Add(double.Parse(dRow[heading_name].ToString()));
 
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
             // UTC to Local Time
             date = date.AddHours(utcdataoffset).AddHours(-1 * systemUTCTimeOffset); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
             // take acoount halh_integration_time
-            date = date.AddSeconds(halh_integration_time);
+            date = date.AddSeconds(-1 * halh_integration_time);
 
             list_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
@@ -596,7 +620,7 @@ public partial class SIG_Current : System.Web.UI.Page
             list_time,
             cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
             blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
-            list_pitch, list_roll, list_temp, list_press, list_volt);//, list_sbe_temp, list_sbe_sal, list_str_sbe);
+            list_pitch, list_roll, list_temp, list_press, list_volt, list_heading);//, list_sbe_temp, list_sbe_sal, list_str_sbe);
 
         data.setDeclination(decl);
 
@@ -622,6 +646,7 @@ public class data_SIG_Current
     public double[] C_temp;
     public double[] C_press;
     public double[] C_volt;
+    public double[] C_heading;
 
     public double[] SBE_temp;
     public double[] SBE_sal;
@@ -642,7 +667,8 @@ public class data_SIG_Current
         List<double> l_roll,
         List<double> l_temp,
         List<double> l_press,
-        List<double> l_volt)
+        List<double> l_volt,
+        List<double> l_heading)
     {
 
         C_spd = l_spd.ToArray();
@@ -655,6 +681,7 @@ public class data_SIG_Current
         C_temp = l_temp.ToArray();
         C_press = l_press.ToArray();
         C_volt = l_volt.ToArray();
+        C_heading = l_heading.ToArray();
 
 
         for (int i = 1; i < C_time.Length; i++)

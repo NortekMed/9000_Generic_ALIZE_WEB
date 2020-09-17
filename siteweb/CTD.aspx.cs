@@ -95,11 +95,11 @@ public partial class CTD : System.Web.UI.Page
 
     protected void DownloadCurrent(object Source, EventArgs e)
     {
-        device_name = Resources.CurrentSIG.DEVICE_0;
+        device_name = Resources.CTD.DEVICE_0;
         List<string> output = MakeHeader(device_name);
 
         output.Add("UTC datetime;"  + templabel.Value + '(' + tempunit.Value + ");"
-                                    + "Salinity (mg/kg);"
+                                    + "Salinity (g/kg);"
                                     );
 
 
@@ -113,8 +113,8 @@ public partial class CTD : System.Web.UI.Page
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
             output.Add(s_date.Replace("T", ", ") + ';'
-                        + downloaddata.SBE_temp[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.SBE_sal[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.SBE_temp[i].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.SBE_sal[i].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)

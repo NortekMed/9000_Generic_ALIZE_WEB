@@ -86,7 +86,7 @@ public partial class Meteo : System.Web.UI.Page
     static string timeref;
     static string timestamp;
     static string direction;
-    static string direction_M;
+    //static string direction_M;
     static string orientation;
 
     //static string l_prj_name = "PROJECT NAME : ";
@@ -149,7 +149,8 @@ public partial class Meteo : System.Web.UI.Page
         output.Add(Global.l_timeref + timeref);
         output.Add(Global.l_timestamp + timestamp);
         output.Add(Global.l_direction + "none");
-        output.Add(Global.l_orientation + orientation + ' ' + downloaddata.declination.ToString("0.00", NumberFormatInfo.InvariantInfo));
+        output.Add(Global.l_orientation + "none");
+        //output.Add(Global.l_orientation + orientation + ' ' + downloaddata.declination.ToString("0.00", NumberFormatInfo.InvariantInfo));
 
 
         return output;
@@ -212,6 +213,8 @@ public partial class Meteo : System.Web.UI.Page
 
         output.Add("UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
                                    + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';'
+                                   + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';'
+                                   + humidity_label.Value + '(' + humidity_unit.Value + ')' + ';'
                                     );
 
         // mise en forme
@@ -224,6 +227,7 @@ public partial class Meteo : System.Web.UI.Page
             output.Add( s_date.Replace("T", ", ") + ';'
                         + downloaddata.wxt_temp[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_press[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_hum[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)
@@ -370,8 +374,12 @@ public partial class Meteo : System.Web.UI.Page
         timeref = Resources.meteo.TIMEREF;
         timestamp = Resources.meteo.TIMESTAMP;
         direction = Resources.meteo.DIRECTION;
-        direction_M = Resources.meteo.DIRECTION_M;
-        orientation = Resources.meteo.ORIENTATION + ", " + Resources.Site.Master.declination;
+        //direction_M = Resources.meteo.DIRECTION_M;
+
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
+            orientation = Resources.Site.Master.orientationG + ", " + Resources.Site.Master.declination;
+        else
+            orientation = Resources.Site.Master.orientationM;
 
         //Retrieving data from master resx files
         start.Value = Resources.Site.Master.start.ToString();
