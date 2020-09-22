@@ -33,6 +33,7 @@
 	<asp:HiddenField ID = "h_sig_label"  value="<%$ Resources:WaveAHRS, h_sig_label %>" Runat="Server" />
 	<asp:HiddenField ID = "h_unit"  value="<%$ Resources:WaveAHRS, h_unit %>" Runat="Server" />
 	<asp:HiddenField ID = "t_avg_label"  value="<%$ Resources:WaveAHRS, t_avg_label %>" Runat="Server" />
+	<asp:HiddenField ID = "t_hmax_label"  value="<%$ Resources:WaveAHRS, t_hmax_label %>" Runat="Server" />
 	<asp:HiddenField ID = "t_max_label"  value="<%$ Resources:WaveAHRS, t_max_label %>" Runat="Server" />
 	<asp:HiddenField ID = "t_peak_label"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
 	<asp:HiddenField ID = "t_m01_label"  value="<%$ Resources:WaveAHRS, t_peak_label %>" Runat="Server" />
@@ -50,6 +51,7 @@
     <asp:HiddenField ID = "t_peak_label_alias"  value="<%$ Resources:WaveAHRS, t_peak_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "t_z_label_alias"  value="<%$ Resources:WaveAHRS, t_z_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "t_m01_label_alias"  value="<%$ Resources:WaveAHRS, t_m01_label_alias %>" Runat="Server" />
+    <asp:HiddenField ID = "t_hmax_label_alias"  value="<%$ Resources:WaveAHRS, t_hmax_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "t_max_label_alias"  value="<%$ Resources:WaveAHRS, t_max_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "t_m02_label_alias"  value="<%$ Resources:WaveAHRS, t_m02_label_alias %>" Runat="Server" />
     <asp:HiddenField ID = "t_3_label_alias"  value="<%$ Resources:WaveAHRS, t_3_label_alias %>" Runat="Server" />

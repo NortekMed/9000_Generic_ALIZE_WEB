@@ -87,7 +87,7 @@ public partial class WaveAHRS : System.Web.UI.Page
                                     + t_peak_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     + t_z_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     + t_m01_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + t_hmax_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     + t_m02_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
                                     + t_3_label_alias.Value + '(' + t_unit.Value + ')' + ';'
@@ -98,7 +98,8 @@ public partial class WaveAHRS : System.Web.UI.Page
                                     + t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     + etamax_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                                     + etamin_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-
+                                    + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                    + "nbr_system;"
                                     );
 
         // mise en forme
@@ -114,7 +115,7 @@ public partial class WaveAHRS : System.Web.UI.Page
                         + downloaddata.T_p[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_z[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_m01[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.T_hmax[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_m02[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_3[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.D_mean[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
@@ -124,7 +125,8 @@ public partial class WaveAHRS : System.Web.UI.Page
                         + downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.ETAmax[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.ETAmin[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-
+                        + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + '2'
                         );
 
             if (i == 0)
@@ -234,6 +236,7 @@ public partial class WaveAHRS : System.Web.UI.Page
         t_peak_label_alias = new HiddenField();
         t_z_label_alias = new HiddenField();
         t_m01_label_alias = new HiddenField();
+        t_hmax_label_alias = new HiddenField();
         t_max_label_alias = new HiddenField();
         t_m02_label_alias = new HiddenField();
         t_3_label_alias = new HiddenField();
@@ -644,11 +647,11 @@ public class dataWaveAHRS
     public double[] T_p;
     public double[] T_z;
     public double[] T_m01;
-    public double[] T_max;
+    public double[] T_hmax;
     public double[] T_m02;
     public double[] T_3;
     public double[] T_e;
-    public double[] Tmax;
+    public double[] T_max;
     public string[] T_time;
 
     public double[] D_mean;
@@ -679,11 +682,11 @@ public class dataWaveAHRS
         T_p = list_t_tp.ToArray();
         T_z = list_t_tz.ToArray();
         T_m01 = list_t_tm01.ToArray();
-        T_max = list_t_thmax.ToArray();
+        T_hmax = list_t_thmax.ToArray();
         T_m02 = list_t_tm02.ToArray();
         T_3 = list_t_t3.ToArray();
         T_e = list_t_te.ToArray();
-        Tmax = list_t_tmax.ToArray();
+        T_max = list_t_tmax.ToArray();
 
         T_time = time.ToArray();
     }

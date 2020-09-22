@@ -943,7 +943,7 @@ public class dataWaveAHRS_BFHF
     public double[] T_p;
     public double[] T_z;
     public double[] T_m01;
-    public double[] T_max;
+    public double[] T_hmax;
     public double[] T_m02;
     public double[] T_3;
     public string[] T_time;
@@ -997,7 +997,7 @@ public class dataWaveAHRS_BFHF
         T_p = list_t_tp.ToArray();
         T_z = list_t_tz.ToArray();
         T_m01 = list_t_tm01.ToArray();
-        T_max = list_t_thmax.ToArray();
+        T_hmax = list_t_thmax.ToArray();
         T_m02 = list_t_tm02.ToArray();
         T_3 = list_t_t3.ToArray();
 

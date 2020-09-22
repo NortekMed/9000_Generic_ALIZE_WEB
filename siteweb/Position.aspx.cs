@@ -204,7 +204,7 @@ public partial class Position : System.Web.UI.Page
     {
 
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
-        location = WebConfigurationManager.AppSettings["Buoy"] + '-' + WebConfigurationManager.AppSettings["SiteName"];
+        location = WebConfigurationManager.AppSettings["SiteName"];
         timeref = Resources.Position.TIMEREF;
         timestamp = Resources.Position.TIMESTAMP;
         direction = Resources.Position.DIRECTION;

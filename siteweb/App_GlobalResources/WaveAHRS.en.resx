@@ -180,7 +180,7 @@
   <data name="t_m02_label" xml:space="preserve">
     <value>Mean period</value>
   </data>
-  <data name="t_max_label" xml:space="preserve">
+  <data name="t_hmax_label" xml:space="preserve">
     <value>Period for the largest wave</value>
   </data>
   <data name="t_peak_label" xml:space="preserve">
@@ -225,7 +225,7 @@
   <data name="t_m02_label_alias" xml:space="preserve">
     <value>T02</value>
   </data>
-  <data name="t_max_label_alias" xml:space="preserve">
+  <data name="t_hmax_label_alias" xml:space="preserve">
     <value>Thmax</value>
   </data>
   <data name="t_peak_label_alias" xml:space="preserve">
@@ -308,5 +308,11 @@
   </data>
   <data name="DEVICE_2" xml:space="preserve">
     <value>Wind-sea</value>
+  </data>
+  <data name="t_max_label" xml:space="preserve">
+    <value>Largest period of waves</value>
+  </data>
+  <data name="t_max_label_alias" xml:space="preserve">
+    <value>Tmax</value>
   </data>
 </root>

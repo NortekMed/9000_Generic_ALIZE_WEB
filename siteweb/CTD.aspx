@@ -14,7 +14,7 @@
 
     <script src="Scripts/bootstrap-datepicker.js"></script>
 
-    <asp:HiddenField ID = "page_name" Value="<%$ Resources:Site.master, signature %>" Runat="Server" />
+    <asp:HiddenField ID = "page_name" Value="<%$ Resources:Site.master, ctd %>" Runat="Server" />
 
 
     <asp:HiddenField ID = "start" ClientIdMode="Static" Runat="Server" />

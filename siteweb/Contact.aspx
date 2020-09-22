@@ -30,7 +30,7 @@
     
     <p>
         WEATHER page:<br />
-        Sensor is at 3.5m.
+        Sensor is at 3.3m.
         Gusts are averaged over 3s.
         Wind direction are defined as 'Going from'.<br />
         Acquisition period is 10 minutes.<br />
@@ -75,7 +75,7 @@
         <strong>Info:</strong> <a href="mailto:info@NortekMed.com">info@NortekMed.com</a>
         <br />
 
-    <strong>Project Manager EMD : ---- ------- +33 - -- -- -- -- </strong><br />
+    <strong>Project Manager EMD : Coline Delafosse +33 6 21 76 98 53 </strong><br />
     <strong>Marine operation manager EMD : Maud Lamaze +33 6 16 80 38 97</strong><br />
     <strong>Project Manager NortekMed : André DOLLE + 33 6 37 48 21 77 </strong><br />
     </address>

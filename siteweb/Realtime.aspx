@@ -509,8 +509,9 @@
 
                 tooltip: {
                     headerFormat: '',
-                    pointFormat: 'V={point.x}m/s Distance={point.y}m',
-                    valueDecimals: 2
+                    pointFormat: 'V={point.x}' + courant_unit+'  Distance={point.y}m',
+                    //pointFormat: 'V={point.x}m/s Distance={point.y}m',
+                    valueDecimals: 3
                 },
                 legend: {
                     enabled: false,
@@ -991,7 +992,7 @@
                 var NB_couche_utile = <%=ConfigurationManager.AppSettings["nb_couche_SIG"] %>;
                 //for (var j = 0; j < data.C_amp[0].length; j++) {
                 for (var j = 0; j < NB_couche_utile; j++) {
-                    Amplitude.push([data.C_spd[last][j] / convert_nd, (j + 1) * data.C_cellsize + data.C_blancking]);
+                    Amplitude.push([Math.ceil(data.C_spd[last][j] * convert_nd*1000)/1000, (j + 1) * data.C_cellsize + data.C_blancking]);
                     Direction.push([data.C_dir[last][j], (j + 1) * data.C_cellsize + data.C_blancking]);
                 }
 

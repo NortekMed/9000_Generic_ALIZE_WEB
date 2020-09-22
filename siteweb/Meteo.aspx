@@ -173,7 +173,7 @@
 
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
-        document.write('  wind at 3.5m above sea level');
+        document.write('  wind at 3.3m above sea level');
         //document.write('<div class="panel-heading"><b>' + label + '</b></div>');document.write('  wind at 3.5m above sea level');
         document.write('<div class="panel-body">');
         document.write('<div id="param2container" style="min-width:500px; width:100%; height:300px;"></div>');

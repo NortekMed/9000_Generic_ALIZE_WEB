@@ -213,7 +213,6 @@ public partial class Meteo : System.Web.UI.Page
 
         output.Add("UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
                                    + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';'
-                                   + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';'
                                    + humidity_label.Value + '(' + humidity_unit.Value + ')' + ';'
                                     );
 
