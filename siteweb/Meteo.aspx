@@ -100,6 +100,8 @@
     <asp:HiddenField ID = "nb_satelite_airmar_label"  ClientIdMode="Static" Runat="Server" />
 
     <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
+
+    <asp:HiddenField ID = "light_site" ClientIdMode="Static" Runat="Server"/>
 		
     
     <script type="text/javascript">
@@ -121,51 +123,55 @@
         var l_last = document.getElementById('<%=last.ClientID%>').value;
         var l_historical = document.getElementById('<%=historical.ClientID%>').value;
 
-        document.write('<div id="Top" style="width: 100 %; ">');
-        document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
-        document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
-        document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
-        document.write('</div><br>');
+        var site_light = light_site.value;
 
-        document.write('<div class="hidden" id="history"> <br>');
-        document.write('<div class="input-group date">');
+        if (site_light == "false") {
 
-        document.write('<div class="col-md-4">');
-        document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
-        document.write('</div></div>');
+            document.write('<div id="Top" style="width: 100 %; ">');
+            document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
+            document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
+            document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
+            document.write('</div><br>');
 
-        document.write("<div class='col-md-4'>");
-        document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
-        document.write('</div></div>');
+            document.write('<div class="hidden" id="history"> <br>');
+            document.write('<div class="input-group date">');
 
-        document.write('<div class="col-md-4">');
-        document.write('<div class="form - group">');
-        document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
-        document.write('</div></div>');
+            document.write('<div class="col-md-4">');
+            document.write('<div class="form - group">');
+            document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
+            document.write('</div></div>');
 
-        document.write('</div></div>');
+            document.write("<div class='col-md-4'>");
+            document.write('<div class="form - group">');
+            document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
+            document.write('</div></div>');
 
-        document.write('<br><p>' + l_download + '</p>');
-        document.write('<div>');
+            document.write('<div class="col-md-4">');
+            document.write('<div class="form - group">');
+            document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
+            document.write('</div></div>');
+
+            document.write('</div></div>');
+
+            document.write('<br><p>' + l_download + '</p>');
+            document.write('<div>');
 
 
-        document.write('<asp:Button runat="server" ID="DownloadWindButton" Text="" class="btn btn-default" OnClick="DownloadWind" />');
-        document.write('<asp:Button runat="server" ID="DownloadMeteoButton" Text="" class="btn btn-default" OnClick="DownloadMeteo" />');
+            document.write('<asp:Button runat="server" ID="DownloadWindButton" Text="" class="btn btn-default" OnClick="DownloadWind" />');
+            document.write('<asp:Button runat="server" ID="DownloadMeteoButton" Text="" class="btn btn-default" OnClick="DownloadMeteo" />');
 
-        document.write('</div><br><br>')
+            document.write('</div><br><br>')
+        }
+
     </script>
 
 
-    <form>
     <div class="speedInputGroup">
         <label for="speed">Enter speed limit — in m/s :</label>
         <input id="speed" type="number" name="speed" step="0.1" min="0" max="20" value="0" required>
         <span class="validity"></span>
         <a class="btn btn-default" onclick="updateData()">Trace</a>
     </div>
-    <div>
 
     <script type="text/javascript">
         var label = document.getElementById('<%=_2_equipname_alias.ClientID%>').value;

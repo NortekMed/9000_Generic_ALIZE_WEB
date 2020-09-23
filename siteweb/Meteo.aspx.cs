@@ -109,9 +109,21 @@ public partial class Meteo : System.Web.UI.Page
         if (WebConfigurationManager.AppSettings["loginNeeded"] == "true" && !Request.IsAuthenticated)
             Response.Redirect("~/Login.aspx");
 
+        if (WebConfigurationManager.AppSettings["DownloadEnabled"] != "true")
+        {
+            DownloadWindButton.Enabled = false;
+            DownloadMeteoButton.Enabled = false;
+        }
 
         DownloadWindButton.Text = _2_equipname_alias.Value + ' ' + download_data.Value;
         DownloadMeteoButton.Text = _0_equipname_alias.Value + ' ' + download_data.Value;
+
+        if (WebConfigurationManager.AppSettings["LightEnabled"] != "true")
+        {
+            light_site.Value = "true";
+        }
+        else
+            light_site.Value = "false";
 
     }
 

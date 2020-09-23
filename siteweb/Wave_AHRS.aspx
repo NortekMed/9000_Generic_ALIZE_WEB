@@ -67,6 +67,8 @@
 
     <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
+    <asp:HiddenField ID = "light_site" ClientIdMode="Static" Runat="Server"/>
+
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
         var l_hour = document.getElementById('<%=hour.ID%>').value;
@@ -86,62 +88,56 @@
         var l_last = document.getElementById('<%=last.ClientID%>').value;
         var l_historical = document.getElementById('<%=historical.ClientID%>').value;
 
-        document.write('<div id="Top" style="width: 100 %; ">');
-        document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
-        document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
-        document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
-        document.write('</div><br>');
+        var site_light = light_site.value;
 
-        document.write('<div class="hidden" id="history"> <br>');
-        document.write('<div class="input-group date">');
+        if (site_light == "false")
+        {
 
-        //var myDate = new Date();
-        //var month = myDate.getMonth() + 1;
-        //var date = ('0' + myDate.getDate()).slice(-2) + '/' + month + '/' + myDate.getFullYear();
+            document.write('<div id="Top" style="width: 100 %; ">');
+            document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
+            document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
+            document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
+            document.write('</div><br>');
 
-        document.write('<div class="col-md-4">');
-        document.write('<div class="form - group">');
-        //document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + date + '"/>');
-        document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
-        document.write('</div></div>');
+            document.write('<div class="hidden" id="history"> <br>');
+            document.write('<div class="input-group date">');
 
-        document.write("<div class='col-md-4'>");
-        document.write('<div class="form - group">');
-        //document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + date + '"/>');
-        document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
-        document.write('</div></div>');
+            document.write('<div class="col-md-4">');
+            document.write('<div class="form - group">');
+            document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
+            document.write('</div></div>');
 
-        document.write('<div class="col-md-4">');
+            document.write("<div class='col-md-4'>");
+            document.write('<div class="form - group">');
+            document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
+            document.write('</div></div>');
 
-        document.write('<div class="form - group">');
-        document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
-        document.write('</div></div>');
+            document.write('<div class="col-md-4">');
 
-        
+            document.write('<div class="form - group">');
+            document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
+            document.write('</div></div>');
 
-        document.write('</div></div>');
+            document.write('</div></div>');
 
-        document.write('<br><p>' + l_download + '</p>');
-        document.write('<div>');
+            document.write('<br><p>' + l_download + '</p>');
+            document.write('<div>');
 
-        document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="DownloadWave" />');
+            document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="DownloadWave" />');
 
-        document.write('</div><br><br>')
+            document.write('</div><br><br>')
+        }
     </script>
 
-    <form>
     <div class="metersInputGroup">
         <label for="meters">Enter height limit — in meters :</label>
         <input id="meters" type="number" name="meters" step="0.1" min="0" max="20" value="0" required>
-        <%--<input id="meters" type="number" name="meters" step="0.1" min="0" max="20" placeholder="value" required>--%>
         <span class="validity"></span>
         <a class="btn btn-default" onclick="updateData()">Trace</a>
-        <%--<input type="submit" value="Trace">--%>
     </div>
     <div>
         
     </div>
-    </form>
 
 
     <script type="text/javascript">

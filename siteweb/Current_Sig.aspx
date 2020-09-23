@@ -76,6 +76,8 @@
     <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
 
+    <asp:HiddenField ID = "light_site" ClientIdMode="Static" Runat="Server"/>
+
     <script type="text/javascript">
         
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
@@ -96,40 +98,47 @@
         var l_last = document.getElementById('<%=last.ClientID%>').value;
         var l_historical = document.getElementById('<%=historical.ClientID%>').value;
 
-        document.write('<div id="Top" style="width: 100 %; ">');
-        document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
-        document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
-        document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
-        document.write('</div><br>');
-
-        document.write('<div class="hidden" id="history"> <br>');
-        document.write('<div class="input-group date">');
+        var site_light = light_site.value;
 
 
+        if (site_light == "false") {        
 
-        document.write('<div class="col-md-4">');
-        document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
-        document.write('</div></div>');
+            document.write('<div id="Top" style="width: 100 %; ">');
+            document.write('<div id="q_opt" class="btn-group" data-toggle="buttons">');
+            document.write('<label class="btn btn-default active" id="d_realtime" > <input id="q_op_1" name="op" type="radio" value="1" checked>' + l_last + ' 24h</label > ');
+            document.write('<label class="btn btn-default" id="d_history"> <input id="q_op_2" name="op" type="radio" value="2" >' + l_historical + '</label>');
+            document.write('</div><br>');
 
-        document.write("<div class='col-md-4'>");
-        document.write('<div class="form - group">');
-        document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
-        document.write('</div></div>');
+            document.write('<div class="hidden" id="history"> <br>');
+            document.write('<div class="input-group date">');
 
-        document.write('<div class="col-md-4">');
-        document.write('<div class="form - group">');
-        document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
-        document.write('</div></div>');
 
-        document.write('</div></div>');
 
-        document.write('<br><p>' + l_download + '</p>');
-        document.write('<div>');
+            document.write('<div class="col-md-4">');
+            document.write('<div class="form - group">');
+            document.write('<input type="text" class="form - control" id="datetimepicker1" value="' + l_start + '"/>');
+            document.write('</div></div>');
 
-        document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="DownloadCurrent" />');
+            document.write("<div class='col-md-4'>");
+            document.write('<div class="form - group">');
+            document.write('<input type="text" class="form - control" id="datetimepicker2" value="' + l_end + '"/>');
+            document.write('</div></div>');
 
-        document.write('</div><br><br>')
+            document.write('<div class="col-md-4">');
+            document.write('<div class="form - group">');
+            document.write('<a class="btn btn-default" onclick="updateData()">' + l_refresh + ' </a>');
+            document.write('</div></div>');
+
+            document.write('</div></div>');
+
+            document.write('<br><p>' + l_download + '</p>');
+            document.write('<div>');
+
+            document.write('<asp:Button runat="server" ID="downloadBouton" Text="" class="btn btn-default" OnClick="DownloadCurrent" />');
+
+            document.write('</div><br><br>')
+        }
+
     </script>
 
     
@@ -142,10 +151,6 @@
 
     <div>
     </div>
-
-    
-
-
 
     <script type="text/javascript">
         var label = document.getElementById('<%=speedlabel.ClientID%>').value;
@@ -162,7 +167,6 @@
         var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        //document.write('<div class="panel-heading"><b>' + label + '</b></div>');
         document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
         document.write('<div class="panel-body">');
         document.write('<div class="panel-body">');
@@ -187,7 +191,6 @@
         var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        //document.write('<div class="panel-heading"><b>' + label + '</b></div>');
         document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl2">X</label>' + '</b></div>');
         document.write('<div class="panel-body">');
         document.write('<div id="ProfileDircontainer" style="min-width:500px; width:100%; height:300px;"></div>');
