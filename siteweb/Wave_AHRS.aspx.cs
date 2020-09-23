@@ -358,37 +358,40 @@ public partial class WaveAHRS : System.Web.UI.Page
         DataTable myDataTable;
 
         double decl = 0;
-
+        List<double> list_decl = new List<double>();
+        List<DateTime> list_time_decl = new List<DateTime>();
         ///////////////////////////////////////////////////////////////////////////
         /// Reading declination
         /// 
-        endate = DateTime.Now;  // using local time ( declination time registering should be in local time )
-
-        timestampsrequest = " WHERE a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
-
-
-        ds = new DataSet();
-        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM DECLINATION a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-        dataadapter.Fill(ds);
-        myDataTable = ds.Tables[0];
-
-        List<double> list_decl = new List<double>();
-        List<DateTime> list_time_decl = new List<DateTime>();
-
-        // to be sure to have at least one element
-        list_decl.Add(0);
-        list_time_decl.Add(DateTime.MinValue);
-
-        foreach (DataRow dRow in myDataTable.Rows)
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
         {
-            DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+            endate = DateTime.Now;  // using local time ( declination time registering should be in local time )
 
-            list_time_decl.Add(date);
+            timestampsrequest = " WHERE a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
-            double tmp = double.Parse(dRow["DECLINATION"].ToString());
-            list_decl.Add(tmp);
+
+            ds = new DataSet();
+            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM DECLINATION a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+            dataadapter.Fill(ds);
+            myDataTable = ds.Tables[0];
+
+            //List<double> list_decl = new List<double>();
+            //List<DateTime> list_time_decl = new List<DateTime>();
+
+            // to be sure to have at least one element
+            list_decl.Add(0);
+            list_time_decl.Add(DateTime.MinValue);
+
+            foreach (DataRow dRow in myDataTable.Rows)
+            {
+                DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+
+                list_time_decl.Add(date);
+
+                double tmp = double.Parse(dRow["DECLINATION"].ToString());
+                list_decl.Add(tmp);
+            }
         }
-
         ///////////////////////////////////////////////////////////////////////////
 
         //double wave_compute_duration = double.Parse(WebConfigurationManager.AppSettings["Wave_Tps_acq"]);
@@ -410,16 +413,18 @@ public partial class WaveAHRS : System.Web.UI.Page
             endate = endate.AddDays(1);
         }
 
-
-        for (int i = 0; i < list_time_decl.Count; i++)
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
         {
-
-            if (list_time_decl[i] < endate)
+            for (int i = 0; i < list_time_decl.Count; i++)
             {
-                decl = list_decl[i];
+
+                if (list_time_decl[i] < endate)
+                {
+                    decl = list_decl[i];
+                }
+                else
+                    break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
             }
-            else
-                break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
         }
 
 
@@ -604,8 +609,16 @@ public partial class WaveAHRS : System.Web.UI.Page
             list_n_waves.Add(double.Parse(dRow["NUMW"].ToString()));
 
             list_d_mean[list_d_mean.Count-1] += decl;
+            if (list_d_mean[list_d_mean.Count - 1] > 360) list_d_mean[list_d_mean.Count - 1] -= 360;
+            if (list_d_mean[list_d_mean.Count - 1] < 0) list_d_mean[list_d_mean.Count - 1] += 360;
+
             list_d_max[list_d_max.Count-1] += decl;
+            if (list_d_max[list_d_max.Count - 1] > 360) list_d_max[list_d_max.Count - 1] -= 360;
+            if (list_d_max[list_d_max.Count - 1] < 0) list_d_max[list_d_max.Count - 1] += 360;
+
             list_d_sd[list_d_sd.Count-1] += decl;
+            if (list_d_sd[list_d_sd.Count - 1] > 360) list_d_sd[list_d_sd.Count - 1] -= 360;
+            if (list_d_sd[list_d_sd.Count - 1] < 0) list_d_sd[list_d_sd.Count - 1] += 360;
 
             //dir_cor = double.Parse(dRow["MAINDIR"].ToString()) - 14.8;
             //if (dir_cor < 0) dir_cor += 360;

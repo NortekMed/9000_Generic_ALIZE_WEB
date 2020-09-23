@@ -568,38 +568,40 @@ public partial class Meteo : System.Web.UI.Page
         DataTable myDataTable;
 
         double decl = 0;
-
+        List<double> list_decl = new List<double>();
+        List<DateTime> list_time_decl = new List<DateTime>();
         ///////////////////////////////////////////////////////////////////////////
         /// Reading declination
         /// 
-        endate = DateTime.Now;  // using local time ( declination time registering should be in local time )
-
-        timestampsrequest = " WHERE a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
-
-
-        ds = new DataSet();
-        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM DECLINATION a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-        dataadapter.Fill(ds);
-        myDataTable = ds.Tables[0];
-
-        List<double> list_decl = new List<double>();
-        List<DateTime> list_time_decl = new List<DateTime>();
-
-        // to be sure to have at least one element
-        list_decl.Add(0);
-        list_time_decl.Add(DateTime.MinValue);
-
-        foreach (DataRow dRow in myDataTable.Rows)
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
         {
-            DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+            endate = DateTime.Now;  // using local time ( declination time registering should be in local time )
 
-            list_time_decl.Add(date);
+            timestampsrequest = " WHERE a.TIME_LOG<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
-            double tmp = double.Parse(dRow["DECLINATION"].ToString());
-            list_decl.Add(tmp);
+
+            ds = new DataSet();
+            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_LOG, a.DECLINATION FROM DECLINATION a " + timestampsrequest + " order by a.TIME_LOG", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+            dataadapter.Fill(ds);
+            myDataTable = ds.Tables[0];
+
+            //List<double> list_decl = new List<double>();
+            //List<DateTime> list_time_decl = new List<DateTime>();
+
+            // to be sure to have at least one element
+            list_decl.Add(0);
+            list_time_decl.Add(DateTime.MinValue);
+
+            foreach (DataRow dRow in myDataTable.Rows)
+            {
+                DateTime date = Convert.ToDateTime(dRow["TIME_LOG"].ToString());
+
+                list_time_decl.Add(date);
+
+                double tmp = double.Parse(dRow["DECLINATION"].ToString());
+                list_decl.Add(tmp);
+            }
         }
-
-        
 
         ///////////////////////////////////////////////////////////////////////////
 
@@ -620,16 +622,18 @@ public partial class Meteo : System.Web.UI.Page
             endate = endate.AddDays(1);
         }
 
-
-        for (int i = 0; i < list_time_decl.Count; i++)
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
         {
-
-            if (list_time_decl[i] < endate)
+            for (int i = 0; i < list_time_decl.Count; i++)
             {
-                decl = list_decl[i];
+
+                if (list_time_decl[i] < endate)
+                {
+                    decl = list_decl[i];
+                }
+                else
+                    break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
             }
-            else
-                break;  // sql request sort list_time_decl in ascending form, so when if comparaison is false we can stop the loop 'for'
         }
 
 
@@ -749,16 +753,22 @@ public partial class Meteo : System.Web.UI.Page
 
             list_par7.Add(double.Parse(dRow[s_wind_dir_avg].ToString()));
             list_par7[list_par7.Count - 1] += decl;
+            if (list_par7[list_par7.Count - 1] > 360) list_par7[list_par7.Count - 1] -= 360;
+            if (list_par7[list_par7.Count - 1] < 0) list_par7[list_par7.Count - 1] += 360;
 
             list_par8.Add(double.Parse(dRow[s_wind_speed_max].ToString()));
 
             list_par9.Add(double.Parse(dRow[s_wind_dir_max].ToString()));
             list_par9[list_par9.Count - 1] += decl;
+            if (list_par9[list_par9.Count - 1] > 360) list_par9[list_par9.Count - 1] -= 360;
+            if (list_par9[list_par9.Count - 1] < 0) list_par9[list_par9.Count - 1] += 360;
 
             list_par20.Add(double.Parse(dRow[s_wind_speed_min].ToString()));
 
             list_par21.Add(double.Parse(dRow[s_wind_dir_min].ToString()));
             list_par21[list_par21.Count - 1] += decl;
+            if (list_par21[list_par21.Count - 1] > 360) list_par21[list_par21.Count - 1] -= 360;
+            if (list_par21[list_par21.Count - 1] < 0) list_par21[list_par21.Count - 1] += 360;
 
         }
 
