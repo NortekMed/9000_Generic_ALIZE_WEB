@@ -118,7 +118,7 @@ public partial class Meteo : System.Web.UI.Page
         DownloadWindButton.Text = _2_equipname_alias.Value + ' ' + download_data.Value;
         DownloadMeteoButton.Text = _0_equipname_alias.Value + ' ' + download_data.Value;
 
-        if (WebConfigurationManager.AppSettings["LightEnabled"] != "true")
+        if (WebConfigurationManager.AppSettings["LightEnabled"] == "true")
         {
             light_site.Value = "true";
         }

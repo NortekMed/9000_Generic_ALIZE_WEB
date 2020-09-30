@@ -523,7 +523,7 @@
             }, {
                 name: 'TPeak BF',
                 data: [],
-                color: 'blue',
+                color: 'orange',
                 animation: false,
                 tooltip: {
                     valueSuffix: ' s'
@@ -588,7 +588,7 @@
             series: [{
                 name: 'MeanWaveDir BF',
                 data: [],
-                color: '#FCF000',
+                color: 'grey',
                 animation: false,
                 lineWidth: 0,
                 tooltip: {
@@ -601,7 +601,7 @@
             },{
                     name: 'MeanWaveDir HF',
                 data: [],
-                color: '#FCA000',
+                color: 'red',
                 lineWidth: 0,
                 animation: false,
                 tooltip: {
@@ -614,7 +614,7 @@
             }, {
                     name: 'PeakWaveDir BF',
                 data: [],
-                color: '#00A000',
+                color: 'orange',
                 lineWidth: 0,
                 animation: false,
                 tooltip: {
@@ -627,7 +627,7 @@
             }, {
                     name: 'PeakWaveDir HF',
                 data: [],
-                color: '#00F000',
+                color: 'yellow',
                 lineWidth: 0,
                 animation: false,
                 tooltip: {

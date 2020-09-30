@@ -47,7 +47,7 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         downloadBouton.Text = download_data.Value;
 
-        if (WebConfigurationManager.AppSettings["LightEnabled"] != "true")
+        if (WebConfigurationManager.AppSettings["LightEnabled"] == "true")
         {
             light_site.Value = "true";
         }

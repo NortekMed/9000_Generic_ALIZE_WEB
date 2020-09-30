@@ -49,7 +49,7 @@ public partial class WaveAHRS_BFHF : System.Web.UI.Page
         downloadBoutonBF.Text = download_dataBF.Value;
         downloadBoutonHF.Text = download_dataHF.Value;
 
-        if (WebConfigurationManager.AppSettings["LightEnabled"] != "true")
+        if (WebConfigurationManager.AppSettings["LightEnabled"] == "true")
         {
             light_site.Value = "true";
         }
