@@ -134,7 +134,7 @@ public partial class SIG_Current : System.Web.UI.Page
             string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
             s_layers += "C_Spd" + (j+1).ToString() + " (" + speedunit.Value + ")(-" + immersion + "m);";
             s_layers += "C_Dir" + (j+1).ToString() + " (" + direction_unit.Value + ")(-" + immersion + "m);";
-            s_layers += "C_Amp" + (j+1).ToString() + " ( Counts)(-" + immersion + "m);";
+            s_layers += "C_Amp" + (j+1).ToString() + " ( dB)(-" + immersion + "m);";
         }
 
         output.Add("UTC datetime;"  + templabel.Value + '(' + tempunit.Value + ");"
@@ -565,7 +565,13 @@ public partial class SIG_Current : System.Web.UI.Page
             list_temp.Add(double.Parse(dRow[temp_name].ToString()));
             list_press.Add(double.Parse(dRow[press_name].ToString()));
             list_volt.Add(double.Parse(dRow[volt_name].ToString()));
-            list_heading.Add(double.Parse(dRow[heading_name].ToString()));
+
+            double tmp = double.Parse(dRow[heading_name].ToString());
+            tmp += decl;
+            if (tmp > 360) tmp -= 360.0;
+            if (tmp < 0) tmp += 360.0;
+            list_heading.Add(tmp);
+            //list_heading.Add(double.Parse(dRow[heading_name].ToString()));
 
 
             DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
@@ -590,8 +596,8 @@ public partial class SIG_Current : System.Web.UI.Page
                 //if (dir[cell] < 0) dir[cell] += 360;
 
                 dir[cell] += decl;
-                if (dir[cell] > 360) dir[cell] -= 360;
-                if (dir[cell] < 0) dir[cell] += 360;
+                if (dir[cell] > 360) dir[cell] -= 360.0;
+                if (dir[cell] < 0) dir[cell] += 360.0;
 
                 snr[cell] = double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
 

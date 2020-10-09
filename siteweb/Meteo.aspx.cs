@@ -196,10 +196,10 @@ public partial class Meteo : System.Web.UI.Page
             output.Add(   s_date.Replace("T", ", ") + ';'
                         + downloaddata.wxt_wind_speed_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_wind_speed_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.wxt_wind_speed_min[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.wxt_wind_dir_avg[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_speed_min[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_dir_avg[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_wind_dir_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.wxt_wind_dir_min[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.wxt_wind_dir_min[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
             if (i == 0)

@@ -88,7 +88,7 @@ public partial class WaveAHRS : System.Web.UI.Page
         device_name = Resources.WaveAHRS.DEVICE_0;
         List<string> output = MakeHeader(device_name);
 
-        output.Add("UTC datetime;"  + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+        output.Add("UTC datetime;" + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                                     + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                                     + h_max_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                                     + t_peak_label_alias.Value + '(' + t_unit.Value + ')' + ';'
@@ -107,7 +107,7 @@ public partial class WaveAHRS : System.Web.UI.Page
                                     + etamin_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                                     + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                                     + "nbr_system;"
-                                    );
+                                    ) ;
 
         // mise en forme
         for (int i = 0; i < downloaddata.H_time.Length; i++)
@@ -130,8 +130,8 @@ public partial class WaveAHRS : System.Web.UI.Page
                         + downloaddata.D_sd[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.N_waves[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.ETAmax[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.ETAmin[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.ETAmax[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                        + downloaddata.ETAmin[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + '2'
                         );
@@ -623,9 +623,9 @@ public partial class WaveAHRS : System.Web.UI.Page
             if (list_d_max[list_d_max.Count - 1] > 360) list_d_max[list_d_max.Count - 1] -= 360;
             if (list_d_max[list_d_max.Count - 1] < 0) list_d_max[list_d_max.Count - 1] += 360;
 
-            list_d_sd[list_d_sd.Count-1] += decl;
-            if (list_d_sd[list_d_sd.Count - 1] > 360) list_d_sd[list_d_sd.Count - 1] -= 360;
-            if (list_d_sd[list_d_sd.Count - 1] < 0) list_d_sd[list_d_sd.Count - 1] += 360;
+            //list_d_sd[list_d_sd.Count-1] += decl;
+            //if (list_d_sd[list_d_sd.Count - 1] > 360) list_d_sd[list_d_sd.Count - 1] -= 360;
+            //if (list_d_sd[list_d_sd.Count - 1] < 0) list_d_sd[list_d_sd.Count - 1] += 360;
 
             //dir_cor = double.Parse(dRow["MAINDIR"].ToString()) - 14.8;
             //if (dir_cor < 0) dir_cor += 360;
