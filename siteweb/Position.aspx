@@ -242,7 +242,8 @@
             if (data.P_lat.length != 0 && data.P_lng.length != 0)
                 buoy_LatLng = { lat: data.P_lat[data.P_lat.length - 1], lng: data.P_lng[data.P_lng.length - 1] };
             else
-                buoy_LatLng = { lat: 43.14367, lng: 6.039166 };
+                buoy_LatLng = { lat: 51.214833, lng: 2.426500 };
+                //buoy_LatLng = { lat: 43.14367, lng: 6.039166 };
 
             buoy_ref_LatLng.lat = data.lat_o;
             buoy_ref_LatLng.lng = data.lng_o;
@@ -390,6 +391,9 @@
             initialize();
         };
 
+        //center: { lat: 51.214833, lng: 2.426500 },
+        //center: buoy_LatLng,
+        //position: buoy_LatLng,
         function initialize() {	
 
             
@@ -416,6 +420,11 @@
                 map: map,
                 title:  '<%=ConfigurationManager.AppSettings["SiteName"] %>'
             });
+            <%--var marker = new google.maps.Marker({
+                position: buoy_LatLng,
+                map: map,
+                title:  '<%=ConfigurationManager.AppSettings["SiteName"] %>'
+            });--%>
 
             //marker.setIcon('http://google-maps-icons.googlecode.com/files/sailboat-tourism.png');
             marker.setIcon('http://maps.google.com/mapfiles/marker_yellow.png');
