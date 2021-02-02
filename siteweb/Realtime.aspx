@@ -1061,7 +1061,7 @@
         //initTurbi();
         initSIG();
         initWAVEAHRS();
-        initWAVEAHRS_BFHF();
+        //initWAVEAHRS_BFHF();
         initPosition();
 
         initCTD();
