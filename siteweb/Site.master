@@ -23,10 +23,10 @@
         <%--<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">--%>
         <asp:HiddenField ID = "rt_measure"  value="<%$ Resources:Site.master, rt_measure %>" Runat="Server" />
         <asp:HiddenField ID = "weather" Value="<%$ Resources:Site.master, weather %>" Runat="Server" />
-        <%--<asp:HiddenField ID = "spm"  value="<%$ Resources:Site.master, pyrano %>" Runat="Server" />
+        <asp:HiddenField ID = "spm"  value="<%$ Resources:Site.master, pyrano %>" Runat="Server" />
         <asp:HiddenField ID = "c4e"  value="<%$ Resources:Site.master, c4e %>" Runat="Server" />
         <asp:HiddenField ID = "optod" Value="<%$ Resources:Site.master, optod %>" Runat="Server" />
-        <asp:HiddenField ID = "turbi"  value="<%$ Resources:Site.master, turbi %>" Runat="Server" />--%>
+        <asp:HiddenField ID = "turbi"  value="<%$ Resources:Site.master, turbi %>" Runat="Server" />
         <asp:HiddenField ID = "signature" Value="<%$ Resources:Site.master, signature %>" Runat="Server" />
         <asp:HiddenField ID = "ctd" Value="<%$ Resources:Site.master, ctd %>" Runat="Server" />
         <asp:HiddenField ID = "waveahrs" Value="<%$ Resources:Site.master, waveahrs %>" Runat="Server" />
@@ -111,10 +111,10 @@
             var l_waveahrs = document.getElementById('<%=waveahrs.ClientID%>').value;
             var l_waveahrs_bfhf = document.getElementById('<%=waveahrs_bfhf.ClientID%>').value;
             var l_weather = document.getElementById('<%=weather.ClientID%>').value;
-            <%--var l_spm = document.getElementById('<%=spm.ClientID%>').value;
+            var l_spm = document.getElementById('<%=spm.ClientID%>').value;
             var l_c4e = document.getElementById('<%=c4e.ClientID%>').value;
             var l_optod = document.getElementById('<%=optod.ClientID%>').value;
-            var l_turbi = document.getElementById('<%=turbi.ClientID%>').value;--%>
+            var l_turbi = document.getElementById('<%=turbi.ClientID%>').value;
             var l_pos = document.getElementById('<%=position.ClientID%>').value;
             var l_contact = document.getElementById('<%=contact.ClientID%>').value;
 
@@ -149,6 +149,34 @@
             if (ena == "true") {
                 document.write('<li><a runat="server" href="~/Meteo">'); document.write(l_weather); document.write("</a></li>");
             }
+
+            
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_C4E"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/c4e">'); document.write(l_c4e); document.write("</a></li>");
+            }
+
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_SPM"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Aquapro_C4E">'); document.write(l_c4e); document.write("</a></li>");
+            }
+
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_OPTOD"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Aquapro_Optod">'); document.write(l_optod); document.write("</a></li>");
+            }
+
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_TURBI"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/Aquapro_Turbi">'); document.write(l_turbi); document.write("</a></li>");
+            }
+
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_SPM"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/pyrano">'); document.write(l_spm); document.write("</a></li>");
+            }
+
+
                             //document.write('<li><a runat="server" href="~/Aquapro_C4E">'); document.write(l_c4e); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_Optod">'); document.write(l_optod); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_Turbi">'); document.write(l_turbi); document.write("</a></li>");
@@ -164,32 +192,42 @@
                 document.write('<li><a runat="server" href="~/Contact">'); document.write(l_contact); document.write("</a></li>");
             }
 
-                            //http://192.168.1.204
-                            //document.write('<li><a runat="server" href="'); document.write(link);document.write('" target="_blank">'); document.write('<%=ConfigurationManager.AppSettings["LinkLabel"] %>'); document.write("</a></li>");
-                            //document.write('<li><a runat="server" href="http://192.168.1.204/SNA-SOUTHWEST" target="_blank">'); document.write(' "LINK" '); document.write("</a></li>");
-                            //document.write('<li><a runat="server" href="http://nortekmed.dyndns.org/SNA-SOUTHWEST">'); document.write(' "LINK" '); document.write("</a></li>");
+            ena = "<%=ConfigurationManager.AppSettings["LinkLabel"] %>";
+            if (ena != "") {
+                document.write('<li><a runat="server" href="'); document.write(link); document.write('" target="_blank">'); document.write('<%=ConfigurationManager.AppSettings["LinkLabel"] %>');
+                document.write("</a></li>");
+            }
       
-                    document.write('</ul>');
+            //document.write('</ul>');
+
+            
+
+
         </script>
-                    <asp:LoginView runat="server" ViewStateMode="Disabled">
-                        <AnonymousTemplate>
-                            <ul class="nav navbar-nav navbar-right">
-                            </ul>
-                        </AnonymousTemplate>
-                        <LoggedInTemplate>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li>
-                                    <script type="text/javascript">
-                                        var l_signout = document.getElementById('<%=signout.ClientID%>').value;
-                                        document.write('<asp:LoginStatus runat="server" ID="logoutstatus" LogoutAction="Redirect" LogoutText="' + l_signout + '" LogoutPageUrl="~/Default" OnLoggingOut="Unnamed_LoggingOut" />');
-                                    </script>
-                                </li>
-                            </ul>
-                        </LoggedInTemplate>
-                    </asp:LoginView>
-                </div>
-            </div>
-        </div>
+                    
+        
+        <asp:LoginView runat="server" ViewStateMode="Disabled">
+            <AnonymousTemplate>
+                <ul class="nav navbar-nav navbar-right">
+                </ul>
+            </AnonymousTemplate>
+            <LoggedInTemplate>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <script type="text/javascript">
+                            var l_signout = document.getElementById('<%=signout.ClientID%>').value;
+                            document.write('<asp:LoginStatus runat="server" ID="logoutstatus" LogoutAction="Redirect" LogoutText="' + l_signout + '" LogoutPageUrl="~/Default" OnLoggingOut="Unnamed_LoggingOut" />');
+                        </script>
+                    </li>
+                </ul>
+            </LoggedInTemplate>
+        </asp:LoginView>
+
+        <script type="text/javascript"> // end of menu
+            document.write('</ul>');
+            document.write('</div></div>');
+            document.write('</div>');
+        </script>
 
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
@@ -213,7 +251,7 @@
                 }
                 document.write('<p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>');
                 document.write('</footer>');
-        </script>
+            </script>
             
             <%--<footer>
                 <p>&copy; <%: DateTime.Now.Year %> - NortekMed</p>

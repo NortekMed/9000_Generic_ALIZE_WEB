@@ -96,6 +96,27 @@
 
 
     <asp:HiddenField ID = "b_knots_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_ahrs_bfhf_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_spm_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_c4e_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_optod_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_turbi_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_ctd_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_decl_hd" ClientIdMode="Static" Runat="Server"/>
+
+    <script>
+        var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
+        var b_ahrs_bfhf = document.getElementById('<%=b_ahrs_bfhf_hd.ClientID%>').value;
+        var b_spm = document.getElementById('<%=b_spm_hd.ClientID%>').value;
+        var b_c4e = document.getElementById('<%=b_c4e_hd.ClientID%>').value;
+        var b_optod = document.getElementById('<%=b_optod_hd.ClientID%>').value;
+        var b_turbi = document.getElementById('<%=b_turbi_hd.ClientID%>').value;
+        var b_ctd = document.getElementById('<%=b_ctd_hd.ClientID%>').value;
+        var b_decl = document.getElementById('<%=b_decl_hd.ClientID%>').value;
+
+    </script>
+         
+
 
     <script>
          var time = new Date().getTime();
@@ -133,7 +154,6 @@
         
         
     </script>
-
 
     <div class="row">
         <script type="text/javascript">
@@ -186,31 +206,26 @@
 
             document.write('<div class="col-md-4">')
 
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle2); document.write(' </b> <label class="indent" id="l_decl">X</label> </div>');
-            document.write('</div>');
-
+            if (b_decl == "True") {
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle2); document.write(' </b> <label class="indent" id="l_decl">X</label> </div>');
+                document.write('</div>');
+            }
             document.write('<div class="panel panel-default">');
             document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Meteohour">X</label> </div>');
             document.write('<div class="panel-body">');
             document.write('<table class="table"><tbody>');
 
-            //document.write('<tr><td>'); document.write(l_desc); document.write('</td></tr>');
-            //var b_knot = true;
-            var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
             if (b_knot == "False") {
                 document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>m/s</td>');
-            }
-            else {
-                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>kts</td>');
-            }
-
-            if (b_knot == "False") {
                 document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>m/s</td>');
             }
             else {
-                    document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>kts</td>');
+                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>kts</td>');
+                document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>kts</td>');
             }
+
+
 
             document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
             document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
@@ -249,27 +264,25 @@
             document.write('</body></table></div>');
             document.write('</div>');
 
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write("CTD"); document.write(' </b> <label class="indent" id="ctdhour">X</label> </div>');
-            document.write('<div class="panel-body"');
-            document.write('<table class="table"><tbody>');
+            if (b_ctd == "True") {
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write("CTD"); document.write(' </b> <label class="indent" id="ctdhour">X</label> </div>');
+                document.write('<div class="panel-body"');
+                document.write('<table class="table"><tbody>');
 
-            document.write('<tr><td>'); document.write("Temperature: "); document.write('</td><td><label id="ctd_temp">X</label></td><td> °C</td><td>  </td>');
-            document.write('<td>'); document.write("Salinity: "); document.write('</td><td><label id="ctd_sal">X</label></td><td> g/kg</td><td>  </td></tr>');
+                document.write('<tr><td>'); document.write("Temperature: "); document.write('</td><td><label id="ctd_temp">X</label></td><td> °C</td><td>  </td>');
+                document.write('<td>'); document.write("Salinity: "); document.write('</td><td><label id="ctd_sal">X</label></td><td> g/kg</td><td>  </td></tr>');
+                document.write('</body></table></div>');
+                document.write('</div>');
+            }
 
-            document.write('</body></table></div>');
-            document.write('</div>');
-
-            //document.write('<img style="float: left" src="<%=ConfigurationManager.AppSettings["pos_img"] %>" height="210" />');    
             
             document.write('</div>');
         </script>
-
+    </div>
         
 
     <div class="row">
-
-
         <script type="text/javascript">
             var l_paneltitle = document.getElementById('<%=sig_panel.ClientID%>').value;
             var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
@@ -292,150 +305,143 @@
             document.write('<div class="col-md-6"><div id="SpeedSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
             document.write('</div>');
             document.write('<div class="col-md-6"><div id="DirSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
-            document.write('</div></div></div></div>');
+            document.write('</div></div></div></div></div>');
 
         </script>
     </div>
 
+   
     <%--<div class="row">--%>
+
+        <script type="text/javascript">
+
+            if (b_spm == "True" || b_c4e == "True" || b_optod == "True" || b_turbi == "True")
+                document.write('<div class="row">');
+
+            if (b_spm == "True") {
+                var l_paneltitle = document.getElementById('<%=pyrano_panel.ClientID%>').value;
+                var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+                var l_param0 = document.getElementById('<%=pyrano_param0.ClientID%>').value;
+                var l_param1 = document.getElementById('<%=pyrano_param1.ClientID%>').value;
+                var l_param2 = document.getElementById('<%=pyrano_param2.ClientID%>').value;
+                var l_param3 = document.getElementById('<%=pyrano_param3.ClientID%>').value;
+                var l_param0unit = document.getElementById('<%=pyrano_param0unit.ClientID%>').value;
+                var l_param1unit = document.getElementById('<%=pyrano_param1unit.ClientID%>').value;
+                var l_param2unit = document.getElementById('<%=pyrano_param2unit.ClientID%>').value;
+                var l_param3unit = document.getElementById('<%=pyrano_param3unit.ClientID%>').value;
+
+                document.write('<div class="col-md-4">')
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="pyranohour">X</label> </div>');
+                document.write('<div class="panel-body">');
+                document.write('<table class="table"><tbody>');
+
+                document.write('<tr><td>' + l_desc + '</td></tr>');
+                document.write('<tr><td>' + l_param0 + '</td><td><label id="pyrano_par0">X</label></td><td>' + l_param0unit + '</td>');
+                document.write('<tr><td>' + l_param1 + '</td><td><label id="pyrano_par1">X</label></td><td>' + l_param1unit + '</td>');
+                document.write('<tr><td>' + l_param2 + '</td><td><label id="pyrano_par2">X</label></td><td>' + l_param2unit + '</td>');
+                document.write('<tr><td>' + l_param3 + '</td><td><label id="pyrano_par3">X</label></td><td>' + l_param3unit + '</td>');
+
+                document.write('</body></table></div>');
+                document.write('</div></div>');
+            }
         
 
+            if (b_c4e == "True") {
+                var l_paneltitle = document.getElementById('<%=c4e_panel.ClientID%>').value;
+                var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+                var l_param0 = document.getElementById('<%=c4e_param0.ClientID%>').value;
+                var l_param1 = document.getElementById('<%=c4e_param1.ClientID%>').value;
+                var l_param2 = document.getElementById('<%=c4e_param2.ClientID%>').value;
+                var l_param3 = document.getElementById('<%=c4e_param3.ClientID%>').value;
+                var l_param0unit = document.getElementById('<%=c4e_param0unit.ClientID%>').value;
+                var l_param1unit = document.getElementById('<%=c4e_param1unit.ClientID%>').value;
+                var l_param2unit = document.getElementById('<%=c4e_param2unit.ClientID%>').value;
+                var l_param3unit = document.getElementById('<%=c4e_param3unit.ClientID%>').value;
 
-        <%--<script type="text/javascript">
-            var l_paneltitle = document.getElementById('<%=pyrano_panel.ClientID%>').value;
-            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
-            var l_param0 = document.getElementById('<%=pyrano_param0.ClientID%>').value;
-            var l_param1 = document.getElementById('<%=pyrano_param1.ClientID%>').value;
-            var l_param2 = document.getElementById('<%=pyrano_param2.ClientID%>').value;
-            var l_param3 = document.getElementById('<%=pyrano_param3.ClientID%>').value;
-            var l_param0unit = document.getElementById('<%=pyrano_param0unit.ClientID%>').value;
-            var l_param1unit = document.getElementById('<%=pyrano_param1unit.ClientID%>').value;
-            var l_param2unit = document.getElementById('<%=pyrano_param2unit.ClientID%>').value;
-            var l_param3unit = document.getElementById('<%=pyrano_param3unit.ClientID%>').value;
+                document.write('<div class="col-md-4">')
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>' + l_paneltitle + ' </b> <label class="indent" id="c4ehour">X</label> </div>');
+                document.write('<div class="panel-body">');
+                document.write('<table class="table"><tbody>');
 
-            document.write('<div class="col-md-4">')
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="pyranohour">X</label> </div>');
-            document.write('<div class="panel-body">');
-            document.write('<table class="table"><tbody>');
+                document.write('<tr><td>' + l_desc + '</td></tr>');
+                document.write('<tr><td>' + l_param0 + '</td><td><label id="c4e_par0">X</label></td><td>' + l_param0unit + '</td>');
+                document.write('<tr><td>' + l_param1 + '</td><td><label id="c4e_par1">X</label></td><td>' + l_param1unit + '</td>');
+                document.write('<tr><td>' + l_param2 + '</td><td><label id="c4e_par2">X</label></td><td>' + l_param2unit + '</td>');
+                document.write('<tr><td>' + l_param3 + '</td><td><label id="c4e_par3">X</label></td><td>' + l_param3unit + '</td>');
 
-            document.write('<tr><td>' + l_desc + '</td></tr>');
-            document.write('<tr><td>' + l_param0 + '</td><td><label id="pyrano_par0">X</label></td><td>' + l_param0unit + '</td>');
-            document.write('<tr><td>' + l_param1 + '</td><td><label id="pyrano_par1">X</label></td><td>' + l_param1unit + '</td>');
-            document.write('<tr><td>' + l_param2 + '</td><td><label id="pyrano_par2">X</label></td><td>' + l_param2unit + '</td>');
-            document.write('<tr><td>' + l_param3 + '</td><td><label id="pyrano_par3">X</label></td><td>' + l_param3unit + '</td>');
+                document.write('</body></table></div>');
+                document.write('</div></div>');
+            }
 
-            document.write('</body></table></div>');
-            document.write('</div></div>');
-        </script>--%>
 
-        <%--<script type="text/javascript">
-            var l_paneltitle = document.getElementById('<%=c4e_panel.ClientID%>').value;
-            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
-            var l_param0 = document.getElementById('<%=c4e_param0.ClientID%>').value;
-            var l_param1 = document.getElementById('<%=c4e_param1.ClientID%>').value;
-            var l_param2 = document.getElementById('<%=c4e_param2.ClientID%>').value;
-            var l_param3 = document.getElementById('<%=c4e_param3.ClientID%>').value;
-            var l_param0unit = document.getElementById('<%=c4e_param0unit.ClientID%>').value;
-            var l_param1unit = document.getElementById('<%=c4e_param1unit.ClientID%>').value;
-            var l_param2unit = document.getElementById('<%=c4e_param2unit.ClientID%>').value;
-            var l_param3unit = document.getElementById('<%=c4e_param3unit.ClientID%>').value;
+            if (b_optod == "True") {
+                var l_paneltitle = document.getElementById('<%=optod_panel.ClientID%>').value;
+                var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+                var l_param0 = document.getElementById('<%=optod_param0.ClientID%>').value;
+                var l_param1 = document.getElementById('<%=optod_param1.ClientID%>').value;
+                var l_param2 = document.getElementById('<%=optod_param2.ClientID%>').value;
+                var l_param3 = document.getElementById('<%=optod_param3.ClientID%>').value;
+                var l_param0unit = document.getElementById('<%=optod_param0unit.ClientID%>').value;
+                var l_param1unit = document.getElementById('<%=optod_param1unit.ClientID%>').value;
+                var l_param2unit = document.getElementById('<%=optod_param2unit.ClientID%>').value;
+                var l_param3unit = document.getElementById('<%=optod_param3unit.ClientID%>').value;
 
-            document.write('<div class="col-md-4">')
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>' + l_paneltitle + ' </b> <label class="indent" id="c4ehour">X</label> </div>');
-            document.write('<div class="panel-body">');
-            document.write('<table class="table"><tbody>');
+                document.write('<div class="col-md-4">')
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>' + l_paneltitle + ' </b> <label class="indent" id="optodhour">X</label> </div>');
+                document.write('<div class="panel-body">');
+                document.write('<table class="table"><tbody>');
 
-            document.write('<tr><td>' + l_desc + '</td></tr>');
-            document.write('<tr><td>' + l_param0 + '</td><td><label id="c4e_par0">X</label></td><td>' + l_param0unit + '</td>');
-            document.write('<tr><td>' + l_param1 + '</td><td><label id="c4e_par1">X</label></td><td>' + l_param1unit + '</td>');
-            document.write('<tr><td>' + l_param2 + '</td><td><label id="c4e_par2">X</label></td><td>' + l_param2unit + '</td>');
-            document.write('<tr><td>' + l_param3 + '</td><td><label id="c4e_par3">X</label></td><td>' + l_param3unit + '</td>');
+                document.write('<tr><td>' + l_desc + '</td></tr>');
+                document.write('<tr><td>' + l_param0 + '</td><td><label id="optod_par0">X</label></td><td>' + l_param0unit + '</td>');
+                document.write('<tr><td>' + l_param1 + '</td><td><label id="optod_par1">X</label></td><td>' + l_param1unit + '</td>');
+                document.write('<tr><td>' + l_param2 + '</td><td><label id="optod_par2">X</label></td><td>' + l_param2unit + '</td>');
+                document.write('<tr><td>' + l_param3 + '</td><td><label id="optod_par3">X</label></td><td>' + l_param3unit + '</td>');
 
-            document.write('</body></table></div>');
-            document.write('</div></div>');
-        </script>--%>
+                document.write('</body></table></div>');
+                document.write('</div></div>');
+            }
 
-        <%--<script type="text/javascript">
-            var l_paneltitle = document.getElementById('<%=optod_panel.ClientID%>').value;
-            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
-            var l_param0 = document.getElementById('<%=optod_param0.ClientID%>').value;
-            var l_param1 = document.getElementById('<%=optod_param1.ClientID%>').value;
-            var l_param2 = document.getElementById('<%=optod_param2.ClientID%>').value;
-            var l_param3 = document.getElementById('<%=optod_param3.ClientID%>').value;
-            var l_param0unit = document.getElementById('<%=optod_param0unit.ClientID%>').value;
-            var l_param1unit = document.getElementById('<%=optod_param1unit.ClientID%>').value;
-            var l_param2unit = document.getElementById('<%=optod_param2unit.ClientID%>').value;
-            var l_param3unit = document.getElementById('<%=optod_param3unit.ClientID%>').value;
 
-            document.write('<div class="col-md-4">')
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>' + l_paneltitle + ' </b> <label class="indent" id="optodhour">X</label> </div>');
-            document.write('<div class="panel-body">');
-            document.write('<table class="table"><tbody>');
+            if (b_turbi == "True") {
+                var l_paneltitle = document.getElementById('<%=turbi_panel.ClientID%>').value;
+                var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+                var l_param0 = document.getElementById('<%=turbi_param0.ClientID%>').value;
+                var l_param1 = document.getElementById('<%=turbi_param1.ClientID%>').value;
+                var l_param2 = document.getElementById('<%=turbi_param2.ClientID%>').value;
+                var l_param3 = document.getElementById('<%=turbi_param3.ClientID%>').value;
+                var l_param0unit = document.getElementById('<%=turbi_param0unit.ClientID%>').value;
+                var l_param1unit = document.getElementById('<%=turbi_param1unit.ClientID%>').value;
+                var l_param2unit = document.getElementById('<%=turbi_param2unit.ClientID%>').value;
+                var l_param3unit = document.getElementById('<%=turbi_param3unit.ClientID%>').value;
 
-            document.write('<tr><td>' + l_desc + '</td></tr>');
-            document.write('<tr><td>' + l_param0 + '</td><td><label id="optod_par0">X</label></td><td>' + l_param0unit + '</td>');
-            document.write('<tr><td>' + l_param1 + '</td><td><label id="optod_par1">X</label></td><td>' + l_param1unit + '</td>');
-            document.write('<tr><td>' + l_param2 + '</td><td><label id="optod_par2">X</label></td><td>' + l_param2unit + '</td>');
-            document.write('<tr><td>' + l_param3 + '</td><td><label id="optod_par3">X</label></td><td>' + l_param3unit + '</td>');
+                document.write('<div class="col-md-4">')
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>' + l_paneltitle + ' </b> <label class="indent" id="turbihour">X</label> </div>');
+                document.write('<div class="panel-body">');
+                document.write('<table class="table"><tbody>');
 
-            document.write('</body></table></div>');
-            document.write('</div></div>');
-        </script>--%>
+                document.write('<tr><td>' + l_desc + '</td></tr>');
+                document.write('<tr><td>' + l_param0 + '</td><td><label id="turbi_par0">X</label></td><td>' + l_param0unit + '</td>');
+                document.write('<tr><td>' + l_param1 + '</td><td><label id="turbi_par1">X</label></td><td>' + l_param1unit + '</td>');
+                document.write('<tr><td>' + l_param2 + '</td><td><label id="turbi_par2">X</label></td><td>' + l_param2unit + '</td>');
+                document.write('<tr><td>' + l_param3 + '</td><td><label id="turbi_par3">X</label></td><td>' + l_param3unit + '</td>');
 
-        <%--<script type="text/javascript">
-            var l_paneltitle = document.getElementById('<%=turbi_panel.ClientID%>').value;
-            var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
-            var l_param0 = document.getElementById('<%=turbi_param0.ClientID%>').value;
-            var l_param1 = document.getElementById('<%=turbi_param1.ClientID%>').value;
-            var l_param2 = document.getElementById('<%=turbi_param2.ClientID%>').value;
-            var l_param3 = document.getElementById('<%=turbi_param3.ClientID%>').value;
-            var l_param0unit = document.getElementById('<%=turbi_param0unit.ClientID%>').value;
-            var l_param1unit = document.getElementById('<%=turbi_param1unit.ClientID%>').value;
-            var l_param2unit = document.getElementById('<%=turbi_param2unit.ClientID%>').value;
-            var l_param3unit = document.getElementById('<%=turbi_param3unit.ClientID%>').value;
-
-            document.write('<div class="col-md-4">')
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>' + l_paneltitle + ' </b> <label class="indent" id="turbihour">X</label> </div>');
-            document.write('<div class="panel-body">');
-            document.write('<table class="table"><tbody>');
-
-            document.write('<tr><td>' + l_desc + '</td></tr>');
-            document.write('<tr><td>' + l_param0 + '</td><td><label id="turbi_par0">X</label></td><td>' + l_param0unit + '</td>');
-            document.write('<tr><td>' + l_param1 + '</td><td><label id="turbi_par1">X</label></td><td>' + l_param1unit + '</td>');
-            document.write('<tr><td>' + l_param2 + '</td><td><label id="turbi_par2">X</label></td><td>' + l_param2unit + '</td>');
-            document.write('<tr><td>' + l_param3 + '</td><td><label id="turbi_par3">X</label></td><td>' + l_param3unit + '</td>');
-
-            document.write('</body></table></div>');
-            document.write('</div></div>');
-        </script>--%>
-
+                document.write('</body></table></div>');
+                document.write('</div></div>');
+            }
         
+
+         if (b_spm == "True" || b_c4e == "True" || b_optod == "True" || b_turbi == "True")
+            document.write('</div>');
+     
+       </script>
+
      </div>
 
-    <%--<script type="text/javascript">
-        $(function () {
-            Highcharts.setOptions({
-                global: {
-                    useUTC: false   // Dont apply client local time
-                }
-            });
-
-
-            initMeteo();
-            //initPyrano();
-            //initC4E();
-            //initOPTOD();
-            //initTurbi();
-            initSIG();
-            initWAVEAHRS();
-        });
-    </script>--%>
-
-
+   
     <script type="text/javascript">
         $(function () {
             Highcharts.setOptions({
@@ -1054,17 +1060,34 @@
                 }
             }
 
-        initMeteo();
-        //initPyrano();
-        //initC4E();
-        //initOPTOD();
-        //initTurbi();
-        initSIG();
-        initWAVEAHRS();
-        //initWAVEAHRS_BFHF();
-        initPosition();
+            initMeteo();
 
-        initCTD();
+            if ( b_spm == "True")
+                initPyrano();
+
+            if ( b_c4e == "True")
+                initC4E();
+
+            if ( b_optod == "True")
+                initOPTOD();
+
+            if ( b_turbi == "True")
+                initTurbi();
+
+
+            initSIG();
+
+            initWAVEAHRS();
+
+
+            if( b_ahrs_bfhf == "True")
+                initWAVEAHRS_BFHF();
+
+
+            initPosition();
+
+            if (b_ctd == "True")
+                initCTD();
 
     });
 

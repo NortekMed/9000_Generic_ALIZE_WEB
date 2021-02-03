@@ -23,9 +23,9 @@
     <p>
         Waves page:<br />
         Waves directions are defined as 'Going from'.<br />
-        Acquisition period is 20 minutes, calculation is performed during 17 minutes.<br />
+        Acquisition period is 30 minutes, calculation is performed during 17 minutes.<br />
         Mean period is T02 parameter.<br />
-        BF / HF limit is 10s.<br />
+        <%--BF / HF limit is 10s.<br />--%>
     </p>
     
     <p>
@@ -38,15 +38,15 @@
         Minimum wind direction is associated to minimum wind speed.<br />
     </p>
 
-    <p>
+    <%--<p>
         CTD: <br />
         Acquisition period is 10 minutes.<br />
-    </p>
+    </p>--%>
 
-    <p>
+    <%--<p>
         DECLINATION: <br />
         Declination is positive for East and and negative for West orientation.<br />
-    </p>
+    </p>--%>
     
     
     <br />

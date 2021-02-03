@@ -480,10 +480,18 @@ public partial class WaveAHRS : System.Web.UI.Page
 
         // Get Pressure and temperature from database
         ds = new DataSet();
-        //dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.THMAX, a.T02, a.T3, a.TE, a.TMAX FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.T02, a.T3 FROM WAVES a " 
-            + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        if (WebConfigurationManager.AppSettings["PAGE_WAVESAHRS_BFHF"] == "true")
+            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.THMAX, a.T02, a.T3, a.TE, a.TMAX FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
 
+        else
+        {
+            if (WebConfigurationManager.AppSettings["DB_LEGACY"] == "true")
+                dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.TM02, a.T3 FROM WAVES a "
+                    + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+            else // new name in DB
+                dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.T02, a.T3 FROM WAVES a "
+                    + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        }
         dataadapter.Fill(ds);
         myDataTable = ds.Tables[0];
 
@@ -596,7 +604,13 @@ public partial class WaveAHRS : System.Web.UI.Page
 
 
         ds = new DataSet();
-        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.DIRT02, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        if (WebConfigurationManager.AppSettings["DB_LEGACY"] == "true")
+            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        else
+        {
+            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.DIRT02, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        }
+        
         dataadapter.Fill(ds);
         myDataTable = ds.Tables[0];
 
