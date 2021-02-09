@@ -182,7 +182,7 @@
                             //document.write('<li><a runat="server" href="~/Aquapro_Turbi">'); document.write(l_turbi); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/pyrano">'); document.write(l_spm); document.write("</a></li>");
 
-            ena = "<%=ConfigurationManager.AppSettings["PAGE_AIRMAR_POSITION"] %>";
+            ena = "<%=ConfigurationManager.AppSettings["PAGE_POSITION"] %>";
             if (ena == "true") {
                 document.write('<li><a runat="server" href="~/position">'); document.write(l_pos); document.write("</a></li>");
             }

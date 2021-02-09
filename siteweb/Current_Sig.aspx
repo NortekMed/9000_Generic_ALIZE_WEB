@@ -169,7 +169,6 @@
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
         document.write('<div class="panel-body">');
-        document.write('<div class="panel-body">');
         document.write('<div id="Dircontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
         document.write('</div>');

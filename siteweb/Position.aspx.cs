@@ -274,10 +274,16 @@ public partial class Position : System.Web.UI.Page
 
         string timestampsrequest = " WHERE a.TIME_REC>='" + stdate.ToString("dd.MM.yyyy , HH:mm:ss") + "' and a.TIME_REC<='" + endate.ToString("dd.MM.yyyy , HH:mm:ss") + "'";
 
+        string cmd = "";
+        if (WebConfigurationManager.AppSettings["SENSOR_POSITION"] == "true")
+            cmd = "SELECT a.TIME_REC, a.LAT , a.LNG, a.QUALITY, a.NBSAT FROM GPS_KVEL a";
+        else
+            cmd = "SELECT a.TIME_REC, a.LAT , a.LNG, a.QUALITY, a.NBSAT FROM GPS a";
 
-        // Get wind from database
         DataSet ds = new DataSet();
-        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC,a.LAT ,a.LNG, a.QUALITY, a.NBSAT FROM GPS a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        //FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter( cmd + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.LAT , a.LNG, a.QUALITY, a.NBSAT FROM GPS_KVEL a" 
+                                                + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
         DataTable myDataTable = ds.Tables[0];
 

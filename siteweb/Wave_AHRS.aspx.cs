@@ -439,11 +439,11 @@ public partial class WaveAHRS : System.Web.UI.Page
 
 
         ds = new DataSet();
-        //dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX,a.H3,a.HM0_BF, a.HM0_HF, a.ETAMAX, a.ETAMIN FROM WAVES a "
-        //                                                                + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-
-        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0, a.HMAX FROM WAVES a "
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0,a.HMAX,a.H3,a.HM0_BF, a.HM0_HF, a.ETAMAX, a.ETAMIN FROM WAVES a "
                                                                         + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+
+        //dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.HM0, a.H3, a.HMAX FROM WAVES a "
+        //                                                                + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
 
 
         dataadapter.Fill(ds);
@@ -467,31 +467,68 @@ public partial class WaveAHRS : System.Web.UI.Page
 
             // UTC to Local Time
             date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"]));
-            
 
             list_h_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
-            list_h_sig.Add(double.Parse(dRow["HM0"].ToString()));
-            list_h_max.Add(double.Parse(dRow["HMAX"].ToString()));
-            list_h_3.Add(double.Parse(dRow["H3"].ToString()));
-            list_etamax.Add(double.Parse(dRow["ETAMAX"].ToString()));
-            list_etamin.Add(double.Parse(dRow["ETAMIN"].ToString()));
+
+            double tmp = 0;
+            double.TryParse(dRow["HM0"].ToString(), out tmp);
+            list_h_sig.Add(tmp);
+            double.TryParse(dRow["HMAX"].ToString(), out tmp);
+            list_h_max.Add(tmp);
+            double.TryParse(dRow["H3"].ToString(), out tmp);
+            list_h_3.Add(tmp);
+            double.TryParse(dRow["ETAMAX"].ToString(), out tmp);
+            list_etamax.Add(tmp);
+            double.TryParse(dRow["ETAMIN"].ToString(), out tmp);
+            list_etamin.Add(tmp);
+
+
+
+            //list_h_sig.Add(double.Parse(dRow["HM0"].ToString()));
+            //list_h_max.Add(double.Parse(dRow["HMAX"].ToString()));
+            //list_h_3.Add(double.Parse(dRow["H3"].ToString()));
+            //list_etamax.Add(double.Parse(dRow["ETAMAX"].ToString()));
+            //list_etamin.Add(double.Parse(dRow["ETAMIN"].ToString()));
         }
 
 
         // Get Pressure and temperature from database
         ds = new DataSet();
-        if (WebConfigurationManager.AppSettings["PAGE_WAVESAHRS_BFHF"] == "true")
-            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.THMAX, a.T02, a.T3, a.TE, a.TMAX FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-
+        string col_t02 = "";
+        string col_thmax = "";
+        string col_te = "";
+        string cmd = "";
+        if (WebConfigurationManager.AppSettings["DB_WAVESAHRS_2021"] == "true")
+        {
+            col_t02 = "T02";
+            col_thmax = "THMAX";
+            col_te = "TE";
+            cmd = "SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.THMAX, a.T02, a.T3, a.TE, a.TMAX FROM WAVES a ";
+        }
         else
         {
-            if (WebConfigurationManager.AppSettings["DB_LEGACY"] == "true")
-                dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.TM02, a.T3 FROM WAVES a "
-                    + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-            else // new name in DB
-                dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.T02, a.T3 FROM WAVES a "
-                    + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+            col_t02 = "TM02";
+            col_thmax = "TMAX";
+            cmd = "SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.TM02, a.T3 FROM WAVES a ";
         }
+
+
+        //if (WebConfigurationManager.AppSettings["PAGE_WAVESAHRS_BFHF"] == "true")
+        //    dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter( cmd + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+
+        //else
+        //{
+        //    if (WebConfigurationManager.AppSettings["DB_LEGACY"] == "true")
+        //        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter( cmd
+        //            + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        //    else // new name in DB
+        //        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.TP, a.TZ, a.TM01, a.TMAX, a.T02, a.T3 FROM WAVES a "
+        //            + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        //}
+
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(cmd
+                    + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+
         dataadapter.Fill(ds);
         myDataTable = ds.Tables[0];
 
@@ -549,7 +586,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             }
             list_t_tm01.Add(tm01);
 
-            double thmax = double.Parse(dRow["THMAX"].ToString());
+            double thmax = double.Parse(dRow[col_thmax].ToString());
             if (double.IsNaN(thmax) || thmax > 31)
             {
                 if (list_t_thmax.Count > 0)
@@ -559,7 +596,8 @@ public partial class WaveAHRS : System.Web.UI.Page
             }
             list_t_thmax.Add(thmax);
 
-            double tm02 = double.Parse(dRow["T02"].ToString());
+
+            double tm02 = double.Parse(dRow[col_t02].ToString());
             if (double.IsNaN(tm02) || tm02 > 31)
             {
                 if (list_t_tm02.Count > 0)
@@ -579,36 +617,39 @@ public partial class WaveAHRS : System.Web.UI.Page
             }
             list_t_t3.Add(t3);
 
-            double.TryParse(dRow["TE"].ToString(), out tmp);
-            if (double.IsNaN(tmp) || tmp > 31)
+            if (WebConfigurationManager.AppSettings["DB_WAVESAHRS_2021"] == "true")
             {
-                if (list_te.Count > 0)
-                    tmp = list_te[list_te.Count - 1];
-                else
-                    tmp = 0;
-            }
-            list_te.Add(tmp);
+                double.TryParse(dRow["TE"].ToString(), out tmp);
+                if (double.IsNaN(tmp) || tmp > 31)
+                {
+                    if (list_te.Count > 0)
+                        tmp = list_te[list_te.Count - 1];
+                    else
+                        tmp = 0;
+                }
+                list_te.Add(tmp);
 
-            double.TryParse(dRow["TMAX"].ToString(), out tmp);
-            if (double.IsNaN(tmp) || tmp > 31)
-            {
-                if (list_te.Count > 0)
-                    tmp = list_te[list_tmax.Count - 1];
-                else
-                    tmp = 0;
-            }
-            list_tmax.Add(tmp);
 
+                double.TryParse(dRow["TMAX"].ToString(), out tmp);
+                if (double.IsNaN(tmp) || tmp > 31)
+                {
+                    if (list_te.Count > 0)
+                        tmp = list_te[list_tmax.Count - 1];
+                    else
+                        tmp = 0;
+                }
+                list_tmax.Add(tmp);
+            }
 
         }
 
 
         ds = new DataSet();
-        if (WebConfigurationManager.AppSettings["DB_LEGACY"] == "true")
-            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        if (WebConfigurationManager.AppSettings["DB_WAVESAHRS_2021"] == "true")
+            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.DIRT02, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         else
         {
-            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.DIRT02, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+            dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter("SELECT a.TIME_REC, a.DIRTP, a.MEANDIR, a.SPRD, a.NUMW FROM WAVES a " + timestampsrequest + " order by a.TIME_REC", ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         }
         
         dataadapter.Fill(ds);
@@ -632,7 +673,12 @@ public partial class WaveAHRS : System.Web.UI.Page
             //date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"]));
             list_d_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
-            list_d_mean.Add(double.Parse(dRow["DIRT02"].ToString()));
+            if (WebConfigurationManager.AppSettings["DB_WAVESAHRS_2021"] == "true")
+                list_d_mean.Add(double.Parse(dRow["DIRT02"].ToString()));
+            else
+                list_d_mean.Add(double.Parse(dRow["MEANDIR"].ToString()));
+
+
             list_d_max.Add(double.Parse(dRow["DIRTP"].ToString()));
             list_d_sd.Add(double.Parse(dRow["SPRD"].ToString()));
             list_n_waves.Add(double.Parse(dRow["NUMW"].ToString()));
