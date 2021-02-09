@@ -486,7 +486,7 @@
                 },
                 yAxis: [
                     {
-                        min: 0,
+                        min: -5,
                         //max: 60,
                         //tickInterval: 1,
                         title: {
