@@ -53,6 +53,14 @@ public partial class WaveAHRS : System.Web.UI.Page
         }
         else
             light_site.Value = "false";
+
+        if (WebConfigurationManager.AppSettings["Declination"] == "true")
+        {
+            b_decl_hd.Value = "true";
+        }
+        else
+            b_decl_hd.Value = "false";
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -68,6 +68,7 @@
     <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
     <asp:HiddenField ID = "light_site" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_decl_hd" ClientIdMode="Static" Runat="Server"/>
 
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
@@ -169,7 +170,13 @@
         var l_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + ' - ' + l_decl + ' : ' + '</b> <label class="indent" id="ldecl">X</label>' + '</b></div>');
+
+        var b_decl = b_decl_hd.value;
+        if (b_decl == "true")
+            document.write('<div class="panel-heading"><b>' + label + ' - ' + l_decl + ' : ' + '</b> <label class="indent" id="ldecl">X</label>' + '</b></div>');
+        else
+            document.write('<div class="panel-heading"><b>' + label + '</b> </div>');
+
         document.write('<div class="panel-body">');
         document.write('<div id="Dcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
