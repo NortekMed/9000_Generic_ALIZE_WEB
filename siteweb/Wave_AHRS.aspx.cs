@@ -93,8 +93,15 @@ public partial class WaveAHRS : System.Web.UI.Page
         string start_date = "";
         string end_date = "";
 
+
+        bool include_ext_param = false;
+        if (WebConfigurationManager.AppSettings["INCLUDE_EXT_WAVE"] == "true")
+            include_ext_param = true;
+
+
         device_name = Resources.WaveAHRS.DEVICE_0;
-        List<string> output = MakeHeader(device_name);
+        List<string> output = MakeHeader("Wave");
+        //List<string> output = MakeHeader(device_name);
 
         output.Add("UTC datetime;" + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                                     + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
@@ -109,13 +116,16 @@ public partial class WaveAHRS : System.Web.UI.Page
                                     + d_avg_label_alias.Value + '(' + d_unit.Value + ')' + ';'
                                     + d_peak_label_alias.Value + '(' + d_unit.Value + ')' + ';'
                                     + d_spread_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + n_waves_alias.Value + ';'
-                                    + t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + etamax_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + etamin_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + "nbr_system;"
-                                    ) ;
+                                    + n_waves_alias.Value + ';');
+
+        if (include_ext_param) {
+            output.Add(t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                        + etamax_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                        + etamin_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                        + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                        + "nbr_system;"
+                        );
+        }
 
         // mise en forme
         for (int i = 0; i < downloaddata.H_time.Length; i++)
@@ -136,13 +146,17 @@ public partial class WaveAHRS : System.Web.UI.Page
                         + downloaddata.D_mean[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.D_peak[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.D_sd[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.N_waves[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.ETAmax[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.ETAmin[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + '2'
-                        );
+                        + downloaddata.N_waves[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';');
+
+            if (include_ext_param)
+            {
+                output.Add(downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                + downloaddata.ETAmax[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                + downloaddata.ETAmin[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                + '2'
+                );
+            }
 
             if (i == 0)
                 start_date = s_date;

@@ -73,6 +73,9 @@ public partial class SIG_Current : System.Web.UI.Page
     static string heading_unit = "";
     static string heading_label = "";
 
+    static int[] itab_layers;
+    static List<int> ilist_layers;
+
     protected void Page_Init(object sender, EventArgs e)
     {
         InitField();
@@ -98,6 +101,33 @@ public partial class SIG_Current : System.Web.UI.Page
         }
         else
             light_site.Value = "false";
+
+        if (WebConfigurationManager.AppSettings["Declination"] == "true")
+        {
+            b_decl_hd.Value = "true";
+        }
+        else
+            b_decl_hd.Value = "false";
+
+        ilist_layers = new List<int>();
+        ilist_layers.Clear();
+        if (WebConfigurationManager.AppSettings["tab_layers"] != "")
+        {
+            string list_layers = WebConfigurationManager.AppSettings["tab_layers"];
+
+            if (list_layers.EndsWith(";"))
+                list_layers = list_layers.Remove(list_layers.Length - 1);
+            string[] stab_layers = list_layers.Split(';');
+            itab_layers = new int[stab_layers.Length];
+
+            for (int j = 0; j < stab_layers.Length; j++)
+            {
+                int val = 0;
+                int.TryParse(stab_layers[j], out val);
+                itab_layers[j] = val;
+                ilist_layers.Add(val);
+            }
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,6 +161,9 @@ public partial class SIG_Current : System.Web.UI.Page
         int nb_c = int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]);
         for (int j = 0; j < nb_c; j++)
         {
+            if (!ilist_layers.Contains(j + 1))
+                continue;
+
             string immersion = (downloaddata.C_blancking + downloaddata.C_cellsize * (1 + j)).ToString();
             s_layers += "C_Spd" + (j+1).ToString() + " (" + speedunit.Value + ")(-" + immersion + "m);";
             s_layers += "C_Dir" + (j+1).ToString() + " (" + direction_unit.Value + ")(-" + immersion + "m);";
@@ -154,6 +187,9 @@ public partial class SIG_Current : System.Web.UI.Page
             s_layers = "";
             for ( int j = 0; j < downloaddata.C_spd[i].Length; j++)
             {
+                if (!ilist_layers.Contains(j + 1))
+                    continue;
+
                 s_layers += downloaddata.C_spd[i][j].ToString("0.000", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_dir[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
                 s_layers += downloaddata.C_snr[i][j].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
@@ -391,6 +427,25 @@ public partial class SIG_Current : System.Web.UI.Page
         heading_unit = headingunit.Value;
         heading_label = headinglabel.Value;
 
+        ilist_layers = new List<int>();
+        if (WebConfigurationManager.AppSettings["tab_layers"] != "")
+        {
+            string list_layers = WebConfigurationManager.AppSettings["tab_layers"];
+
+            if (list_layers.EndsWith(";"))
+                list_layers = list_layers.Remove(list_layers.Length - 1);
+            string[] stab_layers = list_layers.Split(';');
+            itab_layers = new int[stab_layers.Length];
+
+            for (int j = 0; j < stab_layers.Length; j++)
+            {
+                int val = 0;
+                int.TryParse(stab_layers[j], out val);
+                itab_layers[j] = val;
+                ilist_layers.Add(val);
+            }
+        }
+
     }
 
 
@@ -587,19 +642,66 @@ public partial class SIG_Current : System.Web.UI.Page
             for (int cell = 0; cell < nb_c; cell++)
             {
                 // SIGNATURE 
-                 
-                double V_X_East = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_1"].ToString());
-                double V_Y_North = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_2"].ToString());
-                spd[cell] = Math.Round(Math.Sqrt(V_X_East * V_X_East + V_Y_North * V_Y_North),3);
+                double V_X_East = 0;
+                double V_Y_North = 0;
+                if (ilist_layers.Count != 0 )
+                {
+                    if (ilist_layers.Contains(cell+1))
+                    {
+                        V_X_East = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_1"].ToString());
+                        V_Y_North = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_2"].ToString());
+                        spd[cell] = Math.Round(Math.Sqrt(V_X_East * V_X_East + V_Y_North * V_Y_North), 3);
 
-                dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360),1);
+                        dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360), 1);
+                        dir[cell] += decl;
+                        if (dir[cell] > 360) dir[cell] -= 360.0;
+                        if (dir[cell] < 0) dir[cell] += 360.0;
+
+                        snr[cell] = 0.5*double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
+                    }
+                    else
+                    {
+                        if ( cell == 0)
+                        {
+                            V_X_East = 0;
+                            V_Y_North = 0;
+                            spd[cell] = 0;
+
+                            snr[cell] = 0;
+                        }
+                        else
+                        {
+                            //V_X_East = 0;
+                            //V_Y_North = 0;
+                            spd[cell] = spd[cell-1];
+                            dir[cell] = dir[cell - 1];
+
+                            snr[cell] = snr[cell-1];
+                        }
+                    }
+                }
+                else
+                {
+                    V_X_East = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_1"].ToString());
+                    V_Y_North = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_2"].ToString());
+                    spd[cell] = Math.Round(Math.Sqrt(V_X_East * V_X_East + V_Y_North * V_Y_North), 3);
+
+                    dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360), 1);
+                    dir[cell] += decl;
+                    if (dir[cell] > 360) dir[cell] -= 360.0;
+                    if (dir[cell] < 0) dir[cell] += 360.0;
+
+                    snr[cell] = 0.5*double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
+                }
+
+                //dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360),1);
                 //if (dir[cell] < 0) dir[cell] += 360;
 
-                dir[cell] += decl;
-                if (dir[cell] > 360) dir[cell] -= 360.0;
-                if (dir[cell] < 0) dir[cell] += 360.0;
+                //dir[cell] += decl;
+                //if (dir[cell] > 360) dir[cell] -= 360.0;
+                //if (dir[cell] < 0) dir[cell] += 360.0;
 
-                snr[cell] = double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
+                //snr[cell] = double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
 
                 if (spd[cell] > 20)
                     spd[cell] = 0.0;

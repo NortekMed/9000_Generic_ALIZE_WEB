@@ -75,8 +75,8 @@
         <strong>Info:</strong> <a href="mailto:info@NortekMed.com">info@NortekMed.com</a>
         <br />
 
-    <strong>Project Manager EMD : Coline Delafosse +33 6 21 76 98 53 </strong><br />
-    <strong>Marine operation manager EMD : Maud Lamaze +33 6 16 80 38 97</strong><br />
+    <strong>Project Manager EOHF : Coline Delafosse +33 6 21 76 98 53 </strong><br />
+    <strong>Marine operation manager EOHF : XXXXXXXXXXX +33 xxxxxxxxxxxxxx</strong><br />
     <strong>Project Manager NortekMed : André DOLLE + 33 6 37 48 21 77 </strong><br />
     </address>
 </asp:Content>

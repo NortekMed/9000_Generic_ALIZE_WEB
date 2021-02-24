@@ -198,7 +198,7 @@
         document.write('</div>');
     </script>
 
-    <script type="text/javascript">
+    <%--<script type="text/javascript">
         var label = document.getElementById('<%=humidity_label.ClientID%>').value;
 
 
@@ -208,7 +208,7 @@
         document.write('<div id="humcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
         document.write('</div>');
-    </script>
+    </script>--%>
 
     <%--<script type="text/javascript">
         var label = document.getElementById('<%=_1_equipname.ClientID%>').value;
@@ -422,7 +422,7 @@
             chartpar0.series[1].setData(par1);
             //chartpar0.series[2].setData(par2);    // not display humidity
 
-            charthum.series[0].setData(par2);
+            //charthum.series[0].setData(par2);
 
             //chart pluie ( vaissala ) rd / rc / ri
             //chartpar1.series[0].setData(par3);
@@ -486,7 +486,7 @@
                 },
                 yAxis: [
                     {
-                        min: 0,
+                        min: -5,
                         //max: 60,
                         //tickInterval: 1,
                         title: {

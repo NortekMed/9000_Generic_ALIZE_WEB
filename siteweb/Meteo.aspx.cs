@@ -220,13 +220,20 @@ public partial class Meteo : System.Web.UI.Page
         string start_date = "";
         string end_date = "";
 
+        bool include_hum = false;
+        if (WebConfigurationManager.AppSettings["INCLUDE_HUM"] == "true")
+            include_hum = true;
+
+
         device_name = Resources.meteo._0_equip_name;
         List<string> output = MakeHeader2(device_name);
 
         output.Add("UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
-                                   + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';'
-                                   + humidity_label.Value + '(' + humidity_unit.Value + ')' + ';'
-                                    );
+                                   + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';');
+
+        if (include_hum) {
+            output.Add(humidity_label.Value + '(' + humidity_unit.Value + ')' + ';');
+        }
 
         // mise en forme
         for (int i = 0; i < downloaddata.wxt_str_time.Length; i++)
@@ -238,10 +245,14 @@ public partial class Meteo : System.Web.UI.Page
             output.Add( s_date.Replace("T", ", ") + ';'
                         + downloaddata.wxt_temp[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.wxt_press[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.wxt_hum[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         );
 
-            if (i == 0)
+            if (include_hum)
+            {
+                output.Add(downloaddata.wxt_hum[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';');
+            }
+
+                if (i == 0)
                 start_date = s_date;
             if (i == downloaddata.wxt_str_time.Length - 1)
                 end_date = s_date;

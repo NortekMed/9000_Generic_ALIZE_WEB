@@ -77,6 +77,7 @@
 
 
     <asp:HiddenField ID = "light_site" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_decl_hd" ClientIdMode="Static" Runat="Server"/>
 
     <script type="text/javascript">
         
@@ -164,10 +165,16 @@
 
     <script type="text/javascript">
         var label = document.getElementById('<%=direction_label.ClientID%>').value;
-        var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
+        var l_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
+
+        var b_decl = b_decl_hd.value;
+        if (b_decl == "true")
+            document.write('<div class="panel-heading"><b>' + label + ' - ' + l_decl + ' : ' + '</b> <label class="indent" id="ldecl">X</label>' + '</b></div>');
+        else
+            document.write('<div class="panel-heading"><b>' + label + '</b> </div>');
+
         document.write('<div class="panel-body">');
         document.write('<div id="Dircontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -190,7 +197,7 @@
         var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
 
         document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl2">X</label>' + '</b></div>');
+        document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="ldecl2">X</label>' + '</b></div>');
         document.write('<div class="panel-body">');
         document.write('<div id="ProfileDircontainer" style="min-width:500px; width:100%; height:300px;"></div>');
         document.write('</div>');
@@ -372,8 +379,10 @@
             //mtchart.series[0].setData(tempeau);
             //mtchart.series[1].setData(sal);
 
-            $('#l_decl').text(data.declination.toFixed(2));
-            $('#l_decl2').text(data.declination.toFixed(2));
+            //$('#l_decl').text(data.declination.toFixed(2));
+            //$('#l_decl2').text(data.declination.toFixed(2));
+            $('#ldecl').text(data.declination.toFixed(2));
+            $('#ldecl2').text(data.declination.toFixed(2));
             
             var chart = $('#ProfileSpdcontainer').highcharts();
             var charProftDir = $('#ProfileDircontainer').highcharts();
