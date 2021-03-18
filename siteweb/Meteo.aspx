@@ -176,10 +176,12 @@
     <script type="text/javascript">
         var label = document.getElementById('<%=_2_equipname_alias.ClientID%>').value;
         var label_decl = document.getElementById('<%=declination_label.ClientID%>').value;
+        var v_height = "<%=ConfigurationManager.AppSettings["VAISSALA_HEIGHT"] %>";
 
         document.write('<div class="panel panel-default">');
         document.write('<div class="panel-heading"><b>' + label + ' - ' + label_decl + ' : ' + '</b> <label class="indent" id="l_decl">X</label>' + '</b></div>');
-        document.write('  wind at 3.3m above sea level');
+        document.write('  wind at ' + v_height + 'm above sea level');
+        //3.3m above sea level');
         //document.write('<div class="panel-heading"><b>' + label + '</b></div>');document.write('  wind at 3.5m above sea level');
         document.write('<div class="panel-body">');
         document.write('<div id="param2container" style="min-width:500px; width:100%; height:300px;"></div>');

@@ -294,7 +294,7 @@ public partial class WaveAHRS : System.Web.UI.Page
     {
 
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
-        location = WebConfigurationManager.AppSettings["SiteName"];
+        location = WebConfigurationManager.AppSettings["LOCATION"];
         timeref = Resources.WaveAHRS.TIMEREF;
         timestamp = Resources.WaveAHRS.TIMESTAMP;
         direction = Resources.WaveAHRS.DIRECTION;

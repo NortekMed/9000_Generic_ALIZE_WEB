@@ -316,7 +316,7 @@ public partial class SIG_Current : System.Web.UI.Page
     {
 
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
-        location = WebConfigurationManager.AppSettings["SiteName"];
+        location = WebConfigurationManager.AppSettings["LOCATION"];
         timeref = Resources.CurrentSIG.TIMEREF;
         timestamp = Resources.CurrentSIG.TIMESTAMP;
         direction = Resources.CurrentSIG.DIRECTION;
@@ -588,6 +588,7 @@ public partial class SIG_Current : System.Web.UI.Page
         List<double[]> list_direction = new List<double[]>();
         List<double[]> list_snr = new List<double[]>();
         List<string> list_time = new List<string>();
+        List<int> list_layers = new List<int>();
 
         List<double> list_pitch = new List<double>();
         List<double> list_roll = new List<double>();
@@ -646,6 +647,7 @@ public partial class SIG_Current : System.Web.UI.Page
                 double V_Y_North = 0;
                 if (ilist_layers.Count != 0 )
                 {
+                    list_layers = new List<int>(ilist_layers);
                     if (ilist_layers.Contains(cell+1))
                     {
                         V_X_East = double.Parse(dRow[speed_name + (cell + 1).ToString() + "_1"].ToString());
@@ -745,7 +747,7 @@ public partial class SIG_Current : System.Web.UI.Page
             list_time,
             cell_size, //double.Parse(WebConfigurationManager.AppSettings["cell_size_1"])/100,
             blanking_dist,//double.Parse(WebConfigurationManager.AppSettings["blancking_1"])/100,
-            list_pitch, list_roll, list_temp, list_press, list_volt, list_heading);//, list_sbe_temp, list_sbe_sal, list_str_sbe);
+            list_pitch, list_roll, list_temp, list_press, list_volt, list_heading, list_layers);//, list_sbe_temp, list_sbe_sal, list_str_sbe);
 
         data.setDeclination(decl);
 
@@ -777,6 +779,8 @@ public class data_SIG_Current
     public double[] SBE_sal;
     public string[] SBE_time;
 
+    public List<int> Layers;
+
 
     public double meanTimeInterval = 0.0;
 
@@ -793,7 +797,8 @@ public class data_SIG_Current
         List<double> l_temp,
         List<double> l_press,
         List<double> l_volt,
-        List<double> l_heading)
+        List<double> l_heading,
+        List<int> l_layers)
     {
 
         C_spd = l_spd.ToArray();
@@ -807,6 +812,8 @@ public class data_SIG_Current
         C_press = l_press.ToArray();
         C_volt = l_volt.ToArray();
         C_heading = l_heading.ToArray();
+
+        Layers = new List<int>(l_layers);
 
 
         for (int i = 1; i < C_time.Length; i++)

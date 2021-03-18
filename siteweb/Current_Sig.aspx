@@ -420,7 +420,8 @@
             }, false); //true / false to redraw
 
 
-            //charProftSnr.colorAxis[0].update({ min: 0, max: 360 });
+            //charProfSnr.colorAxis[0].update({ min: 0, max: 255 });
+            charProfSnr.colorAxis[0].update({ min: 0, max: 130 });      // in db
             charProfSnr.yAxis[0].update({ max: data.C_snr[0].length * data.C_cellsize + data.C_blancking });
             charProfSnr.series[0].update({
                 data: Snr,
@@ -456,26 +457,37 @@
                 var spd = [];
                 var dir = [];
 
+                var add_layer = false;
 
-                for (var i = 0; i < data.C_time.length; i++) {
-                    var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
-                    spd.push([time, data.C_spd[i][j]]);
-                    //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
-                    dir.push([time, data.C_dir[i][j]]);
-                    //dir.series[i].setData([time, data.C_dir[i][j]]);
-                    //chartH.series[0].setData(H_max);
-                }
-
-                chartSpd.addSeries({
-                    name: "H=" + ((j + 1) * data.C_cellsize + data.C_blancking) + "m",
-                    data: spd,
-                    visible: false,
-                    tooltip: {
-                        valueSuffix: Spd_unit.toString()
+                for (var i = 0; i < data.Layers.length; i++) {
+                    if (data.Layers[i] == (j + 1)) {
+                        add_layer = true;
+                        break;
                     }
-                });
+                }
+                
 
-                chartDir.addSeries({
+                if ((data.Layers.Count == 0) || (add_layer == true))
+                {
+                    for (var i = 0; i < data.C_time.length; i++) {
+                        var time = Date.parse(data.C_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0'));
+                        spd.push([time, data.C_spd[i][j]]);
+                        //console.log( 'amp[][] = ' + data.C_amp[i][j].toString() )
+                        dir.push([time, data.C_dir[i][j]]);
+                        //dir.series[i].setData([time, data.C_dir[i][j]]);
+                        //chartH.series[0].setData(H_max);
+                    }
+
+                    chartSpd.addSeries({
+                        name: "H=" + ((j + 1) * data.C_cellsize + data.C_blancking) + "m",
+                        data: spd,
+                        visible: false,
+                        tooltip: {
+                            valueSuffix: Spd_unit.toString()
+                        }
+                    });
+
+                    chartDir.addSeries({
                         name: "H=" + ((j + 1) * data.C_cellsize + data.C_blancking) + "m",
                         data: dir,
                         lineWidth: 0,
@@ -486,11 +498,11 @@
                             //enabled: false,
                             symbol: 'diamond'
                         },
-                    tooltip: {
-                        valueSuffix: ' ' + direction_unit.toString()
-                        }    
-                });   
-
+                        tooltip: {
+                            valueSuffix: ' ' + direction_unit.toString()
+                        }
+                    });
+                }
             }
 
 

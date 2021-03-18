@@ -392,7 +392,7 @@ public partial class Meteo : System.Web.UI.Page
     protected void InitField()
     {
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
-        location = WebConfigurationManager.AppSettings["SiteName"];
+        location = WebConfigurationManager.AppSettings["LOCATION"];
         timeref = Resources.meteo.TIMEREF;
         timestamp = Resources.meteo.TIMESTAMP;
         direction = Resources.meteo.DIRECTION;

@@ -182,7 +182,7 @@ public partial class CTD : System.Web.UI.Page
     {
 
         prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
-        location = WebConfigurationManager.AppSettings["SiteName"];
+        location = WebConfigurationManager.AppSettings["LOCATION"];
         timeref = Resources.CTD.TIMEREF;
         timestamp = Resources.CTD.TIMESTAMP;
         direction = Resources.CTD.DIRECTION;

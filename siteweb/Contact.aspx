@@ -30,7 +30,7 @@
     
     <p>
         WEATHER page:<br />
-        Sensor is at 3.3m.
+        Sensor is at 3.5m.
         Gusts are averaged over 3s.
         Wind direction are defined as 'Going from'.<br />
         Acquisition period is 10 minutes.<br />
