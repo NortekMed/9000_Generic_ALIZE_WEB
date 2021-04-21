@@ -128,6 +128,16 @@ public partial class SIG_Current : System.Web.UI.Page
                 ilist_layers.Add(val);
             }
         }
+        else
+        {
+            int nb_c = int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]);
+            itab_layers = new int[nb_c];
+            for (int j = 0; j < nb_c; j++)
+            {
+                itab_layers[j] = j;
+                ilist_layers.Add(j);
+            }
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -313,140 +323,149 @@ public partial class SIG_Current : System.Web.UI.Page
     }
 
     protected void InitField()
-    {
-
-        prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
-        location = WebConfigurationManager.AppSettings["LOCATION"];
-        timeref = Resources.CurrentSIG.TIMEREF;
-        timestamp = Resources.CurrentSIG.TIMESTAMP;
-        direction = Resources.CurrentSIG.DIRECTION;
-
-        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
-            orientation = Resources.Site.Master.orientationG + ", " + Resources.Site.Master.declination;
-        else
-            orientation = Resources.Site.Master.orientationM;
-        //orientation = Resources.CurrentSIG.ORIENTATION;
-
-
-        //Retrieving data from master resx files
-        start.Value = Resources.Site.Master.start.ToString();
-        end.Value = Resources.Site.Master.end.ToString();
-        download.Value = Resources.Site.Master.download.ToString();
-        download_data.Value = Resources.Site.Master.download_data.ToString();
-        refresh.Value = Resources.Site.Master.refresh.ToString();
-        last.Value = Resources.Site.Master.last.ToString();
-        historical.Value = Resources.Site.Master.historical.ToString();
-        hour.Value = Resources.Site.Master.hour.ToString();
-
-
-        //Retrieving data from curennt object resx files
-        equipname.Value = Resources.CurrentSIG.equip_name.ToString();
-
-        pitchname.Value = Resources.CurrentSIG.param0name.ToString();
-        pitchlabel.Value = Resources.CurrentSIG.param0label.ToString();
-        pitchunit.Value = Resources.CurrentSIG.param0unit.ToString();
-
-        rollname.Value = Resources.CurrentSIG.param1name.ToString();
-        rolllabel.Value = Resources.CurrentSIG.param1label.ToString();
-        rollunit.Value = Resources.CurrentSIG.param1unit.ToString();
-
-        tempname.Value = Resources.CurrentSIG.param2name.ToString();
-        templabel.Value = Resources.CurrentSIG.param2label.ToString();
-        tempunit.Value = Resources.CurrentSIG.param2unit.ToString();
-
-        pressname.Value = Resources.CurrentSIG.param3name.ToString();
-        presslabel.Value = Resources.CurrentSIG.param3label.ToString();
-        pressunit.Value = Resources.CurrentSIG.param3unit.ToString();
-
-        speedname.Value = Resources.CurrentSIG.param4name.ToString();
-        speedlabel.Value = Resources.CurrentSIG.param4label.ToString();
-        speedunit.Value = Resources.CurrentSIG.param4unit.ToString();
-
-        ampname.Value = Resources.CurrentSIG.param5name.ToString();
-        amplabel.Value = Resources.CurrentSIG.param5label.ToString();
-        ampunit.Value = Resources.CurrentSIG.param5unit.ToString();
-
-        corname.Value = Resources.CurrentSIG.param6name.ToString();
-        corlabel.Value = Resources.CurrentSIG.param6label.ToString();
-        corunit.Value = Resources.CurrentSIG.param6unit.ToString();
-
-        headingname.Value = Resources.CurrentSIG.param8name.ToString();
-        headinglabel.Value = Resources.CurrentSIG.param8label.ToString();
-        headingunit.Value = Resources.CurrentSIG.param8unit.ToString();
-
-        voltname.Value = Resources.CurrentSIG.param7name.ToString();
-        voltunit.Value = Resources.CurrentSIG.param7unit.ToString();
-
-        msg_info_0.Value = Resources.CurrentSIG.msg_info_0.ToString();
-
-        direction_label.Value = Resources.CurrentSIG.direction_label.ToString();
-        direction_unit.Value = Resources.CurrentSIG.direction_unit.ToString();
-        //speed_label.Value = Resources.CurrentSIG.speed_label.ToString();
-        profdir_label.Value = Resources.CurrentSIG.profdir_label.ToString();
-        profspeed_label.Value = Resources.CurrentSIG.profspeed_label.ToString();
-        profamp_label.Value = Resources.CurrentSIG.profamp_label.ToString();
-
-
-        //Assigning string value
-        equip_name = equipname.Value;
-
-        pitch_name = pitchname.Value;
-        pitch_unit = pitchunit.Value;
-        pitch_label = pitchlabel.Value;
-
-
-        roll_name = rollname.Value;
-        roll_unit = rollunit.Value;
-        roll_label = rolllabel.Value;
-
-        temp_name = tempname.Value;
-        temp_unit = tempunit.Value;
-        temp_label = templabel.Value;
-
-        press_name = pressname.Value;
-        press_unit = pressunit.Value;
-        press_label = presslabel.Value;
-
-        volt_name = voltname.Value;
-        volt_unit = voltunit.Value;
-
-        speed_name = speedname.Value;
-        speed_unit = speedunit.Value;
-        speed_label = speedlabel.Value;
-
-
-        amp_name = ampname.Value;
-        amp_unit = ampunit.Value;
-        amp_label = amplabel.Value;
-
-        cor_name = corname.Value;
-        cor_unit = corunit.Value;
-        cor_label = corlabel.Value;
-
-        heading_name = headingname.Value;
-        heading_unit = headingunit.Value;
-        heading_label = headinglabel.Value;
-
-        ilist_layers = new List<int>();
-        if (WebConfigurationManager.AppSettings["tab_layers"] != "")
         {
-            string list_layers = WebConfigurationManager.AppSettings["tab_layers"];
 
-            if (list_layers.EndsWith(";"))
-                list_layers = list_layers.Remove(list_layers.Length - 1);
-            string[] stab_layers = list_layers.Split(';');
-            itab_layers = new int[stab_layers.Length];
+            prj_name = (WebConfigurationManager.AppSettings["PRJ_NAME"]).ToString();
+            location = WebConfigurationManager.AppSettings["LOCATION"];
+            timeref = Resources.CurrentSIG.TIMEREF;
+            timestamp = Resources.CurrentSIG.TIMESTAMP;
+            direction = Resources.CurrentSIG.DIRECTION;
 
-            for (int j = 0; j < stab_layers.Length; j++)
+            if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
+                orientation = Resources.Site.Master.orientationG + ", " + Resources.Site.Master.declination;
+            else
+                orientation = Resources.Site.Master.orientationM;
+            //orientation = Resources.CurrentSIG.ORIENTATION;
+
+
+            //Retrieving data from master resx files
+            start.Value = Resources.Site.Master.start.ToString();
+            end.Value = Resources.Site.Master.end.ToString();
+            download.Value = Resources.Site.Master.download.ToString();
+            download_data.Value = Resources.Site.Master.download_data.ToString();
+            refresh.Value = Resources.Site.Master.refresh.ToString();
+            last.Value = Resources.Site.Master.last.ToString();
+            historical.Value = Resources.Site.Master.historical.ToString();
+            hour.Value = Resources.Site.Master.hour.ToString();
+
+
+            //Retrieving data from curennt object resx files
+            equipname.Value = Resources.CurrentSIG.equip_name.ToString();
+
+            pitchname.Value = Resources.CurrentSIG.param0name.ToString();
+            pitchlabel.Value = Resources.CurrentSIG.param0label.ToString();
+            pitchunit.Value = Resources.CurrentSIG.param0unit.ToString();
+
+            rollname.Value = Resources.CurrentSIG.param1name.ToString();
+            rolllabel.Value = Resources.CurrentSIG.param1label.ToString();
+            rollunit.Value = Resources.CurrentSIG.param1unit.ToString();
+
+            tempname.Value = Resources.CurrentSIG.param2name.ToString();
+            templabel.Value = Resources.CurrentSIG.param2label.ToString();
+            tempunit.Value = Resources.CurrentSIG.param2unit.ToString();
+
+            pressname.Value = Resources.CurrentSIG.param3name.ToString();
+            presslabel.Value = Resources.CurrentSIG.param3label.ToString();
+            pressunit.Value = Resources.CurrentSIG.param3unit.ToString();
+
+            speedname.Value = Resources.CurrentSIG.param4name.ToString();
+            speedlabel.Value = Resources.CurrentSIG.param4label.ToString();
+            speedunit.Value = Resources.CurrentSIG.param4unit.ToString();
+
+            ampname.Value = Resources.CurrentSIG.param5name.ToString();
+            amplabel.Value = Resources.CurrentSIG.param5label.ToString();
+            ampunit.Value = Resources.CurrentSIG.param5unit.ToString();
+
+            corname.Value = Resources.CurrentSIG.param6name.ToString();
+            corlabel.Value = Resources.CurrentSIG.param6label.ToString();
+            corunit.Value = Resources.CurrentSIG.param6unit.ToString();
+
+            headingname.Value = Resources.CurrentSIG.param8name.ToString();
+            headinglabel.Value = Resources.CurrentSIG.param8label.ToString();
+            headingunit.Value = Resources.CurrentSIG.param8unit.ToString();
+
+            voltname.Value = Resources.CurrentSIG.param7name.ToString();
+            voltunit.Value = Resources.CurrentSIG.param7unit.ToString();
+
+            msg_info_0.Value = Resources.CurrentSIG.msg_info_0.ToString();
+
+            direction_label.Value = Resources.CurrentSIG.direction_label.ToString();
+            direction_unit.Value = Resources.CurrentSIG.direction_unit.ToString();
+            //speed_label.Value = Resources.CurrentSIG.speed_label.ToString();
+            profdir_label.Value = Resources.CurrentSIG.profdir_label.ToString();
+            profspeed_label.Value = Resources.CurrentSIG.profspeed_label.ToString();
+            profamp_label.Value = Resources.CurrentSIG.profamp_label.ToString();
+
+
+            //Assigning string value
+            equip_name = equipname.Value;
+
+            pitch_name = pitchname.Value;
+            pitch_unit = pitchunit.Value;
+            pitch_label = pitchlabel.Value;
+
+
+            roll_name = rollname.Value;
+            roll_unit = rollunit.Value;
+            roll_label = rolllabel.Value;
+
+            temp_name = tempname.Value;
+            temp_unit = tempunit.Value;
+            temp_label = templabel.Value;
+
+            press_name = pressname.Value;
+            press_unit = pressunit.Value;
+            press_label = presslabel.Value;
+
+            volt_name = voltname.Value;
+            volt_unit = voltunit.Value;
+
+            speed_name = speedname.Value;
+            speed_unit = speedunit.Value;
+            speed_label = speedlabel.Value;
+
+
+            amp_name = ampname.Value;
+            amp_unit = ampunit.Value;
+            amp_label = amplabel.Value;
+
+            cor_name = corname.Value;
+            cor_unit = corunit.Value;
+            cor_label = corlabel.Value;
+
+            heading_name = headingname.Value;
+            heading_unit = headingunit.Value;
+            heading_label = headinglabel.Value;
+
+            ilist_layers = new List<int>();
+            if (WebConfigurationManager.AppSettings["tab_layers"] != "")
             {
-                int val = 0;
-                int.TryParse(stab_layers[j], out val);
-                itab_layers[j] = val;
-                ilist_layers.Add(val);
-            }
-        }
+                string list_layers = WebConfigurationManager.AppSettings["tab_layers"];
 
-    }
+                if (list_layers.EndsWith(";"))
+                    list_layers = list_layers.Remove(list_layers.Length - 1);
+                string[] stab_layers = list_layers.Split(';');
+                itab_layers = new int[stab_layers.Length];
+
+                for (int j = 0; j < stab_layers.Length; j++)
+                {
+                    int val = 0;
+                    int.TryParse(stab_layers[j], out val);
+                    itab_layers[j] = val;
+                    ilist_layers.Add(val);
+                }
+            }
+            else
+            {
+                int nb_c = int.Parse(WebConfigurationManager.AppSettings["nb_couche_SIG"]);
+                itab_layers = new int[nb_c];
+                for (int j = 0; j < nb_c; j++)
+                    {
+                        itab_layers[j] = j;
+                        ilist_layers.Add(j);
+                    }
+                }
+        }
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
