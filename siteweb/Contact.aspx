@@ -23,14 +23,14 @@
     <p>
         Waves page:<br />
         Waves directions are defined as 'Going from'.<br />
-        Acquisition period is 30 minutes, calculation is performed during 17 minutes.<br />
+        Acquisition period is 20 minutes, calculation is performed during 17 minutes.<br />
         Mean period is T02 parameter.<br />
-        <%--BF / HF limit is 10s.<br />--%>
+        BF / HF limit is 10s.<br />
     </p>
     
     <p>
         WEATHER page:<br />
-        Sensor is at 3.5m.
+        Sensor is at 3.3m.
         Gusts are averaged over 3s.
         Wind direction are defined as 'Going from'.<br />
         Acquisition period is 10 minutes.<br />
@@ -38,15 +38,15 @@
         Minimum wind direction is associated to minimum wind speed.<br />
     </p>
 
-    <%--<p>
+    <p>
         CTD: <br />
         Acquisition period is 10 minutes.<br />
-    </p>--%>
+    </p>
 
-    <%--<p>
+    <p>
         DECLINATION: <br />
         Declination is positive for East and and negative for West orientation.<br />
-    </p>--%>
+    </p>
     
     
     <br />
@@ -75,8 +75,8 @@
         <strong>Info:</strong> <a href="mailto:info@NortekMed.com">info@NortekMed.com</a>
         <br />
 
-    <strong>Project Manager EOHF : Coline Delafosse +33 6 21 76 98 53 </strong><br />
-    <strong>Marine operation manager EOHF : XXXXXXXXXXX +33 xxxxxxxxxxxxxx</strong><br />
+    <strong>Project Manager EMD : Coline Delafosse +33 6 21 76 98 53 </strong><br />
+    <strong>Marine operation manager EMD : Maud Lamaze +33 6 16 80 38 97</strong><br />
     <strong>Project Manager NortekMed : André DOLLE + 33 6 37 48 21 77 </strong><br />
     </address>
 </asp:Content>
