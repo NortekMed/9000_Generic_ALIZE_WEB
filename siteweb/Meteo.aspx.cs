@@ -228,12 +228,22 @@ public partial class Meteo : System.Web.UI.Page
         device_name = Resources.meteo._0_equip_name;
         List<string> output = MakeHeader2(device_name);
 
-        output.Add("UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
-                                   + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';');
+        string tmp_header = "UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
+                                   + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';';
 
-        if (include_hum) {
-            output.Add(humidity_label.Value + '(' + humidity_unit.Value + ')' + ';');
+        if (include_hum)
+        {
+            tmp_header += humidity_label.Value + '(' + humidity_unit.Value + ')' + ';';
         }
+
+        output.Add(tmp_header);
+
+        //output.Add("UTC datetime;" + temperature_label.Value + '(' + temperature_unit.Value + ')' + ';'
+        //                           + pressure_label.Value + '(' + pressure_unit.Value + ')' + ';');
+
+        //if (include_hum) {
+        //    output.Add(humidity_label.Value + '(' + humidity_unit.Value + ')' + ';');
+        //}
 
         // mise en forme
         for (int i = 0; i < downloaddata.wxt_str_time.Length; i++)
@@ -242,15 +252,28 @@ public partial class Meteo : System.Web.UI.Page
 
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
-            output.Add( s_date.Replace("T", ", ") + ';'
+
+
+            string tmp_value = s_date.Replace("T", ", ") + ';'
                         + downloaddata.wxt_temp[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.wxt_press[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        );
+                        + downloaddata.wxt_press[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
 
             if (include_hum)
             {
-                output.Add(downloaddata.wxt_hum[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';');
+                tmp_value += downloaddata.wxt_hum[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
             }
+            output.Add(tmp_value);
+
+
+            //output.Add( s_date.Replace("T", ", ") + ';'
+            //            + downloaddata.wxt_temp[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+            //            + downloaddata.wxt_press[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+            //            );
+
+            //if (include_hum)
+            //{
+            //    output.Add(downloaddata.wxt_hum[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';');
+            //}
 
                 if (i == 0)
                 start_date = s_date;

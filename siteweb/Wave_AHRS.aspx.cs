@@ -103,29 +103,56 @@ public partial class WaveAHRS : System.Web.UI.Page
         //List<string> output = MakeHeader("Wave");
         List<string> output = MakeHeader(device_name);
 
-        output.Add("UTC datetime;" + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + h_max_label_alias.Value + '(' + h_unit.Value + ')' + ';'
-                                    + t_peak_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_z_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_m01_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_hmax_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + t_m02_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
-                                    + t_3_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                                    + d_avg_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_peak_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + d_spread_label_alias.Value + '(' + d_unit.Value + ')' + ';'
-                                    + n_waves_alias.Value + ';');
 
-        if (include_ext_param) {
-            output.Add(t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        string tmp_header = "UTC datetime;" + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                                   + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                                   + h_max_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+                                   + t_peak_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                   + t_z_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                   + t_m01_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                   + t_hmax_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                   + t_m02_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                   //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
+                                   + t_3_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+                                   + d_avg_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                   + d_peak_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                   + d_spread_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+                                   + n_waves_alias.Value + ';';
+
+        if (include_ext_param)
+        {
+            tmp_header += t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
                         + etamax_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                         + etamin_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                         + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
-                        + "nbr_system;"
-                        );
+                        + "nbr_system;";
         }
+        output.Add(tmp_header);
+
+
+        //output.Add("UTC datetime;" + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+        //                            + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+        //                            + h_max_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+        //                            + t_peak_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                            + t_z_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                            + t_m01_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                            + t_hmax_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                            + t_m02_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                            //+ t_avg_label.Value + '(' + t_unit + ')' + ';'
+        //                            + t_3_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                            + d_avg_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+        //                            + d_peak_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+        //                            + d_spread_label_alias.Value + '(' + d_unit.Value + ')' + ';'
+        //                            + n_waves_alias.Value + ';');
+
+        //if (include_ext_param) {
+        //    output.Add(t_e_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                + etamax_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+        //                + etamin_label_alias.Value + '(' + h_unit.Value + ')' + ';'
+        //                + t_max_label_alias.Value + '(' + t_unit.Value + ')' + ';'
+        //                + "nbr_system;"
+        //                );
+        //}
 
         // mise en forme
         for (int i = 0; i < downloaddata.H_time.Length; i++)
@@ -133,7 +160,7 @@ public partial class WaveAHRS : System.Web.UI.Page
             DateTime date = Convert.ToDateTime(downloaddata.H_time[i]).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); ;
             string s_date = date.ToString("yyyy-MM-ddTHH:mm");
 
-            output.Add(s_date.Replace("T", ", ") + ';'
+            string tmp_value = s_date.Replace("T", ", ") + ';'
                         + downloaddata.H_m0[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.H_tier[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.H_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
@@ -146,17 +173,44 @@ public partial class WaveAHRS : System.Web.UI.Page
                         + downloaddata.D_mean[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.D_peak[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                         + downloaddata.D_sd[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                        + downloaddata.N_waves[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';');
+                        + downloaddata.N_waves[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';';
 
             if (include_ext_param)
             {
-                output.Add(downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                tmp_value += downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
                 + downloaddata.ETAmax[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
                 + downloaddata.ETAmin[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
-                + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
-                + '2'
-                );
+                + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';';
             }
+
+            output.Add(tmp_value);
+
+                //output.Add(s_date.Replace("T", ", ") + ';'
+                //            + downloaddata.H_m0[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.H_tier[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.H_max[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.T_p[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.T_z[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.T_m01[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.T_hmax[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.T_m02[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.T_3[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.D_mean[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.D_peak[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.D_sd[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+                //            + downloaddata.N_waves[i].ToString("0", NumberFormatInfo.InvariantInfo) + ';');
+
+            //    if (include_ext_param)
+            //{
+            //    output.Add(downloaddata.T_e[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+            //    + downloaddata.ETAmax[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+            //    + downloaddata.ETAmin[i].ToString("0.00", NumberFormatInfo.InvariantInfo) + ';'
+            //    + downloaddata.T_max[i].ToString("0.0", NumberFormatInfo.InvariantInfo) + ';'
+            //    + '2'
+            //    );
+            //}
+
+
 
             if (i == 0)
                 start_date = s_date;
