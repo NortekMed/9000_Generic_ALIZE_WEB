@@ -100,8 +100,8 @@ public partial class WaveAHRS : System.Web.UI.Page
 
 
         device_name = Resources.WaveAHRS.DEVICE_0;
-        List<string> output = MakeHeader("Wave");
-        //List<string> output = MakeHeader(device_name);
+        //List<string> output = MakeHeader("Wave");
+        List<string> output = MakeHeader(device_name);
 
         output.Add("UTC datetime;" + h_sig_label_alias.Value + '(' + h_unit.Value + ')' + ';'
                                     + h_3_label_alias.Value + '(' + h_unit.Value + ')' + ';'
