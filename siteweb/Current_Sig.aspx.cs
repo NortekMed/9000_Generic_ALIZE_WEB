@@ -700,6 +700,8 @@ public partial class SIG_Current : System.Web.UI.Page
                             snr[cell] = snr[cell-1];
                         }
                     }
+
+
                 }
                 else
                 {
@@ -713,6 +715,7 @@ public partial class SIG_Current : System.Web.UI.Page
                     if (dir[cell] < 0) dir[cell] += 360.0;
 
                     snr[cell] = 0.5*double.Parse(dRow["Amp" + (cell + 1).ToString() + "_1"].ToString());
+
                 }
 
                 //dir[cell] = Math.Round((Math.Atan2(V_X_East, V_Y_North) / (2 * Math.PI) * 360),1);
@@ -726,6 +729,9 @@ public partial class SIG_Current : System.Web.UI.Page
 
                 if (spd[cell] > 20)
                     spd[cell] = 0.0;
+
+                if (spd[cell] == 0)
+                    dir[cell] = 0;
             }
 
             list_spd.Add(spd);
