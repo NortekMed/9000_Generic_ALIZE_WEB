@@ -134,8 +134,8 @@ public partial class SIG_Current : System.Web.UI.Page
             itab_layers = new int[nb_c];
             for (int j = 0; j < nb_c; j++)
             {
-                itab_layers[j] = j;
-                ilist_layers.Add(j);
+                itab_layers[j] = j+1;
+                ilist_layers.Add(j+1);
             }
         }
     }
@@ -461,8 +461,8 @@ public partial class SIG_Current : System.Web.UI.Page
                 itab_layers = new int[nb_c];
                 for (int j = 0; j < nb_c; j++)
                     {
-                        itab_layers[j] = j;
-                        ilist_layers.Add(j);
+                        itab_layers[j] = j+1;
+                        ilist_layers.Add(j+1);
                     }
                 }
         }
