@@ -104,6 +104,10 @@
     <asp:HiddenField ID = "b_ctd_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_decl_hd" ClientIdMode="Static" Runat="Server"/>
 
+    <asp:HiddenField ID = "b_currant_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_weather_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_position_hd" ClientIdMode="Static" Runat="Server"/>
+
     <script>
         var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
         var b_ahrs_bfhf = document.getElementById('<%=b_ahrs_bfhf_hd.ClientID%>').value;
@@ -113,6 +117,10 @@
         var b_turbi = document.getElementById('<%=b_turbi_hd.ClientID%>').value;
         var b_ctd = document.getElementById('<%=b_ctd_hd.ClientID%>').value;
         var b_decl = document.getElementById('<%=b_decl_hd.ClientID%>').value;
+
+        var b_currant = document.getElementById('<%=b_currant_hd.ClientID%>').value;
+        var b_weather = document.getElementById('<%=b_weather_hd.ClientID%>').value;
+        var b_position = document.getElementById('<%=b_position_hd.ClientID%>').value;
 
     </script>
          
@@ -211,58 +219,65 @@
                 document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle2); document.write(' </b> <label class="indent" id="l_decl">X</label> </div>');
                 document.write('</div>');
             }
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Meteohour">X</label> </div>');
-            document.write('<div class="panel-body">');
-            document.write('<table class="table"><tbody>');
 
-            if (b_knot == "False") {
-                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>m/s</td>');
-                document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>m/s</td>');
+            if (b_weather == "True") {
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Meteohour">X</label> </div>');
+                document.write('<div class="panel-body">');
+                document.write('<table class="table"><tbody>');
+
+                if (b_knot == "False") {
+                    document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>m/s</td>');
+                    document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>m/s</td>');
+                }
+                else {
+                    document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>kts</td>');
+                    document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>kts</td>');
+                }
+
+
+
+                document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
+                document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
+                document.write('<tr><td>'); document.write(l_param4); document.write('</td><td><label id="press">X</label></td><td>hPa</td>');
+                //document.write('<tr><td>'); document.write(l_param5); document.write('</td><td><label id="rain_d">X</label></td><td>mm</td>');
+                //document.write('<tr><td>'); document.write(l_param6); document.write('</td><td><label id="rain_acc">X</label></td><td>°</td>');
+
+                document.write('</body></table></div>');
+                document.write('</div>');
             }
-            else {
-                document.write('<tr><td>'); document.write(l_param0); document.write('</td><td><label id="wsmoy">X</label></td><td>kts</td>');
-                document.write('<tr><td>'); document.write(l_param1); document.write('</td><td><label id="wsmax">X</label></td><td>kts</td>');
-            }
-
-
-
-            document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
-            document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
-            document.write('<tr><td>'); document.write(l_param4); document.write('</td><td><label id="press">X</label></td><td>hPa</td>');
-            //document.write('<tr><td>'); document.write(l_param5); document.write('</td><td><label id="rain_d">X</label></td><td>mm</td>');
-            //document.write('<tr><td>'); document.write(l_param6); document.write('</td><td><label id="rain_acc">X</label></td><td>°</td>');
-
-            document.write('</body></table></div>');
-            document.write('</div></div>');
+            document.write('</div>');
         </script>
 
         <script type="text/javascript">
             document.write('<div class="col-md-4">');
 
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Statushour">X</label> </div>');
-            document.write('<div class="panel-body"');
-            document.write('<table class="table"><tbody>');
+            if (b_currant == "True") {
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write("Status"); document.write(' </b> <label class="indent" id="Statushour">X</label> </div>');
+                document.write('<div class="panel-body"');
+                document.write('<table class="table"><tbody>');
 
-            document.write('<tr><td>'); document.write("Voltage: "); document.write('</td><td><label id="voltage">X</label></td><td>V</td><td>  </td>');
-            document.write('<td>'); document.write("Pitch: "); document.write('</td><td><label id="pitch">X</label></td><td>°</td><td>  </td>');
-            document.write('<td>'); document.write("Roll: "); document.write('</td><td><label id="roll">X</label></td><td>°</td><td>  </td></tr>');
+                document.write('<tr><td>'); document.write("Voltage: "); document.write('</td><td><label id="voltage">X</label></td><td>V</td><td>  </td>');
+                document.write('<td>'); document.write("Pitch: "); document.write('</td><td><label id="pitch">X</label></td><td>°</td><td>  </td>');
+                document.write('<td>'); document.write("Roll: "); document.write('</td><td><label id="roll">X</label></td><td>°</td><td>  </td></tr>');
 
-            document.write('</body></table></div>');
-            document.write('</div>');
+                document.write('</body></table></div>');
+                document.write('</div>');
+            }
 
+            if (b_position == "True") {
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write("Position"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
+                document.write('<div class="panel-body"');
+                document.write('<table class="table"><tbody>');
 
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write("Position"); document.write(' </b> <label class="indent" id="Positionhour">X</label> </div>');
-            document.write('<div class="panel-body"');
-            document.write('<table class="table"><tbody>');
+                document.write('<tr><td>'); document.write("Lat: "); document.write('</td><td><label id="lat">X</label></td><td>°</td><td>  </td>');
+                document.write('<td>'); document.write("Lon: "); document.write('</td><td><label id="lon">X</label></td><td>°</td><td>  </td></tr>');
 
-            document.write('<tr><td>'); document.write("Lat: "); document.write('</td><td><label id="lat">X</label></td><td>°</td><td>  </td>');
-            document.write('<td>'); document.write("Lon: "); document.write('</td><td><label id="lon">X</label></td><td>°</td><td>  </td></tr>');
-
-            document.write('</body></table></div>');
-            document.write('</div>');
+                document.write('</body></table></div>');
+                document.write('</div>');
+            }
 
             if (b_ctd == "True") {
                 document.write('<div class="panel panel-default">');
@@ -295,23 +310,23 @@
             var l_param2unit = document.getElementById('<%=sig_param2unit.ClientID%>').value;
             var l_param3unit = document.getElementById('<%=sig_param3unit.ClientID%>').value;
 
-
-            document.write('<div class="col-md-8">');
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Current_Date">X</label> </div>');
-            document.write('<div class="panel-body">');//<p>Mesures moyennées sur 1 minute</p>');
-            //document.write('<tr><td>'+ l_desc + '</td></tr>');
-            document.write('<div class="row">');
-            document.write('<div class="col-md-6"><div id="SpeedSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
-            document.write('</div>');
-            document.write('<div class="col-md-6"><div id="DirSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
-            document.write('</div></div></div></div></div>');
-
+            if (b_currant == "True") {
+                document.write('<div class="col-md-8">');
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="Current_Date">X</label> </div>');
+                document.write('<div class="panel-body">');//<p>Mesures moyennées sur 1 minute</p>');
+                //document.write('<tr><td>'+ l_desc + '</td></tr>');
+                document.write('<div class="row">');
+                document.write('<div class="col-md-6"><div id="SpeedSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
+                document.write('</div>');
+                document.write('<div class="col-md-6"><div id="DirSIGcontainer" style="min-width:100px;width:350px; height:320px;"></div>');
+                document.write('</div></div></div></div></div>');
+            }
         </script>
     </div>
 
    
-    <%--<div class="row">--%>
+    <div class="row">
 
         <script type="text/javascript">
 
@@ -1060,7 +1075,9 @@
                 }
             }
 
-            initMeteo();
+
+            if ( b_weather == "True")
+                initMeteo();
 
             if ( b_spm == "True")
                 initPyrano();
@@ -1074,17 +1091,20 @@
             if ( b_turbi == "True")
                 initTurbi();
 
+            if ( b_currant == "True")
+                initSIG();
 
-            initSIG();
+
 
             initWAVEAHRS();
+
 
 
             if( b_ahrs_bfhf == "True")
                 initWAVEAHRS_BFHF();
 
-
-            initPosition();
+            if (b_position == "True")
+                initPosition();
 
             if (b_ctd == "True")
                 initCTD();

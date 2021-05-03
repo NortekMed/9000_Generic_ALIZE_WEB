@@ -20,6 +20,10 @@ public partial class Realtime : System.Web.UI.Page
     static bool b_ctd = false;
     static bool b_decl = false;
 
+    static bool b_currant = false;
+    static bool b_weather = false;
+    static bool b_position = false;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         // Check if user is connected
@@ -49,6 +53,15 @@ public partial class Realtime : System.Web.UI.Page
         if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
             b_decl = true;
 
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
+            b_currant = true;
+
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
+            b_weather = true;
+
+        if (WebConfigurationManager.AppSettings["DECLINATION"] == "true")
+            b_position = true;
+
         b_ctd_hd.Value = b_ctd.ToString();
         b_ahrs_bfhf_hd.Value = b_ahrs_bfhf.ToString();
         b_spm_hd.Value = b_spm.ToString();
@@ -56,6 +69,10 @@ public partial class Realtime : System.Web.UI.Page
         b_optod_hd.Value = b_optod.ToString();
         b_turbi_hd.Value = b_turbi.ToString();
         b_decl_hd.Value = b_decl.ToString();
+
+        b_currant_hd.Value = b_currant.ToString();
+        b_weather_hd.Value = b_weather.ToString();
+        b_position_hd.Value = b_position.ToString();
 
     }
 
