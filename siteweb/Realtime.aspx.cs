@@ -24,6 +24,7 @@ public partial class Realtime : System.Web.UI.Page
     static bool b_currant = false;
     static bool b_weather = false;
     static bool b_include_hum = false;
+    static bool b_include_rain = false;
     static bool b_position = false;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -71,6 +72,9 @@ public partial class Realtime : System.Web.UI.Page
         if (WebConfigurationManager.AppSettings["INCLUDE_HUM"] == "true")
             b_include_hum = true;
 
+        if (WebConfigurationManager.AppSettings["INCLUDE_RAIN"] == "true")
+            b_include_rain = true;
+
         b_ctd_hd.Value = b_ctd.ToString();
         b_ahrs_hd.Value = b_ahrs.ToString();
         b_ahrs_bfhf_hd.Value = b_ahrs_bfhf.ToString();
@@ -83,6 +87,7 @@ public partial class Realtime : System.Web.UI.Page
         b_currant_hd.Value = b_currant.ToString();
         b_weather_hd.Value = b_weather.ToString();
         b_include_hum_hd.Value = b_include_hum.ToString();
+        b_include_rain_hd.Value = b_include_rain.ToString();
         b_position_hd.Value = b_position.ToString();
 
     }

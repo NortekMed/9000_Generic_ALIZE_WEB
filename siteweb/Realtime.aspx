@@ -108,6 +108,7 @@
     <asp:HiddenField ID = "b_currant_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_weather_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_include_hum_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_include_rain_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_position_hd" ClientIdMode="Static" Runat="Server"/>
 
     <script>
@@ -124,6 +125,7 @@
         var b_currant = document.getElementById('<%=b_currant_hd.ClientID%>').value;
         var b_weather = document.getElementById('<%=b_weather_hd.ClientID%>').value;
         var b_include_hum = document.getElementById('<%=b_include_hum_hd.ClientID%>').value;
+        var b_include_rain = document.getElementById('<%=b_include_rain_hd.ClientID%>').value;
         var b_position = document.getElementById('<%=b_position_hd.ClientID%>').value;
 
     </script>
@@ -245,7 +247,8 @@
                 document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
                 document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
                 document.write('<tr><td>'); document.write(l_param4); document.write('</td><td><label id="press">X</label></td><td>hPa</td>');
-                if (b_include_hum == "True") { 
+
+                if (b_include_rain == "True") { 
                     document.write('<tr><td>'); document.write(l_param5); document.write('</td><td><label id="rain_d">X</label></td><td>mm</td>');
                     document.write('<tr><td>'); document.write(l_param6); document.write('</td><td><label id="rain_acc">X</label></td><td>°</td>');
                 }
@@ -906,9 +909,9 @@
                     $('#wtemp').text(data.wxt_temp[last].toFixed(1))
                     $('#press').text(data.wxt_press[last].toFixed(0))
 
-                //last = data.rain_time.length - 1;
-                //$('#rain_acc').text(data.rain_acc[last])
-                //$('#rain_d').text(data.rain_dur[last])
+                    last = data.wxt_rain_str_time.length - 1;
+                    $('#rain_acc').text(data.wxt_rain_acc[last])
+                    $('#rain_d').text(data.wxt_rain_d[last])
             }
         }
 
@@ -1102,9 +1105,8 @@
                 initSIG();
 
 
-
-            initWAVEAHRS();
-
+            if (b_ahrs == "True")
+                initWAVEAHRS();
 
 
             if( b_ahrs_bfhf == "True")
