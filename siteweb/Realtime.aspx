@@ -97,6 +97,7 @@
 
     <asp:HiddenField ID = "b_knots_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_ahrs_bfhf_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_ahrs_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_spm_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_c4e_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_optod_hd" ClientIdMode="Static" Runat="Server"/>
@@ -106,10 +107,12 @@
 
     <asp:HiddenField ID = "b_currant_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_weather_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_include_hum_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_position_hd" ClientIdMode="Static" Runat="Server"/>
 
     <script>
         var b_knot = document.getElementById('<%=b_knots_hd.ClientID%>').value;
+        var b_ahrs = document.getElementById('<%=b_ahrs_hd.ClientID%>').value;
         var b_ahrs_bfhf = document.getElementById('<%=b_ahrs_bfhf_hd.ClientID%>').value;
         var b_spm = document.getElementById('<%=b_spm_hd.ClientID%>').value;
         var b_c4e = document.getElementById('<%=b_c4e_hd.ClientID%>').value;
@@ -120,6 +123,7 @@
 
         var b_currant = document.getElementById('<%=b_currant_hd.ClientID%>').value;
         var b_weather = document.getElementById('<%=b_weather_hd.ClientID%>').value;
+        var b_include_hum = document.getElementById('<%=b_include_hum_hd.ClientID%>').value;
         var b_position = document.getElementById('<%=b_position_hd.ClientID%>').value;
 
     </script>
@@ -182,20 +186,22 @@
             var l_param4unit = document.getElementById('<%=wave_t_unit.ClientID%>').value;
             var l_param5unit = document.getElementById('<%=wave_t_unit.ClientID%>').value;
 
-            document.write('<div class="col-md-4">')
-            document.write('<div class="panel panel-default">');
-            document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle);document.write(' </b> <label class="indent" id="ahrshour">X</label> </div>');
-            document.write('<div class="panel-body">');
+            if (b_ahrs == "True") {
+                document.write('<div class="col-md-4">')
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>'); document.write(l_paneltitle); document.write(' </b> <label class="indent" id="ahrshour">X</label> </div>');
+                document.write('<div class="panel-body">');
 
-            document.write('<table class="table"><tbody>');
-            document.write('<tr><td>' + l_param3 + '</td><td><label id="ahrs_par3">X</label></td><td>' + l_param3unit + '</td>');
-            document.write('<tr><td>' + l_param5 + '</td><td><label id="ahrs_par5">X</label></td><td>' + l_param5unit + '</td>');
-            document.write('<tr><td>' + l_param0 + '</td><td><label id="ahrs_par0">X</label></td><td>' + l_param0unit + '</td>');
-            document.write('<tr><td>' + l_param1 + '</td><td><label id="ahrs_par1">X</label></td><td>' + l_param1unit + '</td>');
-            document.write('<tr><td>' + l_param2 + '</td><td><label id="ahrs_par2">X</label></td><td>' + l_param2unit + '</td>');
-            document.write('<tr><td>' + l_param4 + '</td><td><label id="ahrs_par4">X</label></td><td>' + l_param4unit + '</td>');
-            document.write('</body></table></div>');
-            document.write('</div></div>');
+                document.write('<table class="table"><tbody>');
+                document.write('<tr><td>' + l_param3 + '</td><td><label id="ahrs_par3">X</label></td><td>' + l_param3unit + '</td>');
+                document.write('<tr><td>' + l_param5 + '</td><td><label id="ahrs_par5">X</label></td><td>' + l_param5unit + '</td>');
+                document.write('<tr><td>' + l_param0 + '</td><td><label id="ahrs_par0">X</label></td><td>' + l_param0unit + '</td>');
+                document.write('<tr><td>' + l_param1 + '</td><td><label id="ahrs_par1">X</label></td><td>' + l_param1unit + '</td>');
+                document.write('<tr><td>' + l_param2 + '</td><td><label id="ahrs_par2">X</label></td><td>' + l_param2unit + '</td>');
+                document.write('<tr><td>' + l_param4 + '</td><td><label id="ahrs_par4">X</label></td><td>' + l_param4unit + '</td>');
+                document.write('</body></table></div>');
+                document.write('</div></div>');
+            }
 
         </script>
 
@@ -236,12 +242,13 @@
                 }
 
 
-
                 document.write('<tr><td>'); document.write(l_param2); document.write('</td><td><label id="wdmoy">X</label></td><td>°</td>');
                 document.write('<tr><td> Air '); document.write(l_param3); document.write('</td><td><label id="wtemp">X</label></td><td>°C</td>');
                 document.write('<tr><td>'); document.write(l_param4); document.write('</td><td><label id="press">X</label></td><td>hPa</td>');
-                //document.write('<tr><td>'); document.write(l_param5); document.write('</td><td><label id="rain_d">X</label></td><td>mm</td>');
-                //document.write('<tr><td>'); document.write(l_param6); document.write('</td><td><label id="rain_acc">X</label></td><td>°</td>');
+                if (b_include_hum == "True") { 
+                    document.write('<tr><td>'); document.write(l_param5); document.write('</td><td><label id="rain_d">X</label></td><td>mm</td>');
+                    document.write('<tr><td>'); document.write(l_param6); document.write('</td><td><label id="rain_acc">X</label></td><td>°</td>');
+                }
 
                 document.write('</body></table></div>');
                 document.write('</div>');
