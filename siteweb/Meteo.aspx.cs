@@ -97,6 +97,9 @@ public partial class Meteo : System.Web.UI.Page
     //static string l_direction = "DIRECTION : ";
     //static string l_orientation = "NORTH : ";
 
+    static bool b_include_hum = false;
+    static bool b_include_rain = false;
+
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -124,6 +127,15 @@ public partial class Meteo : System.Web.UI.Page
         }
         else
             light_site.Value = "false";
+
+        if (WebConfigurationManager.AppSettings["INCLUDE_HUM"] == "true")
+            b_include_hum = true;
+
+        if (WebConfigurationManager.AppSettings["INCLUDE_RAIN"] == "true")
+            b_include_rain = true;
+
+        b_include_hum_hd.Value = b_include_hum.ToString();
+        b_include_rain_hd.Value = b_include_rain.ToString();
 
     }
 
@@ -751,28 +763,28 @@ public partial class Meteo : System.Web.UI.Page
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// Read data for equipment 1 -- look in resx table to know how many parameter to read
-        //ds = new DataSet();
-        //str_connect = "SELECT a.TIME_REC, a." + s_rain_acc + ",a." + s_rain_duration + ", a." + s_rain_intensity + " FROM " + _1_equip_name + " a" + timestampsrequest + " order by a.TIME_REC";
-        
-        //dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(str_connect, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
-        //dataadapter.Fill(ds);
-        //myDataTable = ds.Tables[0];
+        ds = new DataSet();
+        str_connect = "SELECT a.TIME_REC, a." + s_rain_acc + ",a." + s_rain_duration + ", a." + s_rain_intensity + " FROM " + _1_equip_name + " a" + timestampsrequest + " order by a.TIME_REC";
 
-        //foreach (DataRow dRow in myDataTable.Rows)
-        //{
-        //    DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
+        dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(str_connect, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
+        dataadapter.Fill(ds);
+        myDataTable = ds.Tables[0];
 
-        //    // UTC to Local Time
-        //    date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
+        foreach (DataRow dRow in myDataTable.Rows)
+        {
+            DateTime date = Convert.ToDateTime(dRow["TIME_REC"].ToString());
 
-        //    list_str_time1.Add(date.ToString("yyyy-MM-ddTHH:mm"));
+            // UTC to Local Time
+            date = date.AddHours(double.Parse(WebConfigurationManager.AppSettings["UTCdataOffset"])).AddHours(-1 * double.Parse(WebConfigurationManager.AppSettings["systemUTCTimeOffset"])); //=>>>> TIMEREC SINGATURE EN HEURE LOCALE
 
-        //    list_par3.Add(double.Parse(dRow[s_rain_acc].ToString()));
-        //    list_par4.Add(double.Parse(dRow[s_rain_duration].ToString()));
-        //    list_par5.Add(double.Parse(dRow[s_rain_intensity].ToString()));
-        //}
+            list_str_time1.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
-        //data.set_param_equip_1(list_par3, list_par4, list_par5, list_str_time1);
+            list_par3.Add(double.Parse(dRow[s_rain_acc].ToString()));
+            list_par4.Add(double.Parse(dRow[s_rain_duration].ToString()));
+            list_par5.Add(double.Parse(dRow[s_rain_intensity].ToString()));
+        }
+
+        data.set_param_equip_1(list_par3, list_par4, list_par5, list_str_time1);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -780,7 +792,8 @@ public partial class Meteo : System.Web.UI.Page
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// Read data for equipment 2 -- look in resx table to know how many parameter to read
         ds = new DataSet();
-        str_connect = "SELECT a.TIME_REC, a." + s_wind_speed_avg + ",a." + s_wind_dir_avg + ", a." + s_wind_speed_max + ", a." + s_wind_dir_max + ", a." + s_wind_speed_min + ", a." + s_wind_dir_min + " FROM " + _2_equip_name + " a" + timestampsrequest + " order by a.TIME_REC";
+        str_connect = "SELECT a.TIME_REC, a." + s_wind_speed_avg + ",a." + s_wind_dir_avg + ", a." + s_wind_speed_max + ", a." + s_wind_dir_max + ", a." + s_wind_speed_min 
+            + ", a." + s_wind_dir_min + " FROM " + _2_equip_name + " a" + timestampsrequest + " order by a.TIME_REC";
         
         dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(str_connect, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);

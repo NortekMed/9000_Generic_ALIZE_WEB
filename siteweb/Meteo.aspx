@@ -102,7 +102,15 @@
     <asp:HiddenField ID = "declination_label" Value="<%$ Resources:Site.master, declination %>" Runat="Server" />
 
     <asp:HiddenField ID = "light_site" ClientIdMode="Static" Runat="Server"/>
-		
+	<asp:HiddenField ID = "b_include_hum_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_include_rain_hd" ClientIdMode="Static" Runat="Server"/>
+
+    <script>
+        
+        var b_include_rain = document.getElementById('<%=b_include_rain_hd.ClientID%>').value;
+        var b_include_hum = document.getElementById('<%=b_include_hum_hd.ClientID%>').value;
+
+    </script>
     
     <script type="text/javascript">
         var l_maintitle = document.getElementById('<%=page_name.ClientID%>').value;
@@ -200,51 +208,51 @@
         document.write('</div>');
     </script>
 
-    <%--<script type="text/javascript">
+    <script type="text/javascript">
         var label = document.getElementById('<%=humidity_label.ClientID%>').value;
 
-
-        document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label.toUpperCase() + '</b></div>');
-        document.write('<div class="panel-body">');
-        document.write('<div id="humcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
-        document.write('</div>');
-        document.write('</div>');
-    </script>--%>
-
-    <%--<script type="text/javascript">
-        var label = document.getElementById('<%=_1_equipname.ClientID%>').value;
-
-        document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
-        document.write('<div class="panel-body">');
-        document.write('<div id="param1container" style="min-width:500px; width:100%; height:300px;"></div>');
-        document.write('</div>');
-        document.write('</div>');
-    </script>--%>
-
-    
-
-    <%--<script type="text/javascript">
-        var label = document.getElementById('<%=_3_equipname.ClientID%>').value;
-
-        document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + label + '</b></div>');
-        document.write('<div class="panel-body">');
-        document.write('<div id="param3container" style="min-width:500px; width:100%; height:300px;"></div>');
-        document.write('</div>');
-        document.write('</div>');
+        if (b_include_hum == "True") {
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>' + label.toUpperCase() + '</b></div>');
+            document.write('<div class="panel-body">');
+            document.write('<div id="humcontainer" style="min-width:500px; width:100%; height:300px;"></div>');
+            document.write('</div>');
+            document.write('</div>');
+        }
     </script>
 
     <script type="text/javascript">
+        var label = document.getElementById('<%=_1_equipname.ClientID%>').value;
+        if (b_include_rain == "True") {
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+            document.write('<div class="panel-body">');
+            document.write('<div id="param1container" style="min-width:500px; width:100%; height:300px;"></div>');
+            document.write('</div>');
+            document.write('</div>');
+        }
+    </script>
+
+    
+    <%-- METEO AIRMAR %>
+     <%--<script type="text/javascript">
         var label = document.getElementById('<%=_3_equipname.ClientID%>').value;
 
-        document.write('<div class="panel panel-default">');
-        document.write('<div class="panel-heading"><b>' + 'Vent ' + label + '</b></div>');
-        document.write('<div class="panel-body">');
-        document.write('<div id="param4container" style="min-width:500px; width:100%; height:300px;"></div>');
-        document.write('</div>');
-        document.write('</div>');
+        
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>' + label + '</b></div>');
+            document.write('<div class="panel-body">');
+            document.write('<div id="param3container" style="min-width:500px; width:100%; height:300px;"></div>');
+            document.write('</div>');
+            document.write('</div>');
+
+
+            document.write('<div class="panel panel-default">');
+            document.write('<div class="panel-heading"><b>' + 'Vent ' + label + '</b></div>');
+            document.write('<div class="panel-body">');
+            document.write('<div id="param4container" style="min-width:500px; width:100%; height:300px;"></div>');
+            document.write('</div>');
+            document.write('</div>');
     </script>--%>
 
     <%--<script type="text/javascript">
@@ -343,8 +351,8 @@
             var chartpar0 = $('#param0container').highcharts();
             var chartpar1 = $('#param1container').highcharts();
             var chartpar2 = $('#param2container').highcharts();
-            //var chartpar3 = $('#param3container').highcharts();
-            //var chartpar4 = $('#param4container').highcharts();
+
+            
             var chartpar5 = $('#param5container').highcharts();
 
             var charthum = $('#humcontainer').highcharts();
@@ -376,16 +384,30 @@
             for (var i = 0; i < data.wxt_str_time.length; i++) {
                 par0.push([Date.parse(data.wxt_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_temp[i]]);
                 par1.push([Date.parse(data.wxt_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_press[i]]);
-                par2.push([Date.parse(data.wxt_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_hum[i]]);
+
+                if (b_include_hum == "True")
+                    par2.push([Date.parse(data.wxt_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_hum[i]]);
             }
 
-            //PLUIE Vaissala
-            //for (var i = 0; i < data.str_time1.length; i++) {
-            //    par3.push([Date.parse(data.str_time1[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param3[i]]);
-            //    par4.push([Date.parse(data.str_time1[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param4[i]]);
-            //    par5.push([Date.parse(data.str_time1[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.param5[i]]);
-            //}
+            if (b_include_hum == "True") {
+                charthum.series[0].setData(par2);
+            }
 
+            if (b_include_rain == "True") {
+
+                //PLUIE Vaissala
+                for (var i = 0; i < data.wxt_rain_str_time.length; i++) {
+                    par3.push([Date.parse(data.wxt_rain_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_rain_d[i]]);
+                    par4.push([Date.parse(data.wxt_rain_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_rain_acc[i]]);
+                    par5.push([Date.parse(data.wxt_rain_str_time[i].replace(/\-/g, '\/').replace(/T/, ' ').replace(/Z/, ' -0')), data.wxt_rain_i[i]]);
+                }
+
+                //chart pluie ( vaissala ) rd / rc / ri
+                chartpar1.series[0].setData(par3);
+                chartpar1.series[1].setData(par4);
+                //chartpar1.series[2].setData(par5);    // no display ri
+
+            }
 
             var speed = +document.getElementById('speed').value;
             var l_speed = [];
@@ -424,12 +446,9 @@
             chartpar0.series[1].setData(par1);
             //chartpar0.series[2].setData(par2);    // not display humidity
 
-            //charthum.series[0].setData(par2);
+            //
 
-            //chart pluie ( vaissala ) rd / rc / ri
-            //chartpar1.series[0].setData(par3);
-            //chartpar1.series[1].setData(par4);
-            //chartpar1.series[2].setData(par5);    // no display ri
+            
 
             //chart vent vaissala vmoy / dirmoy / vmax / dirmax
             chartpar2.series[0].setData(par6);
