@@ -160,7 +160,7 @@
     <value>Magnetic</value>
   </data>
   <data name="TIMEREF" xml:space="preserve">
-    <value>20 minutes</value>
+    <value>30 minutes</value>
   </data>
   <data name="TIMESTAMP" xml:space="preserve">
     <value>UTC time, acquisition start</value>
