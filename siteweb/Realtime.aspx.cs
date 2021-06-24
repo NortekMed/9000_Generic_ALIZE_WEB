@@ -18,6 +18,7 @@ public partial class Realtime : System.Web.UI.Page
     static bool b_c4e = false;
     static bool b_optod = false;
     static bool b_turbi = false;
+    static bool b_turbi_obs = false;
     static bool b_ctd = false;
     static bool b_decl = false;
 
@@ -53,6 +54,11 @@ public partial class Realtime : System.Web.UI.Page
 
         if (WebConfigurationManager.AppSettings["PAGE_TURBI"] == "true")
             b_turbi = true;
+        
+
+        if (WebConfigurationManager.AppSettings["PAGE_TURBI_OBS"] == "true")
+            b_turbi_obs = true;
+
 
         if (WebConfigurationManager.AppSettings["PAGE_CTD"] == "true")
             b_ctd = true;
@@ -82,6 +88,7 @@ public partial class Realtime : System.Web.UI.Page
         b_c4e_hd.Value = b_c4e.ToString();
         b_optod_hd.Value = b_optod.ToString();
         b_turbi_hd.Value = b_turbi.ToString();
+        b_turbi_obs_hd.Value = b_turbi_obs.ToString();
         b_decl_hd.Value = b_decl.ToString();
 
         b_currant_hd.Value = b_currant.ToString();

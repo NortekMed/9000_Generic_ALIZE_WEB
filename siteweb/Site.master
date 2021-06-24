@@ -171,6 +171,11 @@
                 document.write('<li><a runat="server" href="~/Aquapro_Turbi">'); document.write(l_turbi); document.write("</a></li>");
             }
 
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_TURBI_OBS"] %>";
+            if (ena == "true") {
+                document.write('<li><a runat="server" href="~/OBS_Turbi">'); document.write(l_turbi); document.write("</a></li>");
+            }
+
             var ena = "<%=ConfigurationManager.AppSettings["PAGE_SPM"] %>";
             if (ena == "true") {
                 document.write('<li><a runat="server" href="~/pyrano">'); document.write(l_spm); document.write("</a></li>");

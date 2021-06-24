@@ -102,6 +102,7 @@
     <asp:HiddenField ID = "b_c4e_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_optod_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_turbi_hd" ClientIdMode="Static" Runat="Server"/>
+    <asp:HiddenField ID = "b_turbi_obs_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_ctd_hd" ClientIdMode="Static" Runat="Server"/>
     <asp:HiddenField ID = "b_decl_hd" ClientIdMode="Static" Runat="Server"/>
 
@@ -127,6 +128,8 @@
         var b_include_hum = document.getElementById('<%=b_include_hum_hd.ClientID%>').value;
         var b_include_rain = document.getElementById('<%=b_include_rain_hd.ClientID%>').value;
         var b_position = document.getElementById('<%=b_position_hd.ClientID%>').value;
+
+        var b_turbi_obs = document.getElementById('<%=b_turbi_obs_hd.ClientID%>').value;
 
     </script>
          
@@ -796,6 +799,27 @@
             }
 
             //Call webservice with ajax!
+            function initTurbiOBS() {
+
+                var obj = { begin: "", end: "" };
+
+                $.ajax({
+                    type: "POST",
+                    url: "OBS_Turbi.aspx/GetValuesFrom",
+                    data: JSON.stringify(obj),
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        updateTurbiOBS(data.d);
+                    },
+                    error: function () {
+                        alert('TURBI_OBS : erreur de chargement ou pas de données');
+                    }
+                });
+            }
+
+            //Call webservice with ajax!
             function initSIG() {
 
                 var obj = { begin: "", end: "" };
@@ -985,6 +1009,24 @@
                 $('#turbi_par3').text(data.param3[last])
 
             }
+        }
+
+            // Update charts with turbi_obs data
+            function updateTurbiOBS(data) {
+
+                var last = data.data_type_TURBI_OBS.length - 1;
+
+                if (last >= 0) {
+
+                    //YYYYMMDDtoDDMMYYY(data.spm_time[last]);
+
+                    $('#turbi_obs_hour').text("      " + YYYYMMDDtoDDMMYYY(data.str_time[last]))
+                    $('#turbi_obs_par0').text(data.ntu_1[last])
+                    //$('#turbi_par1').text(data.param1[last])
+                    //$('#turbi_par2').text(data.param2[last])
+                    //$('#turbi_par3').text(data.param3[last])
+
+                }
             }
 
             // Update charts with pyrano data
@@ -1100,6 +1142,9 @@
 
             if ( b_turbi == "True")
                 initTurbi();
+
+            if (b_turbi_obs == "True")
+                initTurbiOBS();
 
             if ( b_currant == "True")
                 initSIG();
