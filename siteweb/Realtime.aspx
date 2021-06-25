@@ -460,9 +460,37 @@
                 document.write('</body></table></div>');
                 document.write('</div></div>');
             }
+
+            if (b_turbi_obs == "True") {
+                var l_paneltitle = document.getElementById('<%=turbi_panel.ClientID%>').value;
+                var l_desc = document.getElementById('<%=avg_10.ClientID%>').value;
+                var l_alim = "External voltage";
+                var l_ntu_1 = "NTU";
+                var l_bat = "Internal battery";
+                 <%--var l_param3 = document.getElementById('<%=turbi_param3.ClientID%>').value;--%>
+                var l_alim_unit = "V";
+                var l_ntu_1_unit = "ntu";
+                var l_bat_unit = "V";
+                <%--var l_param3unit = document.getElementById('<%=turbi_param3unit.ClientID%>').value;--%>
+
+                document.write('<div class="col-md-4">')
+                document.write('<div class="panel panel-default">');
+                document.write('<div class="panel-heading"><b>' + l_paneltitle + ' </b> <label class="indent" id="turbihour">X</label> </div>');
+                document.write('<div class="panel-body">');
+                document.write('<table class="table"><tbody>');
+
+                document.write('<tr><td>' + l_desc + '</td></tr>');
+                document.write('<tr><td>' + l_alim + '</td><td><label id="turbi_obs_alim">X</label></td><td>' + l_alim_unit + '</td>');
+                document.write('<tr><td>' + l_ntu_1 + '</td><td><label id="turbi_obs_ntu_1">X</label></td><td>' + l_ntu_1_unit + '</td>');
+                document.write('<tr><td>' + l_bat + '</td><td><label id="turbi_obs_bat">X</label></td><td>' + l_bat_unit + '</td>');
+                <%--ocument.write('<tr><td>' + l_param3 + '</td><td><label id="turbi_par3">X</label></td><td>' + l_param3unit + '</td>');--%>
+
+                document.write('</body></table></div>');
+                document.write('</div></div>');
+            }
         
 
-         if (b_spm == "True" || b_c4e == "True" || b_optod == "True" || b_turbi == "True")
+            if (b_spm == "True" || b_c4e == "True" || b_optod == "True" || b_turbi == "True" || b_turbi_obs == "True" )
             document.write('</div>');
      
        </script>
@@ -1014,16 +1042,16 @@
             // Update charts with turbi_obs data
             function updateTurbiOBS(data) {
 
-                var last = data.data_type_TURBI_OBS.length - 1;
+                var last = data.str_time.length - 1;
 
                 if (last >= 0) {
 
                     //YYYYMMDDtoDDMMYYY(data.spm_time[last]);
 
                     $('#turbi_obs_hour').text("      " + YYYYMMDDtoDDMMYYY(data.str_time[last]))
-                    $('#turbi_obs_par0').text(data.ntu_1[last])
-                    //$('#turbi_par1').text(data.param1[last])
-                    //$('#turbi_par2').text(data.param2[last])
+                    $('#turbi_obs_alim').text(data.alim[last])
+                    $('#turbi_obs_ntu_1').text(data.ntu_1[last])
+                    $('#turbi_obs_bat').text(data.bat[last])
                     //$('#turbi_par3').text(data.param3[last])
 
                 }

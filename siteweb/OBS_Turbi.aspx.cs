@@ -245,7 +245,7 @@ public partial class Turbi_obs : System.Web.UI.Page
 
 
         DataSet ds = new DataSet();
-        string str_connect = "SELECT a.TIME_REC, a." + NTU_1name + " FROM " + equip_name + " a" + timestampsrequest + " order by a.TIME_REC";
+        string str_connect = "SELECT a.TIME_REC, a.ALIM , a.BAT_INT, a." + NTU_1name + " FROM " + equip_name + " a" + timestampsrequest + " order by a.TIME_REC";
         //string str_connect = "SELECT a.TIME_REC FROM C4E " + timestampsrequest + " order by a.TIME_REC";
         FbDataAdapter dataadapter = new FirebirdSql.Data.FirebirdClient.FbDataAdapter(str_connect, ConfigurationManager.ConnectionStrings["database1"].ConnectionString);
         dataadapter.Fill(ds);
@@ -267,10 +267,10 @@ public partial class Turbi_obs : System.Web.UI.Page
 
             list_str_time.Add(date.ToString("yyyy-MM-ddTHH:mm"));
 
-            list_par1.Add(Math.Round(double.Parse(dRow[NTU_1name].ToString()), 2));
-            //list_par1.Add(double.Parse(dRow[param1_name].ToString()));
-            //list_par2.Add(double.Parse(dRow[param2_name].ToString()));
-            //list_par3.Add(double.Parse(dRow[param3_name].ToString()));
+            list_par0.Add(Math.Round(double.Parse(dRow["ALIM"].ToString())/1000, 2));
+            list_par1.Add(double.Parse(dRow[NTU_1name].ToString()));
+            //list_par2.Add(double.Parse(dRow["BAT_INT"].ToString()));
+            list_par3.Add(Math.Round(double.Parse(dRow["BAT_INT"].ToString())/1000,2));
         }
 
 
