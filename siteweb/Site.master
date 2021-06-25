@@ -181,7 +181,15 @@
                 document.write('<li><a runat="server" href="~/pyrano">'); document.write(l_spm); document.write("</a></li>");
             }
 
-
+            var ena = "<%=ConfigurationManager.AppSettings["PAGE_HYDRO"] %>";
+            if (ena == "true") {
+                document.write('<li class="dropdown">');
+                document.write('<a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">HYDRO <span class="caret"></span></a>');
+                document.write('<ul class="dropdown-menu">');
+                document.write('<li><a runat="server" href="~/Acoustic1">'); document.write("Journalier"); document.write("</a></li>");
+                document.write('<li><a runat="server" href="~/Spectrum1">'); document.write("Spectre"); document.write("</a></li>");
+                document.write('</ul></li >');
+            }
                             //document.write('<li><a runat="server" href="~/Aquapro_C4E">'); document.write(l_c4e); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_Optod">'); document.write(l_optod); document.write("</a></li>");
                             //document.write('<li><a runat="server" href="~/Aquapro_Turbi">'); document.write(l_turbi); document.write("</a></li>");
